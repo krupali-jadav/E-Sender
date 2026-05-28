@@ -28,7 +28,6 @@ import { setUserDetails } from "../redux/reducers/Reducer.user";
 import { getMediaPath } from "../util/getMediaPath";
 import axiosInstance from "../util/axiosInstance";
 
-
 const { Text, Title } = Typography;
 const { Content } = Layout;
 
@@ -68,27 +67,11 @@ function Login() {
         if (value && value.valid && value.valid()) {
             const fullPhoneNumber = `+${value?.countryCode ?? ""}${value?.areaCode ?? ""
                 }${value?.phoneNumber ?? ""}`;
-
-            console.log("Phone:", fullPhoneNumber);
-
             setPhone(fullPhoneNumber);
         } else {
             setPhone("");
         }
     };
-
-    // const onSendOtp = () => {
-    //   setLoading(true);
-    //   setTick(30);
-    //   setResend(false);
-    //   setOtp("");
-    //   setTimeout(() => {
-    //     setIsLoginPage(false);
-    //     message.success(`OTP sent to ${phone || "your number"}`);
-    //     setLoading(false);
-    //   }, 700);
-    // };
-
     const onSendOtp = async () => {
         try {
             setLoading(true);
@@ -100,7 +83,6 @@ function Login() {
                 auth_type: "phone",
                 phone: phone,
             });
-            console.log("send otp", data);
 
             if (data.status) {
                 setIsLoginPage(false);
@@ -115,21 +97,6 @@ function Login() {
             setLoading(false);
         }
     };
-
-    // const onOtpVerify = () => {
-    //     setLoading(true);
-    //     setTimeout(() => {
-    //         if (otp === "123456") {
-    //             const userData = { phone, isLoggedIn: true };
-    //             dispatch(setUserDetails(userData));
-    //             message.success("Login Successfully");
-    //             console.log(userData);
-    //         } else {
-    //             message.error("Invalid OTP");
-    //         }
-    //         setLoading(false);
-    //     }, 700);
-    // }
     const onOtpVerify = async () => {
     try {
       setLoading(true);
@@ -140,10 +107,10 @@ function Login() {
       });
       if (data.status) {
         message.success(
-          ("login.loginSuccessfully", { defaultValue: "Login Successfully" }),
+          (data.message || "Login Successfully"),
         );
         dispatch(setUserDetails(data));
-        navigate("/");
+        navigate("/dashboard");
       } else {
         message.error(data.message);
       }
@@ -159,7 +126,7 @@ function Login() {
             <Content>
                 <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
                     {isLoginPage ? (
-                        <Col xs={22} sm={18} md={12} lg={8} xl={5}>
+                        <Col xs={18} sm={15} md={10} lg={8} xl={7} xxl={5}>
                             <Card>
                                 <Flex justify="center">
                                     <Image
@@ -248,7 +215,7 @@ function Login() {
                             </Card>
                         </Col>
                     ) : (
-                        <Col xs={22} sm={18} md={12} lg={8} xl={5}>
+                        <Col xs={18} sm={15} md={10} lg={8} xl={7} xxl={5}>
                             <Card justify="center" align="middle">
                                 <Image
                                     preview={false}
@@ -327,5 +294,4 @@ function Login() {
         </Layout>
     );
 }
-
 export default Login;
