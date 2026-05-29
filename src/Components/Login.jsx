@@ -21,7 +21,7 @@ import {
     EditOutlined,
     ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "antd-phone-input";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../redux/reducers/Reducer.user";
@@ -84,7 +84,7 @@ function Login() {
                 phone: phone,
             });
 
-            if (data.status) {
+            if (data.status) {  
                 setIsLoginPage(false);
                 message.success(data.message);
                 dispatch(setUserDetails(data));
