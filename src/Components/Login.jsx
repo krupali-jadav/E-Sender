@@ -32,7 +32,7 @@ const { Text, Title } = Typography;
 const { Content } = Layout;
 
 function Login() {
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const otpRef = useRef(null);
     const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
@@ -84,7 +84,7 @@ function Login() {
                 phone: phone,
             });
 
-            if (data.status) {  
+            if (data.status) {
                 setIsLoginPage(false);
                 message.success(data.message);
                 dispatch(setUserDetails(data));
@@ -98,28 +98,28 @@ function Login() {
         }
     };
     const onOtpVerify = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axiosInstance.post("/api/auth/verify-otp", {
-        auth_type: "phone",
-        phone: phone,
-        otp: otp,
-      });
-      if (data.status) {
-        message.success(
-          (data.message || "Login Successfully"),
-        );
-        dispatch(setUserDetails(data));
-        navigate("/dashboard");
-      } else {
-        message.error(data.message);
-      }
-    } catch (error) {
-      message.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        try {
+            setLoading(true);
+            const { data } = await axiosInstance.post("/api/auth/verify-otp", {
+                auth_type: "phone",
+                phone: phone,
+                otp: otp,
+            });
+            if (data.status) {
+                message.success(
+                    (data.message || "Login Successfully"),
+                );
+                dispatch(setUserDetails(data));
+                navigate("/dashboard");
+            } else {
+                message.error(data.message);
+            }
+        } catch (error) {
+            message.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Layout style={{ minHeight: "100vh", }}>
@@ -242,7 +242,9 @@ function Login() {
                                         </Text>
 
                                         <Form.Item label="Enter OTP">
-                                            <Input.OTP length={6}
+                                            <Input.OTP
+                                                ref={otpRef}
+                                                length={6}
                                                 value={otp}
                                                 onChange={(value) => setOtp(value)}
                                                 format={(value) => value.replace(/\D/g, "")}
