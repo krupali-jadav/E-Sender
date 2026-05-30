@@ -8,6 +8,9 @@ import Contacts from "./Components/Contact/Contacts";
 import Groups from "./Components/Contact/Groups";
 import CustomFields from "./Components/Contact/CustomFields";
 
+import SearchHeader from "./Components/Search Header/SearchHeader";
+
+
 const ProtectedRoute = ({ component: Component }) => {
   return (
     <ProLayouts>
@@ -24,7 +27,9 @@ function App() {
     { path: "/sessions", component: Sessions },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
-    { path: "/contact/custom-fields", component: CustomFields } 
+    { path: "/contact/custom-fields", component: CustomFields } ,
+    { path: "/search-header", component: SearchHeader }
+
   ];
 
   return (
