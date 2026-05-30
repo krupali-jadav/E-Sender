@@ -8,9 +8,9 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const state = store.getState();
-        console.log(state, "State"); // Log the entire state to check its structure
-        const token = state.user?.token;
-        console.log(token); // Adjust based on your state structure
+        console.log( "State",state);
+        const token = state.user?.details?.token;
+        console.log("token", token); 
 
         if (import.meta.env.VITE_MODE === "production") {
             config.baseURL = "/api/";

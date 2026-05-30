@@ -3,13 +3,15 @@ import { ProLayout, } from "@ant-design/pro-components";
 import { Avatar, Button, Dropdown, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/action";
 import { t } from "i18next";
 
 const { Title, Text } = Typography;
 
 const ProLayouts = ({ children }) => {
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const profile = useSelector((state) => state?.user?.profile);
 
@@ -69,6 +71,7 @@ const ProLayouts = ({ children }) => {
                   //   title: t("session", { defaultValue: "Session" }),
                   //   icon: <LaptopOutlined />,
                   // },
+
                   {
                     key: "3",
                     icon: <LaptopOutlined />,
@@ -82,7 +85,10 @@ const ProLayouts = ({ children }) => {
                     key: "4",
                     icon: <LogoutOutlined />,
                     label: (
-                      <span onClick={() => { navigate("/logout") }}>
+                      <span onClick={() => {
+                        dispatch(logout());
+                        navigate("/");
+                      }}>
                         Logout
                       </span>
                     ),
@@ -98,13 +104,13 @@ const ProLayouts = ({ children }) => {
                 size="medium"
                 icon={<UserOutlined />}
               />
-            </Dropdown >
+            </Dropdown>
           );
         },
       }}
     >
       {children}
-    </ProLayout >
+    </ProLayout>
   );
 };
 
