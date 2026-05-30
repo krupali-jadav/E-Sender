@@ -1,18 +1,24 @@
 
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, Typography, Card, } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, message, } from "antd";
 import PhoneInput from "antd-phone-input";
 import { PageContainer } from "@ant-design/pro-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import countryList from "../../util/countryList.json";
+import axiosInstance from "../../util/axiosInstance";
+import { LoadingOutlined } from "@ant-design/icons";
+import { getMediaPath } from "../../util/getMediaPath";
 
-const { Title } = Typography;
 
 const Profile = () => {
 
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [phone, setPhone] = useState("");
+  const [profileUrl, setProfileUrl] = useState("");
+  const [isProfileUploading, setIsProfileUploading] = useState(false);
 
   const profile = useSelector((state) => state?.user?.profile);
   const phoneCountry = useSelector(
@@ -28,6 +34,64 @@ const Profile = () => {
       });
     }
   }, [profile]);
+
+  const onProfileSave = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axiosInstance.post("auth/profile/save", {
+        name: name,
+        // email: email,
+        // address: {
+        //   country: country,
+        //   addressLine1: addressLine1,
+        //   addressLine2: addressLine2,
+        //   city: city,
+        //   state: state,
+        //   zip: zip,
+        // },
+        // profile: profileUrl,
+      });
+
+      if (data.status) {
+        message.success(data?.message);
+        // dispatch(refreshProfile());
+      } else {
+        message.error(data.message);
+      }
+    } catch (e) {
+      message.error(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const imageUpload = async (options) => {
+    const { file } = options;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", "image");
+    try {
+      setIsProfileUploading(true);
+      const { data } = await axiosInstance.post("app/upload-image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (data?.status) {
+        message.success(data.message);
+        setProfileUrl(data?.downloadUrl);
+      } else {
+        message.error(data.message);
+      }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      message.error(
+        ("failed.upload.img", { defaultValue: "Failed to upload image" }),
+      );
+    } finally {
+      setIsProfileUploading(false);
+    }
+  };
 
   return (
     <PageContainer title="Profile">
@@ -56,11 +120,22 @@ const Profile = () => {
                     multiple={false}
                     showUploadList={false}
                     cursor="pointer"
+                    customRequest={imageUpload}
                   >
-                    <Avatar
-                      shape="circle"
-                      size={100}
-                    />
+                    {isProfileUploading ? (
+                      <LoadingOutlined />
+                    ) : (
+                      <Avatar
+                        shape="circle"
+                        size={100}
+                        src={
+                          profileUrl !== ""
+                            ? getMediaPath(profileUrl)
+                            : `${getMediaPath("/media/avatar.png")}`
+                        }
+                        alt="avatar"
+                      />
+                    )}
                   </Upload>
                 </Flex>
               </Form.Item>

@@ -1,9 +1,10 @@
 import React from "react";
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Dropdown, Typography, Space, } from "antd";
+import { Avatar, Button, Dropdown, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { t } from "i18next";
 
 const { Title, Text } = Typography;
 
@@ -13,40 +14,40 @@ const ProLayouts = ({ children }) => {
   const profile = useSelector((state) => state?.user?.profile);
 
   // Dropdown Menu
-  const items = [
-    {
-      key: "1",
-      label: (
-        <div>
-          <Title
-            level={5}
-          >
-            {profile.name}
-          </Title>
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: (
+  //       <div>
+  //         <Title
+  //           level={5}
+  //         >
+  //           {profile.name}
+  //         </Title>
 
-          <Text type="secondary">
-            {profile.phone}
-          </Text>
-        </div>
-      ),
-    },
-    { type: "divider", },
-    {
-      key: "2",
-      icon: <UserOutlined />,
-      label: "Edit Profile",
-    },
-    {
-      key: "3",
-      icon: <LaptopOutlined />,
-      label: "Session",
-    },
-    {
-      key: "4",
-      icon: <LogoutOutlined />,
-      label: "Logout",
-    },
-  ];
+  //         <Text type="secondary">
+  //           {profile.phone}
+  //         </Text>
+  //       </div>
+  //     ),
+  //   },
+  //   { type: "divider", },
+  //   {
+  //     key: "2",
+  //     icon: <UserOutlined />,
+  //     label: "Edit Profile",
+  //   },
+  //   {
+  //     key: "3",
+  //     icon: <LaptopOutlined />,
+  //     label: "Session",
+  //   },
+  //   {
+  //     key: "4",
+  //     icon: <LogoutOutlined />,
+  //     label: "Logout",
+  //   },
+  // ];
 
   return (
     <ProLayout
@@ -88,22 +89,28 @@ const ProLayouts = ({ children }) => {
                       </span>
                     ),
                   },
-
                   {
-                    key: "3",
-                    icon: <LaptopOutlined />,
                     label: (
-                      <span>
-                        Session
-                      </span>
+                      <Button
+                        ghost={true}
+                        type="secondary"
+                        onClick={() => {
+                          navigate("/sessions");
+                        }}
+                      >
+                        {/* {t("session", { defaultValue: "Session" })} */}Session
+                      </Button>
                     ),
+                    key: "3",
+                    title: t("session", { defaultValue: "Session" }),
+                    icon: <LaptopOutlined />,
                   },
 
                   {
                     key: "4",
                     icon: <LogoutOutlined />,
                     label: (
-                      <span>
+                      <span onClick={() => { navigate("/logout") }}>
                         Logout
                       </span>
                     ),
@@ -119,13 +126,13 @@ const ProLayouts = ({ children }) => {
                 size="medium"
                 icon={<UserOutlined />}
               />
-            </Dropdown>
+            </Dropdown >
           );
         },
       }}
     >
       {children}
-    </ProLayout>
+    </ProLayout >
   );
 };
 

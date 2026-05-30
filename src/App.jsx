@@ -4,6 +4,7 @@ import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/ProLayouts";
 import EditProfile from "./Components/Profile/Profile";
+import Sessions from "./Components/Sessions/Sessions";
 
 const ProtectedRoute = ({ component: Component }) => {
   return (
@@ -31,6 +32,12 @@ function App() {
           path="/edit-profile"
           element={
             <ProtectedRoute component={EditProfile} />
+          }
+        />
+        <Route
+          path="/sessions"
+          element={
+            <ProtectedRoute component={Sessions} />
           }
         />
       </Routes>
