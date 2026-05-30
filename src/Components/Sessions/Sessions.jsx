@@ -67,12 +67,7 @@ const Sessions = () => {
     };
 
     const renderSessions = (sessions, icon, color, title) => (
-        <Card
-            bordered
-            style={{
-                marginBottom: "24px",
-            }}
-        >
+        <Card>
             <Row gutter={[16, 24]} align="middle" style={{ marginBottom: 16 }} justify="space-between"  >
                 <Col>
                     <Flex align="center" justify="space-between">
