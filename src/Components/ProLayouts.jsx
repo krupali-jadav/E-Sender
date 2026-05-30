@@ -13,42 +13,6 @@ const ProLayouts = ({ children }) => {
   const navigate = useNavigate();
   const profile = useSelector((state) => state?.user?.profile);
 
-  // Dropdown Menu
-  // const items = [
-  //   {
-  //     key: "1",
-  //     label: (
-  //       <div>
-  //         <Title
-  //           level={5}
-  //         >
-  //           {profile.name}
-  //         </Title>
-
-  //         <Text type="secondary">
-  //           {profile.phone}
-  //         </Text>
-  //       </div>
-  //     ),
-  //   },
-  //   { type: "divider", },
-  //   {
-  //     key: "2",
-  //     icon: <UserOutlined />,
-  //     label: "Edit Profile",
-  //   },
-  //   {
-  //     key: "3",
-  //     icon: <LaptopOutlined />,
-  //     label: "Session",
-  //   },
-  //   {
-  //     key: "4",
-  //     icon: <LogoutOutlined />,
-  //     label: "Logout",
-  //   },
-  // ];
-
   return (
     <ProLayout
       layout="mix"
@@ -89,23 +53,31 @@ const ProLayouts = ({ children }) => {
                       </span>
                     ),
                   },
+                  // {
+                  //   label: (
+                  //     <Button
+                  //       ghost={true}
+                  //       type="secondary"
+                  //       onClick={() => {
+                  //         navigate("/sessions");
+                  //       }}
+                  //     >
+                  //       {/* {t("session", { defaultValue: "Session" })} */}Session
+                  //     </Button>
+                  //   ),
+                  //   key: "3",
+                  //   title: t("session", { defaultValue: "Session" }),
+                  //   icon: <LaptopOutlined />,
+                  // },
                   {
-                    label: (
-                      <Button
-                        ghost={true}
-                        type="secondary"
-                        onClick={() => {
-                          navigate("/sessions");
-                        }}
-                      >
-                        {/* {t("session", { defaultValue: "Session" })} */}Session
-                      </Button>
-                    ),
                     key: "3",
-                    title: t("session", { defaultValue: "Session" }),
                     icon: <LaptopOutlined />,
+                    label: (
+                      <span onClick={() => { navigate("/sessions") }}>
+                        Session
+                      </span>
+                    ),
                   },
-
                   {
                     key: "4",
                     icon: <LogoutOutlined />,
