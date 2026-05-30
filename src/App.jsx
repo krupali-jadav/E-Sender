@@ -4,6 +4,7 @@ import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/ProLayouts";
 import EditProfile from "./Components/Profile/Profile";
 import Sessions from "./Components/Sessions/Sessions";
+import SearchHeader from "./Components/Search Header/SearchHeader";
 
 const ProtectedRoute = ({ component: Component }) => {
   return (
@@ -19,6 +20,7 @@ function App() {
     { path: "/dashboard", component: Dashboard },
     { path: "/edit-profile", component: EditProfile },
     { path: "/sessions", component: Sessions },
+    { path: "/search-header", component: SearchHeader },
   ];
 
   return (
