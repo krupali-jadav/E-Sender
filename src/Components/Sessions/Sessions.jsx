@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Row, Spin, Typography, Modal, notification, Flex } from "antd";
-import {
-    WindowsOutlined,
-    MobileOutlined,
-    LogoutOutlined,
-    InfoCircleOutlined,
-} from "@ant-design/icons";
+import { Button, Card, Col, Row, Spin, Typography, Modal, notification, Flex, Space } from "antd";
+import { WindowsOutlined, MobileOutlined, LogoutOutlined, InfoCircleOutlined, } from "@ant-design/icons";
 
 import { t } from "i18next";
 import { sessionAll, sessionLogout } from "./SessionAll";
@@ -67,13 +62,13 @@ const Sessions = () => {
     };
 
     const renderSessions = (sessions, icon, color, title) => (
-        <Card>
+        <Card bordered>
             <Row gutter={[16, 24]} align="middle" style={{ marginBottom: 16 }} justify="space-between"  >
                 <Col>
-                    <Flex align="center" justify="space-between">
-                        {React.cloneElement(icon, { style: { fontSize: "28px", color } })}
-                        <Title level={5} style={{ margin: 0, marginLeft: "10px" }}>{title}</Title>{" "}
-                    </Flex>
+                    <Space align="center">
+                        {React.cloneElement(icon, { style: { color, fontSize: "28px" } })}
+                        <Title level={5}>{title}</Title>
+                    </Space>
 
                 </Col>
                 <Col>
@@ -87,32 +82,24 @@ const Sessions = () => {
                 style={{
                     maxHeight: "450px",
                     overflowY: "auto",
-                    padding: "1rem",
                 }}
             >
                 {sessions?.map((item) => (
-                    <div
+                    <Card
                         key={item._id}
-                        style={{
-                            padding: "16px",
-                            borderRadius: "8px",
-                            marginBottom: "12px",
-                            border: "1px solid #EBEBEB",
-                            transition: "box-shadow 0.3s",
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+                        size="small"
+                        style={{ marginBottom: 12 }}
                     >
                         <Row justify="space-between" align="middle">
                             <Col>
-                                <Text strong style={{ display: "block", fontSize: "16px" }}>
+                                <Text strong>
                                     {item?.info?.os?.name || "Unknown OS"}
                                 </Text>
-                                <Text type="secondary" style={{ fontSize: "14px" }}>
+                                <Text type="secondary">
                                     {item?.info?.client?.name || "Unknown Browser"}
                                 </Text>
                                 <br />
-                                <Text type="secondary" style={{ fontSize: "12px" }}>
+                                <Text type="secondary">
                                     {t("last.active")}{" "}
                                     {item?.createdAt
                                         ? formatDate(item.createdAt)
@@ -134,7 +121,7 @@ const Sessions = () => {
                                 )}
                             </Col>
                         </Row>
-                    </div>
+                    </Card>
                 ))}
             </div>
         </Card>
@@ -143,23 +130,17 @@ const Sessions = () => {
     return (
         <React.Fragment>
             {loading ? (
-                <Col
-                    style={{
-                        height: "50vh",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
+                <Flex
+                    justify="center"
+                    align="center"
+                    style={{ height: "50vh" }}
                 >
                     <Spin spinning={loading} />
-                </Col>
+                </Flex>
             ) : (
                 <Row
                     gutter={[16, 24]}
-                    style={{
-                        padding: "20px",
-                        minHeight: "57vh",
-                    }}
+                    style={{ minHeight: "57vh" }}
                 >
                     <Col xs={24} md={12}>
                         {renderSessions(
