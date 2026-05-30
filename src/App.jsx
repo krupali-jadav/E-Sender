@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
-import ProLayouts from "./Components/ProLayouts";
+import ProLayouts from "./Components/site/ProLayouts";
 import EditProfile from "./Components/Profile/Profile";
 import Sessions from "./Components/Sessions/Sessions";
 import Contacts from "./Components/Contact/Contacts";
 import Groups from "./Components/Contact/Groups";
-import CustomFields from "./Components/Contact/Customfileds";
+import CustomFields from "./Components/Contact/CustomFields";
 
 const ProtectedRoute = ({ component: Component }) => {
   return (
@@ -24,7 +24,7 @@ function App() {
     { path: "/sessions", component: Sessions },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
-    { path: "/contact/custom-fields", component: CustomFields },
+    { path: "/contact/custom-fields", component: CustomFields } 
   ];
 
   return (

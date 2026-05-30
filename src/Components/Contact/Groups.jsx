@@ -3,7 +3,7 @@ import React from 'react'
 function Groups() {
   return (
     <div>
-      Groups
+      <h1>Groups</h1>
     </div>
   )
 }

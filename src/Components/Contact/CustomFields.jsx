@@ -3,7 +3,7 @@ import React from 'react'
 function CustomFields() {
   return (
     <div>
-      Custom Fields
+      <h1>Custom Fields</h1>
     </div>
   )
 }
