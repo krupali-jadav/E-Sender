@@ -4,6 +4,9 @@ import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/ProLayouts";
 import EditProfile from "./Components/Profile/Profile";
 import Sessions from "./Components/Sessions/Sessions";
+import Contacts from "./Components/Contact/Contacts";
+import Groups from "./Components/Contact/Groups";
+import CustomFields from "./Components/Contact/Customfileds";
 
 const ProtectedRoute = ({ component: Component }) => {
   return (
@@ -19,6 +22,9 @@ function App() {
     { path: "/dashboard", component: Dashboard },
     { path: "/edit-profile", component: EditProfile },
     { path: "/sessions", component: Sessions },
+    { path: "/contact/contacts", component: Contacts },
+    { path: "/contact/groups", component: Groups },
+    { path: "/contact/custom-fields", component: CustomFields },
   ];
 
   return (

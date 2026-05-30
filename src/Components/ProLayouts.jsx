@@ -1,8 +1,8 @@
 import React from "react";
 import { ProLayout, } from "@ant-design/pro-components";
 import { Avatar, Button, Dropdown, Typography } from "antd";
-import { UserOutlined, LogoutOutlined, LaptopOutlined, } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, } from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/action";
 import { t } from "i18next";
@@ -11,9 +11,43 @@ const { Title, Text } = Typography;
 
 const ProLayouts = ({ children }) => {
 
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const profile = useSelector((state) => state?.user?.profile);
+
+  const menuRoutes = {
+    path: "/",
+    routes: [
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        icon: <HomeOutlined />,
+      },
+      {
+        path: "/contact",
+        name: "Contact",
+        icon: <TeamOutlined />,
+        routes: [
+          {
+            path: "/contact/contacts",
+            name: "Contacts",
+            icon: <DatabaseOutlined />,
+          },
+          {
+            path: "/contact/groups",
+            name: "Groups",
+            icon: <DatabaseOutlined />,
+          },
+          {
+            path: "/contact/custom-fields",
+            name: "Custom Fields",
+            icon: <DatabaseOutlined />,
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <ProLayout
@@ -107,7 +141,29 @@ const ProLayouts = ({ children }) => {
           );
         },
       }}
+
+      location={{
+        pathname: location.pathname,
+      }}
+
+      route={menuRoutes}
+
+      menuItemRender={(item, dom) => (
+        <div
+          onClick={() => {
+            if (item.path) {
+              navigate(item.path);
+            }
+          }}
+        >
+          {dom}
+        </div>
+      )}
+
     >
+
+
+
       {children}
     </ProLayout>
   );
