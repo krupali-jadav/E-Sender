@@ -1,10 +1,17 @@
 import React from 'react'
+import SearchHeader from '../Search Header/SearchHeader'
+import { PageContainer } from '@ant-design/pro-components'
 
 function Contacts() {
   return (
-    <div>
-      <h1>Contacts</h1>
-    </div>
+    <>
+      <PageContainer
+        title="Contacts"
+        breadcrumb={false}
+      >
+        <SearchHeader />
+      </PageContainer>
+    </>
   )
 }
 
