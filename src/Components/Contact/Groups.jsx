@@ -1,10 +1,15 @@
+import { PageContainer } from '@ant-design/pro-components'
 import React from 'react'
+import SearchHeader from '../Search Header/SearchHeader'
 
 function Groups() {
   return (
-    <div>
-      <h1>Groups</h1>
-    </div>
+    <PageContainer
+      title="Groups"
+      breadcrumb={false}
+    >
+      <SearchHeader />
+    </PageContainer>
   )
 }
 

@@ -8,8 +8,6 @@ import Contacts from "./Components/Contact/Contacts";
 import Groups from "./Components/Contact/Groups";
 import CustomFields from "./Components/Contact/CustomFields";
 
-
-
 const ProtectedRoute = ({ component: Component }) => {
   return (
     <ProLayouts>

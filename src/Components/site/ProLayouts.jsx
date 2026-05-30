@@ -105,7 +105,6 @@ const ProLayouts = ({ children }) => {
                   //   title: t("session", { defaultValue: "Session" }),
                   //   icon: <LaptopOutlined />,
                   // },
-
                   {
                     key: "3",
                     icon: <LaptopOutlined />,

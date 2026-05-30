@@ -1,10 +1,15 @@
 import React from 'react'
+import SearchHeader from '../Search Header/SearchHeader'
+import { PageContainer } from '@ant-design/pro-components'
 
 function CustomFields() {
   return (
-    <div>
-      <h1>Custom Fields</h1>
-    </div>
+    <PageContainer
+      title="Custom Fields"
+      breadcrumb={false}
+      >
+      <SearchHeader />
+    </PageContainer>
   )
 }
 
