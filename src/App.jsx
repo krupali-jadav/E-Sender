@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/ProLayouts";
@@ -15,31 +14,27 @@ const ProtectedRoute = ({ component: Component }) => {
 };
 
 function App() {
+
+  const routes = [
+    { path: "/dashboard", component: Dashboard },
+    { path: "/edit-profile", component: EditProfile },
+    { path: "/sessions", component: Sessions },
+  ];
+
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Login />} />
 
-        <Route path="/" element={<Login />}/>
-
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute component={Dashboard} />
-          }
-        />
-
-        <Route
-          path="/edit-profile"
-          element={
-            <ProtectedRoute component={EditProfile} />
-          }
-        />
-        <Route
-          path="/sessions"
-          element={
-            <ProtectedRoute component={Sessions} />
-          }
-        />
+        {routes.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <ProtectedRoute component={route.component} />
+            }
+          />
+        ))}
       </Routes>
     </BrowserRouter>
   );
