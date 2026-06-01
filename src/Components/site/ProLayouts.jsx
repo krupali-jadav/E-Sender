@@ -1,11 +1,10 @@
-import React from "react";
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Button, Dropdown, Typography } from "antd";
+import { Avatar, Dropdown, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
-import { t } from "i18next";
+// import { t } from "i18next";
 
 const { Title, Text } = Typography;
 

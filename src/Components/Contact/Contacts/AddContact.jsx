@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Typography, Space, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col,Space, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 
-const { Title, Text } = Typography;
 
 function AddContact({ open, onClose }) {
     const [groups, setGroups] = useState([]);
@@ -70,6 +69,19 @@ function AddContact({ open, onClose }) {
                         >
                             <Input placeholder="Enter Email" />
                         </Form.Item>
+
+                        <Form.Item
+                            label="Custom Fields"
+                            name="Custom Fields"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter Custom Fields",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Enter Custom Fields" />
+                        </Form.Item>
                     </Col>
 
                     <Col span={12}>
@@ -127,12 +139,6 @@ function AddContact({ open, onClose }) {
                         </Form.Item>
                     </Col>
                 </Row>
-
-                <Title level={5}>Custom Fields</Title>
-
-                <Text type="secondary">
-                    {/* Custom Fields Not Found */}
-                </Text>
             </Form>
         </Modal>
     );

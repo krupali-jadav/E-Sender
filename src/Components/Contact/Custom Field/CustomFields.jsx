@@ -2,6 +2,8 @@ import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Space, Table, Tag } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import AddCustomeField from './AddCustomField';
 
 const columns = [
   {
@@ -70,16 +72,26 @@ const columns = [
 
 
 function CustomFields() {
+
+  const [CustomFieldOpen, setCustomFieldOpen] = useState(false)
   return (
     <PageContainer
       title="Custom Fields"
       breadcrumb={false}
       extra={
         <Flex gap="small" justify="flex-end" wrap>
-          <Button type="primary" icon={<PlusOutlined />}>
-           {/* {t("add_custom_field", { defaultValue: "Add Custom Field" })} */}
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setCustomFieldOpen(true)}>
+            {/* {t("add_custom_field", { defaultValue: "Add Custom Field" })} */}
             Add Custom Field
           </Button>
+
+          <AddCustomeField
+            open={CustomFieldOpen}
+            onClose={() => setCustomFieldOpen(false)} />
+
         </Flex>
       }
     >
