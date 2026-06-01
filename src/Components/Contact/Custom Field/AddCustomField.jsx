@@ -70,6 +70,19 @@ function AddCustomField({ open, onClose }) {
                         ]}
                     />
                 </Form.Item>
+
+                 <Form.Item
+                    label="Fallback Value"
+                    name="fallbackValue"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please enter fallback value",
+                        },
+                    ]}
+                >
+                    <Input placeholder="Enter Fallback Value" />
+                </Form.Item>
             </Form>
 
         </Modal>
