@@ -2,34 +2,41 @@ import React from 'react'
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Space, Table, Tag } from 'antd'
-import {  ImportOutlined, PlusOutlined } from '@ant-design/icons'
+import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
+import { t } from 'i18next'
 const columns = [
     {
+        // title: t("sn", { defaultValue: "SN" }),
         title: "SN",
         dataIndex: "sn",
         key: "sn",
     },
     {
+        // title: t("name", { defaultValue: "Name" }),
         title: "Name",
         dataIndex: "name",
         key: "name",
     },
     {
+        // title: t("phone", { defaultValue: "Phone" }),
         title: "Phone",
         dataIndex: "phone",
         key: "phone",
     },
     {
+        // title: t("email", { defaultValue: "Email" }),
         title: "Email",
         dataIndex: "email",
         key: "email",
     },
     {
-        title: "Company",
+        // title: t("company", { defaultValue: "Company" }),
+        title:"Company",
         dataIndex: "company",
         key: "company",
     },
     {
+        // title: t("status", { defaultValue: "Status" }),
         title: "Status",
         dataIndex: "status",
         key: "status",
@@ -40,11 +47,13 @@ const columns = [
         ),
     },
     {
+        // title: t("created_at", { defaultValue: "Created At" }),
         title: "Created At",
         dataIndex: "createdAt",
         key: "createdAt",
     },
     {
+        // title: t("actions", { defaultValue: "Actions" }),
         title: "Actions",
         key: "actions",
         render: () => (
@@ -76,12 +85,13 @@ function Contacts() {
                             Excel Import
                         </Button>
 
-                        <Button type="primary" icon={<PlusOutlined />}>
+                        <Button type="primary"  icon={<PlusOutlined />}>
                             Add Contact
                         </Button>
                     </Space>
                 }
             >
+                {/* <Space type="vertical" size="large" style={{ width: "100%" }}> */}
 
                 <SearchHeader />
 
@@ -92,6 +102,7 @@ function Contacts() {
                         pagination={false}
                     />
                 </Card>
+                {/* </Space> */}
             </PageContainer>
         </>
     )

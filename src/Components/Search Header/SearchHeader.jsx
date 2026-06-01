@@ -1,6 +1,6 @@
 import { DownloadOutlined, FilterOutlined, RedoOutlined, SearchOutlined, SortAscendingOutlined } from '@ant-design/icons'
-import { Input } from 'antd';
-import { Badge, Button, Card, Col, Row, Select } from 'antd'
+import { Flex, Input } from 'antd';
+import {  Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
 import React from 'react'
 
@@ -49,54 +49,48 @@ function SearchHeader() {
 
                 <Col xs={0} sm={0} md={0} lg={0} xl={4} xxl={4} />
 
+
+
                 <Col xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
-                    <Row gutter={[10, 10]}>
-                        {/* Reset */}
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                            <Button block>
-                                <RedoOutlined />
-                                {/* {t("reset", { defaultValue: "Reset" })} */}
-                                Reset
-                            </Button>
-                        </Col>
+                    <Flex justify="end" gap="small" wrap>
+                        <Button >
+                            <RedoOutlined />
+                            {/* {t("reset", { defaultValue: "Reset" })} */}
+                            Reset
+                        </Button>
 
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                            <Button block>
-                                <FilterOutlined />{" "}
-                                {/* {t("filter", { defaultValue: "Filter" })} */}
-                                Filter
-                            </Button>
-                        </Col>
+                        <Button >
+                            <FilterOutlined />{" "}
+                            {/* {t("filter", { defaultValue: "Filter" })} */}
+                            Filter
+                        </Button>
 
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                            <Select
-                                // value={sortBy}
-                                optionFilterProp="children"
-                                menuItemSelectedIcon={<SortAscendingOutlined />}
-                                // onChange={(value) => setSortBy(value)}
-                                options={sortByItems}
-                                style={{ width: "100%" }}
-                                placeholder="Sort By Create At"
-                            />
-                        </Col>
+                        <Select
+                            // value={sortBy}
+                            optionFilterProp="children"
+                            menuItemSelectedIcon={<SortAscendingOutlined />}
+                            // onChange={(value) => setSortBy(value)}
+                            options={sortByItems}
+                            placeholder="Sort By Create At"
+                        />
 
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                            <Button
-                                // loading={exporting}
-                                // disabled={exporting}
-                                type="primary"
-                                // onClick={onExport}
-                                block
-                                icon={<DownloadOutlined />}
-                            >
-                                {/* {t("export", {
+                        <Button
+                            // loading={exporting}
+                            // disabled={exporting}
+                            type="primary"
+                            // onClick={onExport}
+
+                            icon={<DownloadOutlined />}
+                        >
+                            {/* {t("export", {
                                     defaultValue: "Export",
                                 })} */}
-                                Export
-                            </Button>
-                        </Col>
-                    </Row>
+                            Export
+                        </Button>
+                    </Flex>
                 </Col>
+
+               
             </Row>
         </Card>
     )
