@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import SearchHeader from '../Search Header/SearchHeader'
+import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
-import ManualImport from './ManualImport'
-import AddContact from './AddContact'
+import ManualImport from '../Contacts/ManualImport'
+import AddContact from '../Contacts/AddContact'
 const columns = [
     {
         title: "SN",

@@ -4,9 +4,9 @@ import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/site/ProLayouts";
 import EditProfile from "./Components/Profile/Profile";
 import Sessions from "./Components/Sessions/Sessions";
-import Contacts from "./Components/Contact/Contacts";
-import Groups from "./Components/Contact/Groups";
-import CustomFields from "./Components/Contact/CustomFields";
+import Contacts from "./Components/Contact/Contacts/Contacts";
+import Groups from "./Components/Contact/Group/Groups";
+import CustomFields from "./Components/Contact/Custom Field/CustomFields";
 
 const ProtectedRoute = ({ component: Component }) => {
   return (
