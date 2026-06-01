@@ -24,7 +24,28 @@ function App() {
     { path: "/sessions", component: Sessions },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
-    { path: "/contact/custom-fields", component: CustomFields } 
+    { path: "/contact/custom-fields", component: CustomFields } ,
+    {
+      path: "/privacy-policy",
+      // component: PolicyPage,
+      publicRoute: true,
+      isPolicyRoute: true,
+      props: { type: "privacyPolicy" },
+    },
+    {
+      path: "/terms-and-conditions",
+      // component: PolicyPage,
+      publicRoute: true,
+      isPolicyRoute: true,
+      props: { type: "termsAndConditions" },
+    },
+    {
+      path: "/refund-policy",
+      // component: PolicyPage,
+      publicRoute: true,
+      isPolicyRoute: true,
+      props: { type: "refundPolicy" },
+    },
 
   ];
 

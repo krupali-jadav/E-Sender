@@ -1,6 +1,6 @@
 import { ProLayout, } from "@ant-design/pro-components";
 import { Avatar, Dropdown, Typography } from "antd";
-import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
@@ -44,6 +44,26 @@ const ProLayouts = ({ children }) => {
             icon: <DatabaseOutlined />,
           },
         ],
+      },
+      {
+       path: "/orders",
+       name: "Orders",
+       icon: <ShoppingCartOutlined />,
+     },
+      {
+       path: "/privacy-policy",
+       name: "Privacy Policy",
+       icon: <SafetyCertificateOutlined />,
+     },
+       {
+        path: "/terms-and-conditions",
+        name: "Terms and Conditions",
+        icon: <FileTextOutlined />,
+      },
+       {
+        path: "/refund-policy",
+        name: "Refund Policy",
+        icon: <ReadOutlined />,
       },
     ],
   };
