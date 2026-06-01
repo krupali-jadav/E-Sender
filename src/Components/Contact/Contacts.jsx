@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Space, Table, Tag } from 'antd'
+import { Button, Card, Flex, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ManualImport from './ManualImport'
+import ExcelImport from './ExcelImport'
 const columns = [
     {
         // title: t("sn", { defaultValue: "SN" }),
@@ -32,7 +33,7 @@ const columns = [
     },
     {
         // title: t("company", { defaultValue: "Company" }),
-        title:"Company",
+        title: "Company",
         dataIndex: "company",
         key: "company",
     },
@@ -73,18 +74,20 @@ const columns = [
 function Contacts() {
 
     const [open, setOpen] = useState(false);
+    const [excelOpen, setExcelOpen] = useState(false);
     return (
         <>
             <PageContainer
                 title="Contacts"
                 breadcrumb={false}
                 extra={
-                    <Space>
+                    <Flex gap="small" justify="flex-end" wrap>
                         <Button
                             type="primary"
                             icon={<ImportOutlined />}
                             onClick={() => setOpen(true)}
                         >
+                            {/* {t("manual_import", { defaultValue: "Manual Import" })} */}
                             Manual Import
                         </Button>
 
@@ -93,28 +96,40 @@ function Contacts() {
                             onClose={() => setOpen(false)}
                         />
 
-                        <Button type="primary" icon={<ImportOutlined />}>
+                        <Button
+                            type="primary"
+                            icon={<ImportOutlined />}
+                            onClick={() => setExcelOpen(true)}
+                        >
+                            {/* {t("excel_import", { defaultValue: "Excel Import" })} */}
                             Excel Import
                         </Button>
 
-                        <Button type="primary"  icon={<PlusOutlined />}>
+                        <ExcelImport
+                            open={excelOpen}
+                            onClose={() => setExcelOpen(false)}
+                        />
+
+                        <Button type="primary" icon={<PlusOutlined />}>
+                            {/* {t("add_contact", { defaultValue: "Add Contact" })} */}
                             Add Contact
                         </Button>
-                    </Space>
+                    </Flex>
                 }
             >
-                {/* <Space type="vertical" size="large" style={{ width: "100%" }}> */}
+                <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
-                <SearchHeader />
+                    <SearchHeader />
 
-                <Card>
-                    <Table
-                        columns={columns}
-                        // dataSource={data}
-                        pagination={false}
-                    />
-                </Card>
-                {/* </Space> */}
+                    <Card >
+                        <Table
+                            columns={columns}
+                            // dataSource={data}
+                            pagination={false}
+                            scroll={{ x: "max-content" }}
+                        />
+                    </Card>
+                </Space>
             </PageContainer>
         </>
     )
