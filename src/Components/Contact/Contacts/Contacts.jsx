@@ -4,8 +4,9 @@ import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
-import ManualImport from './ManualImport'
 import ExcelImport from './ExcelImport'
+import ManualImport from '../Contacts/ManualImport'
+import AddContact from '../Contacts/AddContact'
 const columns = [
     {
         // title: t("sn", { defaultValue: "SN" }),
@@ -73,8 +74,9 @@ const columns = [
 
 function Contacts() {
 
-    const [open, setOpen] = useState(false);
     const [excelOpen, setExcelOpen] = useState(false);
+    const [manualImportOpen, setManualImportOpen] = useState(false);
+    const [AddContactOpen, setAddContactOpen] = useState(false);
     return (
         <>
             <PageContainer
@@ -85,15 +87,15 @@ function Contacts() {
                         <Button
                             type="primary"
                             icon={<ImportOutlined />}
-                            onClick={() => setOpen(true)}
+                            onClick={() => setManualImportOpen(true)}
                         >
                             {/* {t("manual_import", { defaultValue: "Manual Import" })} */}
                             Manual Import
                         </Button>
 
                         <ManualImport
-                            open={open}
-                            onClose={() => setOpen(false)}
+                            open={manualImportOpen}
+                            onClose={() => setManualImportOpen(false)}
                         />
 
                         <Button
@@ -110,10 +112,18 @@ function Contacts() {
                             onClose={() => setExcelOpen(false)}
                         />
 
-                        <Button type="primary" icon={<PlusOutlined />}>
-                            {/* {t("add_contact", { defaultValue: "Add Contact" })} */}
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setAddContactOpen(true)}
+                        >
                             Add Contact
                         </Button>
+
+                        <AddContact
+                            open={AddContactOpen}
+                            onClose={() => setAddContactOpen(false)}
+                        />
                     </Flex>
                 }
             >
