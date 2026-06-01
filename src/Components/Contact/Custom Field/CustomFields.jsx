@@ -1,4 +1,4 @@
-import SearchHeader from '../Search Header/SearchHeader'
+import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Space, Table, Tag } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';

@@ -1,10 +1,10 @@
 import  { useState } from 'react'
-import SearchHeader from '../Search Header/SearchHeader'
+import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
-import ExcelImport from './ExcelImport'
+import ExcelImport from '../Contacts/ExcelImport'
 import ManualImport from '../Contacts/ManualImport'
 import AddContact from '../Contacts/AddContact'
 const columns = [
