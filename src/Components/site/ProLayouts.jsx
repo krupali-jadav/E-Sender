@@ -48,7 +48,7 @@ const ProLayouts = ({ children }) => {
       },
     ],
   };
-
+  console.log("Current Path:", location.pathname);
   return (
     <ProLayout
       layout="mix"
@@ -145,6 +145,7 @@ const ProLayouts = ({ children }) => {
       location={{
         pathname: location.pathname,
       }}
+
 
       route={menuRoutes}
 

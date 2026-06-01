@@ -7,6 +7,7 @@ const { TextArea } = Input;
 const ManualImport = ({ open, onClose }) => {
   const [groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
+  const [selectedGroups, setSelectedGroups] = useState([]);
 
   const handleAddGroup = () => {
     if (!groupName.trim()) return;
@@ -60,6 +61,9 @@ const ManualImport = ({ open, onClose }) => {
 
         <Form.Item label="Groups">
           <Select
+            mode="multiple"
+            value={selectedGroups}
+            onChange={(value) => setSelectedGroups(value)}
             showSearch
             placeholder="Select Groups"
             options={groups.map((group) => ({

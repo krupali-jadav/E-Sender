@@ -2,6 +2,8 @@ import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { Button, Card, Space, Table, Tag } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import AddGroup from './AddGroup';
+import { useState } from 'react';
 
 const columns = [
   {
@@ -70,6 +72,7 @@ const columns = [
 
 
 function Groups() {
+  const [AddGroupOpen, setAddGroupOpen] = useState(false);
   return (
     <PageContainer
       title="Groups"
@@ -79,20 +82,19 @@ function Groups() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-          // onClick={() => setAddContactOpen(true)}
+            onClick={() => setAddGroupOpen(true)}
           >
             Add Group
           </Button>
 
-          {/* <AddContact
-            open={AddContactOpen}
-            onClose={() => setAddContactOpen(false)}
-          /> */}
+          <AddGroup      
+            open={AddGroupOpen}
+            onClose={() => setAddGroupOpen(false)} />
         </Space>
       }
     >
-      <Space direction="vertical" size="large" style={{ width: "100%" }}> 
-      <SearchHeader />
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <SearchHeader />
 
         <Card >
           <Table
@@ -102,7 +104,7 @@ function Groups() {
             scroll={{ x: "max-content" }}
           />
         </Card>
-        </Space>
+      </Space>
     </PageContainer>
   )
 }
