@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
+import ManualImport from './ManualImport'
 const columns = [
     {
         // title: t("sn", { defaultValue: "SN" }),
@@ -70,6 +71,8 @@ const columns = [
 ];
 
 function Contacts() {
+
+    const [open, setOpen] = useState(false);
     return (
         <>
             <PageContainer
@@ -77,9 +80,18 @@ function Contacts() {
                 breadcrumb={false}
                 extra={
                     <Space>
-                        <Button type="primary" icon={<ImportOutlined />}>
+                        <Button
+                            type="primary"
+                            icon={<ImportOutlined />}
+                            onClick={() => setOpen(true)}
+                        >
                             Manual Import
                         </Button>
+
+                        <ManualImport
+                            open={open}
+                            onClose={() => setOpen(false)}
+                        />
 
                         <Button type="primary" icon={<ImportOutlined />}>
                             Excel Import

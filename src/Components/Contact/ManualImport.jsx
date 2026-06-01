@@ -1,0 +1,90 @@
+import React, { useState } from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Button,
+  Space,
+  Empty,
+  List,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
+const { TextArea } = Input;
+
+const ManualImport = ({ open, onClose }) => {
+  const [groups, setGroups] = useState(["gg"]);
+  const [groupName, setGroupName] = useState("");
+
+  const handleAddGroup = () => {
+    if (!groupName.trim()) return;
+
+    setGroups([...groups, groupName]);
+    setGroupName("");
+  };
+
+  return (
+    <Modal
+      title="Manual Import"
+      open={open}
+      onCancel={onClose}
+      width={900}
+      footer={[
+        <Button key="cancel" onClick={onClose}>
+          Cancel
+        </Button>,
+        <Button key="import" type="primary">
+          Import
+        </Button>,
+      ]}
+    >
+      <Form layout="vertical">
+        <Form.Item label="Contacts">
+          <TextArea rows={5} />
+        </Form.Item>
+
+        <Form.Item label="Groups">
+          <Select
+            showSearch
+            placeholder="Select Groups"
+            options={groups.map((group) => ({
+              label: group,
+              value: group,
+            }))}
+          />
+        </Form.Item>
+
+        <List
+          bordered
+          dataSource={groups}
+          renderItem={(item) => <List.Item>{item}</List.Item>}
+        />
+
+        <br />
+
+        <Space.Compact block>
+          <Input
+            placeholder="Enter Group Name"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+          />
+
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddGroup}
+          >
+            Add Group
+          </Button>
+        </Space.Compact>
+
+        <br />
+
+        <Empty description="No Data" />
+      </Form>
+    </Modal>
+  );
+};
+
+export default ManualImport;
