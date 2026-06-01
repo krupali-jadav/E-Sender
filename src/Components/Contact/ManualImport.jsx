@@ -1,28 +1,41 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  Button,
-  Space,
-  Empty,
-  List,
-} from "antd";
+import { Modal, Form, Input, Select, Button, Space, Empty, List, Table, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
 const ManualImport = ({ open, onClose }) => {
-  const [groups, setGroups] = useState(["gg"]);
+  const [groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
 
   const handleAddGroup = () => {
     if (!groupName.trim()) return;
-
     setGroups([...groups, groupName]);
     setGroupName("");
   };
+
+  const columns = [
+    {
+      title: "SN",
+      dataIndex: "sn",
+      key: "sn",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    }
+  ]
 
   return (
     <Modal
@@ -30,6 +43,7 @@ const ManualImport = ({ open, onClose }) => {
       open={open}
       onCancel={onClose}
       width={900}
+      centered
       footer={[
         <Button key="cancel" onClick={onClose}>
           Cancel
@@ -52,36 +66,35 @@ const ManualImport = ({ open, onClose }) => {
               label: group,
               value: group,
             }))}
+            popupRender={(menu) => (
+              <>
+                {menu}
+
+                <Space.Compact block>
+                  <Input
+                    placeholder="Enter Group Name"
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                  />
+
+                  <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={handleAddGroup}
+                  >
+                    Add Group
+                  </Button>
+                </Space.Compact>
+              </>
+            )}
           />
         </Form.Item>
 
-        <List
-          bordered
-          dataSource={groups}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
+        <Table
+          columns={columns}
+          dataSource={[]}
+          pagination={false}
         />
-
-        <br />
-
-        <Space.Compact block>
-          <Input
-            placeholder="Enter Group Name"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-          />
-
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAddGroup}
-          >
-            Add Group
-          </Button>
-        </Space.Compact>
-
-        <br />
-
-        <Empty description="No Data" />
       </Form>
     </Modal>
   );

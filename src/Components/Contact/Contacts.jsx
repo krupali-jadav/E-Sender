@@ -4,6 +4,7 @@ import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Space, Table, Tag } from 'antd'
 import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import ManualImport from './ManualImport'
+import AddContact from './AddContact'
 const columns = [
     {
         title: "SN",
@@ -63,7 +64,8 @@ const columns = [
 
 function Contacts() {
 
-    const [open, setOpen] = useState(false);
+    const [manualImportOpen, setManualImportOpen] = useState(false);
+    const [AddContactOpen, setAddContactOpen] = useState(false);
     return (
         <>
             <PageContainer
@@ -74,23 +76,32 @@ function Contacts() {
                         <Button
                             type="primary"
                             icon={<ImportOutlined />}
-                            onClick={() => setOpen(true)}
+                            onClick={() => setManualImportOpen(true)}
                         >
                             Manual Import
                         </Button>
 
                         <ManualImport
-                            open={open}
-                            onClose={() => setOpen(false)}
+                            open={manualImportOpen}
+                            onClose={() => setManualImportOpen(false)}
                         />
 
                         <Button type="primary" icon={<ImportOutlined />}>
                             Excel Import
                         </Button>
 
-                        <Button type="primary" icon={<PlusOutlined />}>
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setAddContactOpen(true)}
+                        >
                             Add Contact
                         </Button>
+
+                        <AddContact
+                            open={AddContactOpen}
+                            onClose={() => setAddContactOpen(false)}
+                        />
                     </Space>
                 }
             >
