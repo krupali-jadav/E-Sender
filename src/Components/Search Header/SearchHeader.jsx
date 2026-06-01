@@ -1,6 +1,6 @@
 import { DownloadOutlined, FilterOutlined, RedoOutlined, SearchOutlined, SortAscendingOutlined } from '@ant-design/icons'
 import { Flex, Input } from 'antd';
-import {  Button, Card, Col, Row, Select } from 'antd'
+import { Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
 import React from 'react'
 
@@ -52,14 +52,14 @@ function SearchHeader() {
 
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
-                    <Flex justify="end" gap="small" wrap>
-                        <Button >
+                    <Flex justify="end" gap={10} wrap>
+                        <Button style={{ minWidth: "18%" }}>
                             <RedoOutlined />
                             {/* {t("reset", { defaultValue: "Reset" })} */}
                             Reset
                         </Button>
 
-                        <Button >
+                        <Button style={{ minWidth: "18%" }}>
                             <FilterOutlined />{" "}
                             {/* {t("filter", { defaultValue: "Filter" })} */}
                             Filter
@@ -71,6 +71,7 @@ function SearchHeader() {
                             menuItemSelectedIcon={<SortAscendingOutlined />}
                             // onChange={(value) => setSortBy(value)}
                             options={sortByItems}
+                            style={{ minWidth: "22%" }}
                             placeholder="Sort By Create At"
                         />
 
@@ -78,6 +79,7 @@ function SearchHeader() {
                             // loading={exporting}
                             // disabled={exporting}
                             type="primary"
+                            style={{ minWidth: "18%" }}
                             // onClick={onExport}
 
                             icon={<DownloadOutlined />}
@@ -90,7 +92,7 @@ function SearchHeader() {
                     </Flex>
                 </Col>
 
-               
+
             </Row>
         </Card>
     )

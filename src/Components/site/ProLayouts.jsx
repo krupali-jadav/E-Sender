@@ -47,7 +47,6 @@ const ProLayouts = ({ children }) => {
       },
     ],
   };
-  console.log("Current Path:", location.pathname);
   return (
     <ProLayout
       layout="mix"
