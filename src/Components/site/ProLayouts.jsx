@@ -46,21 +46,21 @@ const ProLayouts = ({ children }) => {
         ],
       },
       {
-       path: "/orders",
-       name: "Orders",
-       icon: <ShoppingCartOutlined />,
-     },
+        path: "/orders",
+        name: "Orders",
+        icon: <ShoppingCartOutlined />,
+      },
       {
-       path: "/privacy-policy",
-       name: "Privacy Policy",
-       icon: <SafetyCertificateOutlined />,
-     },
-       {
+        path: "/privacy-policy",
+        name: "Privacy Policy",
+        icon: <SafetyCertificateOutlined />,
+      },
+      {
         path: "/terms-and-conditions",
         name: "Terms and Conditions",
         icon: <FileTextOutlined />,
       },
-       {
+      {
         path: "/refund-policy",
         name: "Refund Policy",
         icon: <ReadOutlined />,
@@ -160,7 +160,7 @@ const ProLayouts = ({ children }) => {
         },
       }}
 
-      
+
 
       location={{
         pathname: location.pathname,
@@ -169,17 +169,44 @@ const ProLayouts = ({ children }) => {
 
       route={menuRoutes}
 
-      menuItemRender={(item, dom) => (
-        <div
-          onClick={() => {
-            if (item.path) {
-              navigate(item.path);
-            }
-          }}
-        >
-          {dom}
-        </div>
-      )}
+      menuItemRender={(item, dom) => {
+        const externalPages = [
+          "/privacy-policy",
+          "/terms-and-conditions",
+          "/refund-policy",
+        ];
+
+        if (externalPages.includes(item.path)) {
+          return (
+            <div
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                window.open(
+                  item.path,
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+              }}
+            >
+              {dom}
+            </div>
+          );
+        }
+
+        return (
+          <div
+            onClick={() => {
+              if (item.path) {
+                navigate(item.path);
+              }
+            }}
+          >
+            {dom}
+          </div>
+        );
+      }}
 
     >
 
