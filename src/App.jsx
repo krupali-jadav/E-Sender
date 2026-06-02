@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import ProLayouts from "./Components/site/ProLayouts";
@@ -14,28 +16,36 @@ const ProtectedRoute = ({
   component: Component,
   publicRoute,
   isPolicyRoute,
-  props
+  isAuthenticated,
+  props,
 }) => {
+  if (!isAuthenticated && !publicRoute) {
+    return <Navigate to="/" replace />;
+  }
 
   if (isPolicyRoute) {
     return (
       <PolicyProLayout>
         <Component {...props} />
       </PolicyProLayout>
-    )
+    );
   }
 
   if (publicRoute) {
     return <Component {...props} />;
   }
+
   return (
     <ProLayouts>
-      <Component />
+      <Component {...props} />
     </ProLayouts>
   );
 };
 
 function App() {
+  const token = useSelector((state) => state?.user?.token);
+
+  const isAuthenticated = !!token;
 
   const routes = [
     { path: "/dashboard", component: Dashboard },
@@ -65,27 +75,52 @@ function App() {
       isPolicyRoute: true,
       props: { type: "refundPolicy" },
     },
-
   ];
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {!isAuthenticated ? (
+          <>
+            <Route path="/" element={<Login />} />
 
-        {routes.map((route) => (
-          <Route
-            key={route.path}
-            path={route.path}
-            element={
-              <ProtectedRoute component={route.component}
-              publicRoute={route.publicRoute}
-              isPolicyRoute={route.isPolicyRoute}
-              props={route.props}
-               />
-            }
-          />
-        ))}
+            {routes
+              .filter((route) => route.publicRoute)
+              .map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={
+                    <ProtectedRoute
+                      component={route.component}
+                      publicRoute={true}
+                      isPolicyRoute={route.isPolicyRoute}
+                      isAuthenticated={false}
+                      props={route.props}
+                    />
+                  }
+                />
+              ))}
+
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </>
+        ) : (
+          routes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <ProtectedRoute
+                  component={route.component}
+                  publicRoute={route.publicRoute}
+                  isPolicyRoute={route.isPolicyRoute}
+                  isAuthenticated={isAuthenticated}
+                  props={route.props}
+                />
+              }
+            />
+          ))
+        )}
       </Routes>
     </BrowserRouter>
   );
