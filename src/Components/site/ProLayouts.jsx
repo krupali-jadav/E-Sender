@@ -51,6 +51,11 @@ const ProLayouts = ({ children }) => {
         icon: <ShoppingCartOutlined />,
       },
       {
+        path: "/templates",
+        name: "Templates",
+        icon: <ShoppingCartOutlined />,
+      },
+      {
         path: "/privacy-policy",
         name: "Privacy Policy",
         icon: <SafetyCertificateOutlined />,

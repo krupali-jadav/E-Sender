@@ -13,6 +13,7 @@ import PolicyPage from "./Components/PrivacyPolicy/PolicyPage";
 import PolicyProLayout from "./Components/PrivacyPolicy/PolicyProLayout";
 import Orders from "./Components/Orders/Orders";
 import Invoice from "./Components/Orders/Invoice";
+import Templates from "./Components/Templates/Templates";
 
 const ProtectedRoute = ({
   component: Component,
@@ -55,6 +56,7 @@ function App() {
     { path: "/sessions", component: Sessions },
     { path: "/orders", component: Orders },
     { path: "/orders/:order_id", component: Invoice },
+    { path: "/templates", component: Templates },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
     { path: "/contact/custom-fields", component: CustomFields },
@@ -110,7 +112,7 @@ function App() {
           </>
         ) : (
           <>
-            {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
             {routes.map((route) => (
               <Route 
