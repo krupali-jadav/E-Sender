@@ -11,6 +11,8 @@ import Groups from "./Components/Contact/Group/Groups";
 import CustomFields from "./Components/Contact/Custom Field/CustomFields";
 import PolicyPage from "./Components/PrivacyPolicy/PolicyPage";
 import PolicyProLayout from "./Components/PrivacyPolicy/PolicyProLayout";
+import Orders from "./Components/Orders/Orders";
+import Invoice from "./Components/Orders/Invoice";
 
 const ProtectedRoute = ({
   component: Component,
@@ -51,6 +53,8 @@ function App() {
     { path: "/dashboard", component: Dashboard },
     { path: "/edit-profile", component: EditProfile },
     { path: "/sessions", component: Sessions },
+    { path: "/orders", component: Orders },
+    { path: "/orders/:order_id", component: Invoice },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
     { path: "/contact/custom-fields", component: CustomFields },
@@ -105,21 +109,27 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         ) : (
-          routes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                <ProtectedRoute
-                  component={route.component}
-                  publicRoute={route.publicRoute}
-                  isPolicyRoute={route.isPolicyRoute}
-                  isAuthenticated={isAuthenticated}
-                  props={route.props}
-                />
-              }
-            />
-          ))
+          <>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <ProtectedRoute
+                    component={route.component}
+                    publicRoute={route.publicRoute}
+                    isPolicyRoute={route.isPolicyRoute}
+                    isAuthenticated={isAuthenticated}
+                    props={route.props}
+                  />
+                }
+              />
+            ))}
+
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </>
         )}
       </Routes>
     </BrowserRouter>
