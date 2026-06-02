@@ -110,10 +110,10 @@ function App() {
           </>
         ) : (
           <>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
 
             {routes.map((route) => (
-              <Route
+              <Route 
                 key={route.path}
                 path={route.path}
                 element={
