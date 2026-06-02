@@ -26,7 +26,7 @@ const PolicyPage = ({ type }) => {
     <React.Fragment>
       <Card bordered={false} title={t(type)}>
         <Typography.Text>
-          {polices?.[type] ? (
+          {polices?.[type] ? (  
             <div
               dangerouslySetInnerHTML={{ __html: polices?.[type] }}
               style={{ color: theme ? "#fff" : "#333" }}

@@ -7,8 +7,27 @@ import Sessions from "./Components/Sessions/Sessions";
 import Contacts from "./Components/Contact/Contacts/Contacts";
 import Groups from "./Components/Contact/Group/Groups";
 import CustomFields from "./Components/Contact/Custom Field/CustomFields";
+import PolicyPage from "./Components/PrivacyPolicy/PolicyPage";
+import PolicyProLayout from "./Components/PrivacyPolicy/PolicyProLayout";
 
-const ProtectedRoute = ({ component: Component }) => {
+const ProtectedRoute = ({
+  component: Component,
+  publicRoute,
+  isPolicyRoute,
+  props
+}) => {
+
+  if (isPolicyRoute) {
+    return (
+      <PolicyProLayout>
+        <Component {...props} />
+      </PolicyProLayout>
+    )
+  }
+
+  if (publicRoute) {
+    return <Component {...props} />;
+  }
   return (
     <ProLayouts>
       <Component />
@@ -24,24 +43,24 @@ function App() {
     { path: "/sessions", component: Sessions },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
-    { path: "/contact/custom-fields", component: CustomFields } ,
+    { path: "/contact/custom-fields", component: CustomFields },
     {
       path: "/privacy-policy",
-      // component: PolicyPage,
+      component: PolicyPage,
       publicRoute: true,
       isPolicyRoute: true,
       props: { type: "privacyPolicy" },
     },
     {
       path: "/terms-and-conditions",
-      // component: PolicyPage,
+      component: PolicyPage,
       publicRoute: true,
       isPolicyRoute: true,
       props: { type: "termsAndConditions" },
     },
     {
       path: "/refund-policy",
-      // component: PolicyPage,
+      component: PolicyPage,
       publicRoute: true,
       isPolicyRoute: true,
       props: { type: "refundPolicy" },
@@ -59,7 +78,11 @@ function App() {
             key={route.path}
             path={route.path}
             element={
-              <ProtectedRoute component={route.component} />
+              <ProtectedRoute component={route.component}
+              publicRoute={route.publicRoute}
+              isPolicyRoute={route.isPolicyRoute}
+              props={route.props}
+               />
             }
           />
         ))}
