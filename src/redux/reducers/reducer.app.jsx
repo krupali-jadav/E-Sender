@@ -23,6 +23,9 @@ export const appSlice = createSlice({
     setPanel: (state, action) => {
       state.panel = action.payload;
     },
+    changePageTitle: (state, action) => {
+      state.pageTitle = action.payload;
+    },
   },
 });
 
@@ -31,6 +34,7 @@ export const {
   changeLanguage,
   changeCurrency,
   setPanel,
+  changePageTitle,
 
 } = appSlice.actions;
 
