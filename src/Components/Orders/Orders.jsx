@@ -1,6 +1,6 @@
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import {  Card, Space, Table, Tag } from 'antd'
+import { Card, Space, Table, Tag } from 'antd'
 import { Link } from 'react-router-dom';
 // import { t } from 'i18next'
 
@@ -9,18 +9,18 @@ const columns = [
         // title: t("sn", { defaultValue: "SN" }),
         title: "S/N",
         dataIndex: "sn",
-         width: 100,
+        width: 100,
         key: "sn",
     },
     {
         // title: t("order_id", { defaultValue: "Order ID" }),
         title: "Order ID",
         dataIndex: "orderId",
-         width: 150,
+        width: 150,
         key: "orderId",
         render: (_, record) => (
-        <Link to={`/order/${record._id}`}>#{record._id}</Link>
-      ),
+            <Link to={`/orders/${record._id}`}>#{record._id}</Link>
+        ),
     },
     {
         // title: t("type", { defaultValue: "Type" }),
@@ -44,7 +44,7 @@ const columns = [
         title: "Payment",
         dataIndex: "payment",
         key: "payment",
-         render: (payment) => (
+        render: (payment) => (
             <Tag color={payment === "Paid" ? "green" : "red"}>
                 {payment}
             </Tag>
@@ -69,7 +69,7 @@ const columns = [
         dataIndex: "createdAt",
         key: "createdAt",
     },
-    
+
 ];
 
 const data = [
