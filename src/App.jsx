@@ -17,7 +17,7 @@ import Templates from "./Components/Templates/Templates";
 import Campaigns from "./Components/Campaigns/Campaigns";
 import Domains from "./Components/Domains/Domains";
 import Documentation from "./Components/Documentation/Documentation";
-import Logs from "./Components/Logs/Logs";
+import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
 
 const ProtectedRoute = ({
