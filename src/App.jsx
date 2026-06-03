@@ -19,6 +19,7 @@ import Domains from "./Components/Domains/Domains";
 import Documentation from "./Components/Documentation/Documentation";
 import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
+import { ConfigProvider, theme as antdTheme } from "antd";
 
 const ProtectedRoute = ({
   component: Component,
@@ -52,7 +53,7 @@ const ProtectedRoute = ({
 
 function App() {
   const token = useSelector((state) => state?.user?.token);
-
+  const darkMode = useSelector((state) => state?.app?.theme);
   const isAuthenticated = !!token;
 
   const routes = [
@@ -94,57 +95,65 @@ function App() {
   ];
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {!isAuthenticated ? (
-          <>
-            <Route path="/" element={<Login />} />
+    <ConfigProvider
+      theme={{
+        algorithm: darkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          {!isAuthenticated ? (
+            <>
+              <Route path="/" element={<Login />} />
 
-            {routes
-              .filter((route) => route.publicRoute)
-              .map((route) => (
+              {routes
+                .filter((route) => route.publicRoute)
+                .map((route) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={
+                      <ProtectedRoute
+                        component={route.component}
+                        publicRoute={true}
+                        isPolicyRoute={route.isPolicyRoute}
+                        isAuthenticated={false}
+                        props={route.props}
+                      />
+                    }
+                  />
+                ))}
+
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+              {routes.map((route) => (
                 <Route
                   key={route.path}
                   path={route.path}
                   element={
                     <ProtectedRoute
                       component={route.component}
-                      publicRoute={true}
+                      publicRoute={route.publicRoute}
                       isPolicyRoute={route.isPolicyRoute}
-                      isAuthenticated={false}
+                      isAuthenticated={isAuthenticated}
                       props={route.props}
                     />
                   }
                 />
               ))}
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-            {routes.map((route) => (
-              <Route 
-                key={route.path}
-                path={route.path}
-                element={
-                  <ProtectedRoute
-                    component={route.component}
-                    publicRoute={route.publicRoute}
-                    isPolicyRoute={route.isPolicyRoute}
-                    isAuthenticated={isAuthenticated}
-                    props={route.props}
-                  />
-                }
-              />
-            ))}
-
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </>
-        )}
-      </Routes>
-    </BrowserRouter>
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </>
+          )}
+        </Routes>
+      </BrowserRouter>
+    </ConfigProvider>
   );
 }
 
