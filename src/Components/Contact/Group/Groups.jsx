@@ -60,9 +60,11 @@ const columns = [
     render: () => (
       <Space>
         <Button size="small" type="primary">
+          {/* {t("edit", { defaultValue: "Edit" })} */}
           Edit
         </Button>
         <Button size="small" danger>
+          {/* {t("delete", { defaultValue: "Delete" })} */}
           Delete
         </Button>
       </Space>
@@ -83,7 +85,8 @@ function Groups() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
-          >
+            >
+            {/* {t("add_group", { defaultValue: "Add Group" })} */}
             Add Group
           </Button>
 

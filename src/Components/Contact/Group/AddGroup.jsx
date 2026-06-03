@@ -1,20 +1,22 @@
 import { Button, Form, Input, Modal } from 'antd'
-import React from 'react'
 
 function AddGroup({ open, onClose }) {
     return (
         <>
             <Modal
                 title="Add Group"
+                // title= {t("add_group", { defaultValue: "Add Group" })} 
                 open={open}
                 onCancel={onClose}
                 width={500}
                 centered
                 footer={[
                     <Button key="cancel" onClick={onClose}>
+                        {/* {t("cancel", { defaultValue: "Cancel" })} */}
                         Cancel
                     </Button>,
                     <Button key="add" type="primary">
+                        {/* {t("add", { defaultValue: "Add" })} */}
                         Add
                     </Button>,
                 ]}
@@ -22,6 +24,7 @@ function AddGroup({ open, onClose }) {
                 <Form layout="vertical">
                     <Form.Item
                         label="Group Name"
+                        // label={t("group_name", { defaultValue: "Group Name" })}
                         name="name"
                         rules={[
                             {
@@ -30,7 +33,9 @@ function AddGroup({ open, onClose }) {
                             },
                         ]}
                     >
-                        <Input placeholder="Enter Group name" />
+                        <Input placeholder="Enter Group name"
+                        //  placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })} 
+                         />
                     </Form.Item>
                 </Form>
 

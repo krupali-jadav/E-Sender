@@ -1,9 +1,12 @@
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Dropdown, Typography } from "antd";
-import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, } from "@ant-design/icons";
+import { Avatar, Dropdown, Select, Typography } from "antd";
+import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
+import { changeLanguage, setPanel, setTheme } from "../../redux/reducers/reducer.app";
+import i18next from "i18next";
+import lang from "../../util/lang/lang";
 // import { t } from "i18next";
 
 const { Title, Text } = Typography;
@@ -14,6 +17,37 @@ const ProLayouts = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const profile = useSelector((state) => state?.user?.profile);
+  const panel = useSelector((state) => state?.app?.panel);
+  const language = useSelector((state) => state?.app?.lang);
+  const theme = useSelector((state) => state?.app?.theme);
+  console.log("Current Theme:", theme);
+
+  const toggleTheme = () => {
+    const newTheme = !theme;
+    dispatch(setTheme(newTheme));
+    const currentPanel = panel || {};
+    dispatch(
+      setPanel({
+        ...currentPanel,
+        telecaller: {
+          ...currentPanel.telecaller,
+          theme: {
+            algorithm: newTheme ? "dark" : "light",
+            token: {
+              colorPrimary: "#1890ff",
+              borderRadius: 16,
+            },
+          },
+        },
+      }),
+    );
+  };
+
+  const handleLanguageChange = (lang) => {
+    const nextLang = lang ?? "en";
+    i18next.changeLanguage(nextLang);
+    dispatch(changeLanguage(nextLang));
+  };
 
   const menuRoutes = {
     path: "/",
@@ -77,7 +111,6 @@ const ProLayouts = ({ children }) => {
       layout="mix"
       title="E-Sender"
       logo={false}
-
       avatarProps={{
         render: () => {
           return (
@@ -109,6 +142,7 @@ const ProLayouts = ({ children }) => {
                     label: (
                       <span onClick={() => { navigate("/edit-profile") }}>
                         Edit Profile
+                      {/* {t("edit_profile", { defaultValue: "Edit Profile" })} */}
                       </span>
                     ),
                   },
@@ -134,6 +168,7 @@ const ProLayouts = ({ children }) => {
                     label: (
                       <span onClick={() => { navigate("/sessions") }}>
                         Session
+                    {/* {t("session", { defaultValue: "Session" })} */}
                       </span>
                     ),
                   },
@@ -146,6 +181,7 @@ const ProLayouts = ({ children }) => {
                         navigate("/");
                       }}>
                         Logout
+                      {/* {t("logout", { defaultValue: "Logout" })} */}
                       </span>
                     ),
                   },
@@ -165,11 +201,67 @@ const ProLayouts = ({ children }) => {
         },
       }}
 
+      actionsRender={(props) => {
+        if (props?.isMobile)
+          return [
+            theme ? (
+              <SunOutlined
+                key="SunOutlined"
+                onClick={toggleTheme}
+                style={{ marginRight: 20 }}
+              />
+            ) : (
+              <MoonOutlined
+                key="MoonOutlined"
+                onClick={toggleTheme}
+                style={{ marginRight: 20 }}
+              />
+            ),
+          ];
+        if (typeof window === "undefined") return [];
+        return [
+          theme ? (
+            <MoonOutlined
+              key="MoonOutlined"
+              onClick={toggleTheme}
+              style={{ marginRight: 10 }}
+            />
+          ) : (
+            <SunOutlined
+              key="SunOutlined"
+              onClick={toggleTheme}
+              style={{ marginRight: 10 }}
+            />
+          ),
+          <>
+            <Select
+              value={language ?? "en"}
+              listHeight={200}
+              showSearch
+              style={{
+                height: 45,
+                width: 150,
+              }}
+              onChange={handleLanguageChange}
+              options={lang?.map((x) => ({
+                value: x.key,
+                label: x.name,
+              }))}
+              filterOption={(input, option) => {
+                return option.label
+                  .toLowerCase()
+                  .includes(input.toLowerCase());
+              }}
+            />
+          </>,
+        ];
+      }}
 
 
       location={{
         pathname: location.pathname,
-      }}
+      }
+      }
 
 
       route={menuRoutes}
@@ -218,7 +310,7 @@ const ProLayouts = ({ children }) => {
 
 
       {children}
-    </ProLayout>
+    </ProLayout >
   );
 };
 

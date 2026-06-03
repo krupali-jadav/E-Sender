@@ -4,15 +4,18 @@ function AddCustomField({ open, onClose }) {
     return (
         <Modal
             title="Add Custom Field"
+            // title={t("add_custom_field", { defaultValue: "Add Custom Field" })}
             open={open}
             onCancel={onClose}
             width={500}
             centered
             footer={[
                 <Button key="cancel" onClick={onClose}>
+                {/* {t("cancel", { defaultValue: "Cancel" })} */}
                     Cancel
                 </Button>,
                 <Button key="add" type="primary">
+                    {/* {t("add", { defaultValue: "Add" })} */}
                     Add
                 </Button>,
             ]}
@@ -21,6 +24,7 @@ function AddCustomField({ open, onClose }) {
             <Form layout="vertical">
                 <Form.Item
                     label="Name"
+                    // label={t("name", { defaultValue: "Name" })}
                     name="name"
                     rules={[
                         {
@@ -29,15 +33,20 @@ function AddCustomField({ open, onClose }) {
                         },
                     ]}
                 >
-                    <Input placeholder="Enter name" />
+                    <Input 
+                    placeholder="Enter name" 
+                //    placeholder={t("enter_name", { defaultValue: "Enter name" })} 
+                    />
                 </Form.Item>
 
                 <Form.Item
                     label="Type"
+                    // label={t("type", { defaultValue: "Type" })}
                     name="type"
                 >
                     <Select
                         placeholder="Text"
+                        // placeholder= {t("select_type", { defaultValue: "Select Type" })} 
                         options={[
                             {
                                 // label: t("text", {
@@ -73,6 +82,7 @@ function AddCustomField({ open, onClose }) {
 
                  <Form.Item
                     label="Fallback Value"
+                    // label={t("fallback_value", { defaultValue: "Fallback Value" })}
                     name="fallbackValue"
                     rules={[
                         {
@@ -81,7 +91,10 @@ function AddCustomField({ open, onClose }) {
                         },
                     ]}
                 >
-                    <Input placeholder="Enter Fallback Value" />
+                    <Input
+                     placeholder="Enter Fallback Value" 
+                    // placeholder={t("enter_fallback_value", { defaultValue: "Enter Fallback Value" })}
+                     />
                 </Form.Item>
             </Form>
 
