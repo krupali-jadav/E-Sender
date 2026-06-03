@@ -80,13 +80,13 @@ const ProLayouts = ({ children }) => {
         ],
       },
       {
-        path: "/orders",
-        name: "Orders",
+        path: "/templates",
+        name: "Templates",
         icon: <ShoppingCartOutlined />,
       },
       {
-        path: "/templates",
-        name: "Templates",
+        path: "/orders",
+        name: "Orders",
         icon: <ShoppingCartOutlined />,
       },
       {

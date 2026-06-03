@@ -17,21 +17,25 @@ const ManualImport = ({ open, onClose }) => {
 
   const columns = [
     {
+      // title: t("sn", { defaultValue: "SN" }),
       title: "SN",
       dataIndex: "sn",
       key: "sn",
     },
     {
+      // title: t("name", { defaultValue: "Name" }),
       title: "Name",
       dataIndex: "name",
       key: "name",
     },
     {
+      // title: t("phone_number", { defaultValue: "Phone Number" }),
       title: "Phone Number",
       dataIndex: "phone",
       key: "phone",
     },
     {
+      // title: t("email", { defaultValue: "Email" }),
       title: "Email",
       dataIndex: "email",
       key: "email",
@@ -47,9 +51,11 @@ const ManualImport = ({ open, onClose }) => {
       centered
       footer={[
         <Button key="cancel" onClick={onClose}>
+          {/* {t("cancel", { defaultValue: "Cancel" })} */}
           Cancel
         </Button>,
         <Button key="import" type="primary">
+          {/* {t("excel_import", { defaultValue: "Excel Import" })} */}
           Import
         </Button>,
       ]}
@@ -76,6 +82,7 @@ const ManualImport = ({ open, onClose }) => {
 
                 <Space.Compact block>
                   <Input
+                    // placeholder={t("group_name", { defaultValue: "Enter Group Name",})}
                     placeholder="Enter Group Name"
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
@@ -86,6 +93,7 @@ const ManualImport = ({ open, onClose }) => {
                     icon={<PlusOutlined />}
                     onClick={handleAddGroup}
                   >
+                    {/* {t("add_group", { defaultValue: "Add Group" })} */}
                     Add Group
                   </Button>
                 </Space.Compact>
