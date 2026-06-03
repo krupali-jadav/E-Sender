@@ -118,6 +118,7 @@ function Contacts() {
                             icon={<PlusOutlined />}
                             onClick={() => setAddContactOpen(true)}
                         >
+                            {/* {t("add_contact", { defaultValue: "Add Contact" })}                             */}
                             Add Contact
                         </Button>
 

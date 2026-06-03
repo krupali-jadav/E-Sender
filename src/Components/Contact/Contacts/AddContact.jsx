@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col,Space, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 
@@ -34,9 +34,11 @@ function AddContact({ open, onClose }) {
             centered
             footer={[
                 <Button key="cancel" onClick={onClose}>
+                    {/* {t("cancel", { defaultValue: "Cancel" })} */}
                     Cancel
                 </Button>,
                 <Button key="add" type="primary">
+                    {/* {t("add", { defaultValue: "Add" })} */}
                     Add
                 </Button>,
             ]}
@@ -54,7 +56,9 @@ function AddContact({ open, onClose }) {
                                 },
                             ]}
                         >
-                            <Input placeholder="Enter name" />
+                            <Input 
+                            // placeholder={t("name", { defaultValue: "Enter Name", })}
+                            placeholder="Enter name" />
                         </Form.Item>
 
                         <Form.Item
@@ -67,7 +71,9 @@ function AddContact({ open, onClose }) {
                                 },
                             ]}
                         >
-                            <Input placeholder="Enter Email" />
+                            <Input
+                                // placeholder={t("email", { defaultValue: "Enter Email", })}
+                                placeholder="Enter Email" />
                         </Form.Item>
 
                         <Form.Item
@@ -80,7 +86,9 @@ function AddContact({ open, onClose }) {
                                 },
                             ]}
                         >
-                            <Input placeholder="Enter Custom Fields" />
+                            <Input
+                                // placeholder={t("custome_fields", { defaultValue: "Enter Custom Fields", })}
+                                placeholder="Enter Custom Fields" />
                         </Form.Item>
                     </Col>
 
@@ -100,6 +108,7 @@ function AddContact({ open, onClose }) {
                                 country={"in"}
                                 value={phone}
                                 onChange={handlePhoneChange}
+                                // placeholder={t("phone_number", {defaultValue: "Enter Phone Number", })}
                                 placeholder="Enter phone number"
                             />
                         </Form.Item>
@@ -118,6 +127,7 @@ function AddContact({ open, onClose }) {
 
                                         <Space.Compact block>
                                             <Input
+                                                // placeholder={t("group_name", {defaultValue: "Enter Group Name", })}
                                                 placeholder="Enter Group Name"
                                                 value={groupName}
                                                 onChange={(e) =>
@@ -130,6 +140,7 @@ function AddContact({ open, onClose }) {
                                                 icon={<PlusOutlined />}
                                                 onClick={handleAddGroup}
                                             >
+                                                {/* {t("add_group", { defaultValue: "Add Group" })} */}
                                                 Add Group
                                             </Button>
                                         </Space.Compact>

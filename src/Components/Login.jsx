@@ -28,7 +28,7 @@ import { setUserDetails } from "../redux/reducers/Reducer.user";
 import { getMediaPath } from "../util/getMediaPath";
 import axiosInstance from "../util/axiosInstance";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 const { Content } = Layout;
 
 function Login() {
@@ -152,6 +152,7 @@ function Login() {
                                             country={"in"}
                                             value={phone}
                                             onChange={handlePhoneChange}
+                                            // placeholder={t("phone_number", { defaultValue: "Enter Phone Number" })}
                                             placeholder="Enter phone number"
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
@@ -267,6 +268,7 @@ function Login() {
                                                 disabled={!otpValid}
                                                 block
                                             >
+                                                {/* {t("submit", { defaultValue: "Submit" })} */}
                                                 Submit
                                             </Button>
                                         </Form.Item>
@@ -278,6 +280,7 @@ function Login() {
                                                     type="link"
                                                     onClick={onSendOtp}
                                                 >
+                                                    {/* {t("resend", { defaultValue: "Resend" })} */}
                                                     Resend
                                                 </Button>
                                             ) : (
