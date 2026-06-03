@@ -1,6 +1,6 @@
 import { ProLayout, } from "@ant-design/pro-components";
 import { Avatar, Dropdown, Select, Typography } from "antd";
-import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, CommentOutlined, SettingFilled, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
@@ -58,6 +58,21 @@ const ProLayouts = ({ children }) => {
         icon: <HomeOutlined />,
       },
       {
+        path: "/campaigns",
+        name: "Campaigns",
+        icon: <CommentOutlined />,
+      },
+      {
+        path: "/templates",
+        name: "Templates",
+        icon: <ContainerOutlined />,
+      },
+      {
+        path: "/domains",
+        name: "Domains",
+        icon: <GlobalOutlined />,
+      },
+      {
         path: "/contact",
         name: "Contact",
         icon: <TeamOutlined />,
@@ -80,14 +95,24 @@ const ProLayouts = ({ children }) => {
         ],
       },
       {
-        path: "/templates",
-        name: "Templates",
+        path: "/logs",
+        name: "Logs",
         icon: <ShoppingCartOutlined />,
       },
       {
         path: "/orders",
         name: "Orders",
         icon: <ShoppingCartOutlined />,
+      },
+      {
+        path: "/settings",
+        name: "Settings",
+        icon: <SettingFilled />,
+      },
+      {
+        path: "/documentation",
+        name: "Documentation",
+        icon: <FileTextOutlined />,
       },
       {
         path: "/privacy-policy",

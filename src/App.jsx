@@ -14,6 +14,11 @@ import PolicyProLayout from "./Components/PrivacyPolicy/PolicyProLayout";
 import Orders from "./Components/Orders/Orders";
 import Invoice from "./Components/Orders/Invoice";
 import Templates from "./Components/Templates/Templates";
+import Campaigns from "./Components/Campaigns/Campaigns";
+import Domains from "./Components/Domains/Domains";
+import Documentation from "./Components/Documentation/Documentation";
+import Logs from "./Components/Logs/Logs";
+import Settings from "./Components/Settings/Settings";
 
 const ProtectedRoute = ({
   component: Component,
@@ -60,6 +65,11 @@ function App() {
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
     { path: "/contact/custom-fields", component: CustomFields },
+    { path: "/campaigns", component: Campaigns },
+    { path: "/domains", component: Domains },
+    { path: "/logs", component: Logs },
+    { path: "/settings", component: Settings },
+    { path: "/documentation", component: Documentation },
     {
       path: "/privacy-policy",
       component: PolicyPage,
