@@ -1,6 +1,6 @@
 import { ProLayout, } from "@ant-design/pro-components";
 import { Avatar, Dropdown, Select, Typography } from "antd";
-import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, CommentOutlined, SettingFilled, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
@@ -9,6 +9,7 @@ import i18next from "i18next";
 import lang from "../../util/lang/lang";
 import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdOutlineCampaign } from "react-icons/md";
 // import { t } from "i18next";
 
 const { Title, Text } = Typography;
@@ -62,7 +63,7 @@ const ProLayouts = ({ children }) => {
       {
         path: "/campaigns",
         name: "Campaigns",
-        icon: <CommentOutlined />,
+        icon: <MdOutlineCampaign />,
       },
       {
         path: "/templates",

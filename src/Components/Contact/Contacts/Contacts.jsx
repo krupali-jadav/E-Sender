@@ -53,19 +53,6 @@ function Contacts() {
             test: "Test 1",
             country: "USA",
         },
-        {
-            key: "2",
-            sn: "2",
-            name: "Jane Smith",
-            phonenumber: "+0987654321",
-            email: "jane@gmail.com",
-            groups: "",
-            unsubscribed: "",
-            blocked: false,
-            createdAt: "2024-01-01",
-            test: "Test 1",
-            country: "USA",
-        },
     ]);
     const handleBlockedChange = (checked, record) => {
         setData((prev) =>
