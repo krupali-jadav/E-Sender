@@ -7,6 +7,8 @@ import { exportToExcel } from "react-json-to-excel";
 import { useEffect, useState } from 'react';
 import { getCurrentTime } from '../../util/commom.utils';
 // import { t } from 'i18next'
+import dayjs from 'dayjs';
+import { message } from 'antd';
 const data = [
     {
         key: "1",
@@ -39,6 +41,7 @@ function Orders() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filterForm] = Form.useForm();
+    const { RangePicker } = DatePicker;
     const resetFilterParameters = () => {
         setFilterType("all-time");
         setStartDate(null);
@@ -273,9 +276,9 @@ function Orders() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: t("please.select.date", {
-                                                defaultValue: "Please select a date",
-                                            }),
+                                            // message: t("please.select.date", {
+                                            //     defaultValue: "Please select a date",
+                                            // }),
                                         },
                                     ]}
                                 >
