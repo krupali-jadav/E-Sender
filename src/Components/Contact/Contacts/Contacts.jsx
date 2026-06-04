@@ -26,11 +26,6 @@ function Contacts() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filterForm] = Form.useForm();
-    const [exporting, setExporting] = useState(false);
-    const [search, setSearch] = useState("");
-    const [sortBy, setSortBy] = useState("created-at");
-    const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
     const resetFilterParameters = () => {
         setStatus("all");
         setPage(1);
@@ -212,37 +207,6 @@ function Contacts() {
             ),
         },
     ];
-    const onExport = async () => {
-        try {
-            setExporting(true);
-            const { data } = await axiosInstance.post(``, {
-                page: 0,
-                limit: total,
-                search: search,
-                sortBy: sortBy,
-            });
-
-            if (data?.status) {
-                const allOrders = data?.orders;
-                const exportData = allOrders?.map((ord) => ({
-                    orderId: ord?._id,
-                    name: ord?.name,
-                    type: ord?.type,
-                    amount: ord?.orderTotal,
-                    status: ord?.status,
-                    paymentMethod: ord?.paymentId?.gateway,
-                    createdAt: ord?.createdAt,
-                }));
-                exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
-            } else {
-                message.error(data?.message || "Failed to fetch orders for export");
-            }
-        } catch (error) {
-            message.error("An error occurred while exporting orders");
-        } finally {
-            setExporting(false);
-        }
-    };
 
     return (
         <>
