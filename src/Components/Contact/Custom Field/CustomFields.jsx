@@ -1,7 +1,7 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Space, Table, Tag } from 'antd'
-import { PlusOutlined } from '@ant-design/icons';
+import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import AddCustomeField from './AddCustomField';
 
@@ -19,33 +19,10 @@ const columns = [
     key: "name",
   },
   {
-    // title: t("phone", { defaultValue: "Phone" }),
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
-  },
-  {
-    // title: t("email", { defaultValue: "Email" }),
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    // title: t("company", { defaultValue: "Company" }),
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    // title: t("status", { defaultValue: "Status" }),
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status) => (
-      <Tag color={status === "Active" ? "green" : "red"}>
-        {status}
-      </Tag>
-    ),
+    // title: t("type", { defaultValue: "Type" }),
+    title: "Type",
+    dataIndex: "type",
+    key: "type",
   },
   {
     // title: t("created_at", { defaultValue: "Created At" }),
@@ -58,16 +35,18 @@ const columns = [
     title: "Actions",
     key: "actions",
     render: () => (
-      <Space>
-        <Button size="small" type="primary">
-          Edit
-        </Button>
-        <Button size="small" danger>
-          Delete
-        </Button>
-      </Space>
+      <MoreOutlined />
+      // <Space>
+      //   <Button size="small" type="primary">
+      //     Edit
+      //   </Button>
+      //   <Button size="small" danger>
+      //     Delete
+      //   </Button>
+      // </Space>
     ),
   },
+  
 ];
 
 
