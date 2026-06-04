@@ -86,6 +86,7 @@ function Templates() {
                         icon={<DeleteOutlined />}
                         block
                         // shape="round"
+                    
                       >
                         {/* {t("delete", { defaultValue: "Delete" })} */}
                         Delete
