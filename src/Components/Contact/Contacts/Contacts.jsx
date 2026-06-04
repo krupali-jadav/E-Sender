@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, DatePicker, Flex, Form, Modal, Radio, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, DatePicker, Flex, Form, message, Modal, Radio, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 // import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
 import ManualImport from '../Contacts/ManualImport'
 import AddContact from '../Contacts/AddContact'
+import { exportToExcel } from 'react-json-to-excel'
+import { getCurrentTime } from '../../../util/commom.utils'
+import axiosInstance from '../../../util/axiosInstance'
 
 
 
@@ -41,6 +44,11 @@ import AddContact from '../Contacts/AddContact'
 // ]
 
 function Contacts() {
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const [sortBy, setSortBy] = useState("created-at");
+    const [exporting, setExporting] = useState(false);
     const [excelOpen, setExcelOpen] = useState(false);
     const [manualImportOpen, setManualImportOpen] = useState(false);
     const [AddContactOpen, setAddContactOpen] = useState(false);
@@ -52,6 +60,10 @@ function Contacts() {
     const [filterForm] = Form.useForm();
     const { RangePicker } = DatePicker;
     const resetFilterParameters = () => {
+        setStatus("all");
+        setPage(1);
+        setSearch("");
+        setIsApplyFilter(false);
         setFilterType("all-time");
         setStartDate(null);
         setEndDate(null);
@@ -196,7 +208,37 @@ function Contacts() {
             ),
         },
     ];
+    const onExport = async () => {
+        try {
+            setExporting(true);
+            const { data } = await axiosInstance.post(``, {
+                page: 0,
+                limit: total,
+                search: search,
+                sortBy: sortBy,
+            });
 
+            if (data?.status) {
+                const allOrders = data?.orders;
+                const exportData = allOrders?.map((ord) => ({
+                    orderId: ord?._id,
+                    name: ord?.name,
+                    type: ord?.type,
+                    amount: ord?.orderTotal,
+                    status: ord?.status,
+                    paymentMethod: ord?.paymentId?.gateway,
+                    createdAt: ord?.createdAt,
+                }));
+                exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+            } else {
+                message.error(data?.message || "Failed to fetch orders for export");
+            }
+        } catch (error) {
+            message.error("An error occurred while exporting orders");
+        } finally {
+            setExporting(false);
+        }
+    };
 
     return (
         <>
@@ -254,6 +296,8 @@ function Contacts() {
                     <SearchHeader
                         onFilterClick={() => { setShowFilterModal(true); }}
                         page="contacts"
+                        onExport={onExport}
+                        exporting={exporting}
                     />
 
                     <Card >

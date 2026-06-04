@@ -43,6 +43,10 @@ function Orders() {
     const [filterForm] = Form.useForm();
     const { RangePicker } = DatePicker;
     const resetFilterParameters = () => {
+        // setStatus("all");
+        // setPage(1);
+        // setSearch("");
+        // setIsApplyFilter(false);
         setFilterType("all-time");
         setStartDate(null);
         setEndDate(null);
