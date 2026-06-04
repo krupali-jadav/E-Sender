@@ -4,34 +4,81 @@ import { Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
 import React from 'react'
 
-function SearchHeader() {
-
-    const sortByItems = [
-        {
-            key: "1",
-            // label: t("sort.by.name", {defaultValue: "Sort by Name",}),
-            label: "Sort by Name",
-            value: "name",
-        },
-        {
-            key: "2",
-            // label: t("sort.by.createat", {defaultValue: "Sort by Created At",}),
-            label: "Sort by Created At",
-            value: "create-at",
-        },
-        {
-            key: "3",
-            // label: t("sort.by.end_date", {defaultValue: "Sort by End Date",}),
-            label: "Sort by End Date",
-            value: "end_date",
-        },
-        {
-            key: "4",
-            // label: t("sort.by.start_date", {defaultValue: "Sort by Start Date",}),
-            label: "Sort by Start Date",
-            value: "start_date",
-        },
-    ];
+function SearchHeader({ page, onFilterClick }) {
+    let sortByItems = [];
+    if (page === "contacts") {
+        sortByItems = [
+            {
+                key: 1,
+                // label: t("sort_by._name", {defaultValue: "Sort by Name",}),
+                label: "Sort by Name",
+                value: "name",
+            },
+            {
+                key: 2,
+                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
+                label: "Sort by Created At",
+                value: "create-at",
+            },
+        ];
+    } else if (page === "orders") {
+        sortByItems = [
+            {
+                key: 1,
+                // label: t("sort_by_type", {defaultValue: "Sort by type",}),
+                label: "Sort by Type",
+                value: "type",
+            },
+            {
+                key: 2,
+                // label: t("sort_by_status", {defaultValue: "Sort by Status",}),
+                label: "Sort by Status",
+                value: "status",
+            },
+            {
+                key: 3,
+                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
+                label: "Sort by Created At",
+                value: "create-at",
+            },
+        ]
+    } else if (page === "groups") {
+        sortByItems = [
+            {
+                key: 1,
+                // label: t("sort_by._name", {defaultValue: "Sort by Name",}),
+                label: "Sort by Name",
+                value: "name",
+            },
+            {
+                key: 2,
+                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
+                label: "Sort by Created At",
+                value: "create-at",
+            },
+        ];
+    } else if (page === "custom-fields") {
+        sortByItems = [
+            {
+                key: 1,
+                // label: t("sort_by_type", {defaultValue: "Sort by type",}),
+                label: "Sort by Type",
+                value: "type",
+            },
+            {
+                key: 2,
+                // label: t("sort_by_status", {defaultValue: "Sort by Status",}),
+                label: "Sort by Status",
+                value: "status",
+            },
+            {
+                key: 3,
+                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
+                label: "Sort by Created At",
+                value: "create-at",
+            },
+        ]
+    }
 
     return (
         <Card>
@@ -59,7 +106,7 @@ function SearchHeader() {
                             Reset
                         </Button>
 
-                        <Button style={{ minWidth: "18%" }}>
+                        <Button style={{ minWidth: "18%" }} onClick={onFilterClick}>
                             <FilterOutlined />{" "}
                             {/* {t("filter", { defaultValue: "Filter" })} */}
                             Filter

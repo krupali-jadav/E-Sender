@@ -1,6 +1,7 @@
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Card, Space, Table, Tag } from 'antd'
+import { Card, DatePicker, Form, Modal, Radio, Select, Space, Table, Tag } from 'antd'
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { t } from 'i18next'
 
@@ -87,6 +88,41 @@ const data = [
 ];
 
 function Orders() {
+
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [filterType, setFilterType] = useState("all-time");
+    const [status, setStatus] = useState("all");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [filterForm] = Form.useForm();
+    const resetFilterParameters = () => {
+        setFilterType("all-time");
+        setStartDate(null);
+        setEndDate(null);
+        setStatus("all");
+        setShowFilterModal(false);
+        filterForm.resetFields();
+    };
+
+    const OrderStatuses = [
+        // t("processing", { defaultValue: "Processing" }),
+        "Processing",
+        // t("pending", { defaultValue: "Pending" }),
+        "Pending",
+        // t("failed", { defaultValue: "Failed" }),
+        'Failed',
+        // t("on.hold", { defaultValue: "On Hold" }),
+        "On Hold",
+        // t("completed", { defaultValue: "Completed" }),
+        "Completed",
+        // t("cancelled", { defaultValue: "Cancelled" }),
+        "Cancelled",
+        // t("refunded", { defaultValue: "Refunded" }),
+        "Refunded",
+        // t("draft", { defaultValue: "Draft" }),
+        "Draft",
+    ];
+
     return (
         <>
             <PageContainer
@@ -96,7 +132,10 @@ function Orders() {
             >
                 <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
-                    <SearchHeader />
+                    <SearchHeader
+                        onFilterClick={() => setShowFilterModal(true)}
+                        page="orders"
+                    />
 
                     <Card >
                         <Table
@@ -106,6 +145,102 @@ function Orders() {
                             scroll={{ x: "max-content" }}
                         />
                     </Card>
+
+                    <Modal
+                        // title={t("filter.orders", { defaultValue: "Filter Orders" })}
+                        title="Filter Orders"
+                        open={showFilterModal}
+                        centered
+                        onCancel={() => setShowFilterModal(false)}
+                        // okText={t("apply", { defaultValue: "Apply" })}
+                        okText="Apply"
+                        // cancelText={t("cancel", { defaultValue: "Cancel" })}
+                        cancelText="Cancel"
+                        onOk={() => {
+                            filterForm.validateFields().then(() => {
+                                setShowFilterModal(false);
+                                setPage(1);
+                                setIsApplyFilter(true);
+                                if (isApplyFilter) {
+                                    getAllOrders();
+                                }
+                            });
+                        }}
+                    >
+                        <Form layout="vertical" form={filterForm}>
+                            <Form.Item>
+                                <Radio.Group
+                                    value={filterType}
+                                    onChange={(e) => setFilterType(e.target.value)}
+                                >
+                                    <Radio value={"all-time"}>
+                                        {/* {t("allTime", { defaultValue: "All Time" })} */}
+                                        All Time
+                                    </Radio>
+                                    <Radio value={"specific"}>
+                                        {/* {t("specificTime", { defaultValue: "Specific Time" })} */}
+                                        Specific Time
+                                    </Radio>
+                                </Radio.Group>
+                            </Form.Item>
+
+                            {filterType == "specific" && (
+                                <Form.Item
+                                    // label={t("filterbydate", { defaultValue: "Filter by Date" })}
+                                    label="Filter by Date"
+                                    name="date"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t("please.select.date", {
+                                                defaultValue: "Please select a date",
+                                            }),
+                                        },
+                                    ]}
+                                >
+                                    <RangePicker
+                                        placeholder={[
+                                            // t("start.date", { defaultValue: "Start Date" }),
+                                            "Start Date",
+                                            // t("end.date", { defaultValue: "End Date" }),
+                                            "End Date"
+                                        ]}
+                                        maxDate={dayjs()}
+                                        style={{
+                                            width: "100%",
+                                        }}
+                                    // onChange={(dates) => {
+                                    //     const [start, end] = dates;
+                                    //     setStartDate(start);
+                                    //     setEndDate(end);
+                                    // }}
+                                    />
+                                </Form.Item>
+                            )}
+
+                            <Form.Item
+                                // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
+                                label="Filter by status"
+                            >
+                                <Select
+                                    value={status}
+                                // onChange={(value) => {
+                                //     setStatus(value);
+                                // }}
+                                >
+                                    <Option value="all">
+                                        {/* {t("all", { defaultValue: "All" })} */}
+                                        All
+                                    </Option>
+                                    {OrderStatuses?.map((status) => (
+                                        <Option key={status} value={status}>
+                                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                 </Space>
             </PageContainer>
         </>
