@@ -1,6 +1,6 @@
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Card, DatePicker, Form, Modal, Radio, Select, Space, Table, Tag } from 'antd'
+import { Card, DatePicker, Form, message, Modal, Radio, Select, Space, Table, Tag } from 'antd'
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../util/axiosInstance';
 import { exportToExcel } from "react-json-to-excel";
@@ -93,7 +93,7 @@ function Orders() {
                 message.error(data?.message || "Failed to load orders");
             }
         } catch (error) {
-            message.error("Something went wrong");
+            message.error("Something went wrong", error);
         } finally {
             setLoading(false);
         }
@@ -130,7 +130,7 @@ function Orders() {
                 message.error(data?.message || "Failed to fetch orders for export");
             }
         } catch (error) {
-            message.error("An error occurred while exporting orders");
+            message.error("An error occurred while exporting orders", error);
         } finally {
             setExporting(false);
         }
@@ -216,6 +216,8 @@ function Orders() {
                     <SearchHeader
                         onFilterClick={() => setShowFilterModal(true)}
                         page="orders"
+                        onExport={onExport}
+                        exporting={exporting}
                     />
 
                     <Card >

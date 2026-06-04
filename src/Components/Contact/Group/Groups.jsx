@@ -1,9 +1,12 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Search Header/SearchHeader'
-import { Button, Card, Space, Table, Tag } from 'antd'
+import { Button, Card, message, Space, Table, Tag } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { useState } from 'react';
+import { exportToExcel } from 'react-json-to-excel';
+import { getCurrentTime } from '../../../util/commom.utils';
+import axiosInstance from '../../../util/axiosInstance';
 
 const columns = [
   {
@@ -66,6 +69,42 @@ const columns = [
 
 function Groups() {
   const [AddGroupOpen, setAddGroupOpen] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("created-at");
+  const [total, setTotal] = useState(0);
+
+  const onExport = async () => {
+    try {
+      setExporting(true);
+      const { data } = await axiosInstance.post(``, {
+        page: 0,
+        limit: total,
+        search: search,
+        sortBy: sortBy,
+      });
+
+      if (data?.status) {
+        const allOrders = data?.orders;
+        const exportData = allOrders?.map((ord) => ({
+          orderId: ord?._id,
+          name: ord?.name,
+          type: ord?.type,
+          amount: ord?.orderTotal,
+          status: ord?.status,
+          paymentMethod: ord?.paymentId?.gateway,
+          createdAt: ord?.createdAt,
+        }));
+        exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+      } else {
+        message.error(data?.message || "Failed to fetch groups for export");
+      }
+    } catch (error) {
+      message.error("An error occurred while exporting Groups",error);
+    } finally {
+      setExporting(false);
+    }
+  };
   return (
     <PageContainer
       title="Groups"
@@ -88,7 +127,10 @@ function Groups() {
       }
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <SearchHeader page="groups" />
+        <SearchHeader 
+        onExport={onExport}
+        exporting={exporting}
+        page="groups" />
 
         <Card >
           <Table

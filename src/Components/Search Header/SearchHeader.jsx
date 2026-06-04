@@ -2,9 +2,8 @@ import { DownloadOutlined, FilterOutlined, RedoOutlined, SearchOutlined, SortAsc
 import { Flex, Input } from 'antd';
 import { Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
-import React from 'react'
 
-function SearchHeader({ page, onFilterClick }) {
+function SearchHeader({ page, onFilterClick, onExport, exporting }) {
     let sortByItems = [];
     if (page === "contacts") {
         sortByItems = [
@@ -124,12 +123,11 @@ function SearchHeader({ page, onFilterClick }) {
                         />
 
                         <Button
-                            // loading={exporting}
                             // disabled={exporting}
                             type="primary"
                             style={{ minWidth: "18%" }}
-                            // onClick={onExport}
-
+                            loading={exporting}
+                            onClick={onExport}
                             icon={<DownloadOutlined />}
                         >
                             {/* {t("export", { defaultValue: "Export", })} */}

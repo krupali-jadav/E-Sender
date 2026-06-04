@@ -1,44 +1,15 @@
 import { useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, DatePicker, Flex, Form, Modal, Radio, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 // import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
 import ManualImport from '../Contacts/ManualImport'
 import AddContact from '../Contacts/AddContact'
-
-
-
-
-// const data = [
-//     {
-//         key: "1",
-//         sn: "1",
-//         name: "John Doe",
-//         phonenumber: "+1234567890",
-//         email: "test@gmail.com",
-//         groups: "Group 1, Group 2",
-//         unsubscribed: "No",
-//         blocked: "No",
-//         createdAt: "2024-01-01",
-//         test: "Test 1",
-//         country: "USA",
-//     },
-//      {
-//             key: "2",
-//             sn: "2",
-//             name: "Jane Smith",
-//             phonenumber: "+0987654321",
-//             email: "jane@gmail.com",
-//             groups: "",
-//             unsubscribed: "",
-//             blocked: false,
-//             createdAt: "2024-01-01",
-//             test: "Test 1",
-//             country: "USA",
-//         },
-// ]
+import { getCurrentTime } from '../../../util/commom.utils'
+import { exportToExcel } from 'react-json-to-excel'
+import axiosInstance from '../../../util/axiosInstance'
 
 function Contacts() {
     const [excelOpen, setExcelOpen] = useState(false);
@@ -50,7 +21,11 @@ function Contacts() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filterForm] = Form.useForm();
-    const { RangePicker } = DatePicker;
+    const [exporting, setExporting] = useState(false);
+    const [search, setSearch] = useState("");
+    const [sortBy, setSortBy] = useState("created-at");
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
     const resetFilterParameters = () => {
         setFilterType("all-time");
         setStartDate(null);
@@ -97,6 +72,38 @@ function Contacts() {
             )
         );
     }
+
+    const onExport = async () => {
+        try {
+            setExporting(true);
+            const { data } = await axiosInstance.post(``, {
+                page: 0,
+                limit: total,
+                search: search,
+                sortBy: sortBy,
+            });
+
+            if (data?.status) {
+                const allOrders = data?.orders;
+                const exportData = allOrders?.map((ord) => ({
+                    orderId: ord?._id,
+                    name: ord?.name,
+                    type: ord?.type,
+                    amount: ord?.orderTotal,
+                    status: ord?.status,
+                    paymentMethod: ord?.paymentId?.gateway,
+                    createdAt: ord?.createdAt,
+                }));
+                exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+            } else {
+                message.error(data?.message || "Failed to fetch contacts for export");
+            }
+        } catch (error) {
+            message.error("An error occurred while exporting Contacts",error);
+        } finally {
+            setExporting(false);
+        }
+    };
 
     const columns = [
         {
@@ -252,6 +259,8 @@ function Contacts() {
                 <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
                     <SearchHeader
+                        onExport={onExport}
+                        exporting={exporting}
                         onFilterClick={() => { setShowFilterModal(true); }}
                         page="contacts"
                     />
@@ -318,7 +327,6 @@ function Contacts() {
                                         {/* {t("all", { defaultValue: "All" })} */}
                                         All
                                     </Option>
-
                                 </Select>
                             </Form.Item>
                             <Form.Item
@@ -335,7 +343,6 @@ function Contacts() {
                                         {/* {t("all", { defaultValue: "All" })} */}
                                         All
                                     </Option>
-
                                 </Select>
                             </Form.Item>
                         </Form>

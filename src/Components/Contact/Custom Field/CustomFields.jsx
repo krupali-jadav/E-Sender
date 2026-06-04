@@ -1,10 +1,13 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 
-import { Button, Card, Flex, Form, Modal, Select, Space, Table, Tag } from 'antd'
+import { Button, Card, Flex, Form, message, Modal, Select, Space, Table, Tag } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import AddCustomeField from './AddCustomField';
+import axiosInstance from '../../../util/axiosInstance';
+import { getCurrentTime } from '../../../util/commom.utils';
+import { exportToExcel } from 'react-json-to-excel';
 
 const columns = [
   {
@@ -47,7 +50,7 @@ const columns = [
       // </Space>
     ),
   },
-  
+
 ];
 
 
@@ -58,6 +61,12 @@ function CustomFields() {
   const [status, setStatus] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [CustomFieldOpen, setCustomFieldOpen] = useState(false)
+  const [exporting, setExporting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("created-at");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [filterForm] = Form.useForm();
   const resetFilterParameters = () => {
     setFilterType("all-time");
@@ -79,7 +88,38 @@ function CustomFields() {
     "Date",
   ];
 
-  const [CustomFieldOpen, setCustomFieldOpen] = useState(false)
+  const onExport = async () => {
+    try {
+      setExporting(true);
+      const { data } = await axiosInstance.post(``, {
+        page: 0,
+        limit: total,
+        search: search,
+        sortBy: sortBy,
+      });
+
+      if (data?.status) {
+        const allOrders = data?.orders;
+        const exportData = allOrders?.map((ord) => ({
+          orderId: ord?._id,
+          name: ord?.name,
+          type: ord?.type,
+          amount: ord?.orderTotal,
+          status: ord?.status,
+          paymentMethod: ord?.paymentId?.gateway,
+          createdAt: ord?.createdAt,
+        }));
+        exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+      } else {
+        message.error(data?.message || "Failed to fetch Fields for export");
+      }
+    } catch (error) {
+      message.error("An error occurred while exporting Fields",error);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <PageContainer
       title="Custom Fields"
@@ -104,7 +144,10 @@ function CustomFields() {
 
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
-        <SearchHeader onFilterClick={() => setShowFilterModal(true)} page="custom-fields" />
+        <SearchHeader
+          onExport={onExport}
+          exporting={exporting}
+          onFilterClick={() => setShowFilterModal(true)} page="custom-fields" />
 
         <Card >
           <Table
