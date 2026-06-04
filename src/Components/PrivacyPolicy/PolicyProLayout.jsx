@@ -1,6 +1,5 @@
 import {
   HomeOutlined,
-  DownOutlined,
   SunOutlined,
   MoonOutlined,
   SafetyOutlined,
@@ -12,14 +11,10 @@ import {
 } from "@ant-design/pro-components";
 import {
   Breadcrumb,
-  Button,
   ConfigProvider,
-  Dropdown,
   Image,
   Select,
-  Space,
   Tooltip,
-  Typography,
 } from "antd";
 import React, {
   // useContext,
@@ -32,7 +27,6 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
-  changeCurrency,
   changeLanguage,
 } from "../../redux/reducers/reducer.app";
 import lang from "../../util/lang/lang.json";
@@ -46,13 +40,12 @@ const PolicyProLayout = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const currency = useSelector((state) => state?.app?.currency);
   const panel = useSelector((state) => state?.app?.panel);
   const theme = useSelector((state) => state?.app?.theme);
   const setting = useSelector((state) => state?.setting);
 
   const CompanyName = useMemo(() => panel?.billing?.name ?? "", [panel]);
-  const profile = useSelector((state) => state?.user?.profile);
+    const language = useSelector((state) => state?.app?.lang);
   const [pathname, setPathname] = useState(location?.pathname);
   const [menuCollapsed, setMenuCollapsed] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -174,12 +167,12 @@ const PolicyProLayout = ({ children }) => {
     });
 
     // Add home as the first breadcrumb item
-    const breadcrumbItems = [
-      { title: <HomeOutlined onClick={() => navigate("/")} /> },
-      ...items,
-    ];
+    // const breadcrumbItems = [
+    //   { title: <HomeOutlined onClick={() => navigate("/")} /> },
+    //   ...items,
+    // ];
 
-    return <Breadcrumb items={breadcrumbItems?.filter(Boolean)} />;
+    // return <Breadcrumb items={breadcrumbItems?.filter(Boolean)} />;
   };
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -210,6 +203,7 @@ const PolicyProLayout = ({ children }) => {
               fixedHeader={true}
               logo={
                 <Image
+                  
                   src={getMediaPath(logo)}
                   alt="logo"
                   width={100}
@@ -228,85 +222,60 @@ const PolicyProLayout = ({ children }) => {
                 },
               }}
               actionsRender={(props) => {
-                if (props?.isMobile)
-                  return [
-                    isDarkMode ? (
-                      <SunOutlined
-                        key="SunOutlined"
-                        onClick={toggleTheme}
-                        style={{ marginRight: 20 }}
-                      />
-                    ) : (
-                      <MoonOutlined
-                        key="MoonOutlined"
-                        onClick={toggleTheme}
-                        style={{ marginRight: 20 }}
-                      />
-                    ),
-                  ];
-
-                if (typeof window === "undefined") return [];
-                return [
-                  isDarkMode ? (
-                    <MoonOutlined
-                      key="MoonOutlined"
-                      onClick={toggleTheme}
-                      style={{ marginRight: 10 }}
-                    />
-                  ) : (
-                    <SunOutlined
-                      key="SunOutlined"
-                      onClick={toggleTheme}
-                      style={{ marginRight: 10 }}
-                    />
-                  ),
-
-                  <>
-                    <Dropdown
-                      key="pay"
-                      menu={{
-                        items: panel?.currencies?.map((currencyItem) => {
-                          return {
-                            key: currencyItem._id,
-                            label: (
-                              <Space align="center">{currencyItem?.code}</Space>
-                            ),
-
-                            onClick: () => {
-                              dispatch(changeCurrency(currencyItem?.code));
-                            },
-                          };
-                        }),
-                      }}
-                    >
-                      <Button>
-                        {currency}
-                        <DownOutlined />
-                      </Button>
-                    </Dropdown>
-                    <Typography.Text strong>
-                      {t("dashboard.selectLanguage", {
-                        defaultValue: "Select Language",
-                      })}
-                    </Typography.Text>
-
-                    <Select
-                      defaultValue={setting?.lang ?? "en"} // Use current language from Redux state or default to English
-                      listHeight={200}
-                      showSearch
-                      style={{
-                        height: 45,
-                        width: 150,
-                      }}
-                      onChange={handleLanguageChange}
-                      options={lang?.map((x) => ({
-                        value: x.key,
-                        label: x.name,
-                      }))}
-                    />
-                  </>,
-                ];
-              }}
+                     if (props?.isMobile)
+                       return [
+                         theme ? (
+                           <SunOutlined
+                             key="SunOutlined"
+                             onClick={toggleTheme}
+                             style={{ marginRight: 20 }}
+                           />
+                         ) : (
+                           <MoonOutlined
+                             key="MoonOutlined"
+                             onClick={toggleTheme}
+                             style={{ marginRight: 20 }}
+                           />
+                         ),
+                       ];
+                     if (typeof window === "undefined") return [];
+                     return [
+                       theme ? (
+                         <MoonOutlined
+                           key="MoonOutlined"
+                           onClick={toggleTheme}
+                           style={{ marginRight: 10 }}
+                         />
+                       ) : (
+                         <SunOutlined
+                           key="SunOutlined"
+                           onClick={toggleTheme}
+                           style={{ marginRight: 10 }}
+                         />
+                       ),
+                       <>
+                         <Select
+                           value={language ?? "en"}
+                           listHeight={200}
+                           showSearch
+                           style={{
+                             height: 45,
+                             width: 150,
+                           }}
+                           onChange={handleLanguageChange}
+                           options={lang?.map((x) => ({
+                             value: x.key,
+                             label: x.name,
+                           }))}
+                           filterOption={(input, option) => {
+                             return option.label
+                               .toLowerCase()
+                               .includes(input.toLowerCase());
+                           }}
+                         />
+                       </>,
+                     ];
+                   }}
               headerTitleRender={(logo, title, _) => {
                 const defaultDom = (
                   <Tooltip arrow={false} title={panel?.title ?? ""}>

@@ -1,7 +1,7 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { Button, Card, Space, Table, Tag } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { useState } from 'react';
 
@@ -19,33 +19,22 @@ const columns = [
     key: "name",
   },
   {
-    // title: t("phone", { defaultValue: "Phone" }),
-    title: "Phone",
-    dataIndex: "phone",
-    key: "phone",
+    // title: t("totalContacts", { defaultValue: "Total Contacts" }),
+    title: "Total Contacts",
+    dataIndex: "totalContacts",
+    key: "totalContacts",
   },
   {
-    // title: t("email", { defaultValue: "Email" }),
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
+    // title: t("blocked", { defaultValue: "Blocked" }),
+    title: "Blocked",
+    dataIndex: "blocked",
+    key: "blocked",
   },
   {
-    // title: t("company", { defaultValue: "Company" }),
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    // title: t("status", { defaultValue: "Status" }),
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status) => (
-      <Tag color={status === "Active" ? "green" : "red"}>
-        {status}
-      </Tag>
-    ),
+    // title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
+    title: "Unsubscribed",
+    dataIndex: "unsubscribed",
+    key: "unsubscribed",
   },
   {
     // title: t("created_at", { defaultValue: "Created At" }),
@@ -58,18 +47,20 @@ const columns = [
     title: "Actions",
     key: "actions",
     render: () => (
-      <Space>
-        <Button size="small" type="primary">
-          {/* {t("edit", { defaultValue: "Edit" })} */}
-          Edit
-        </Button>
-        <Button size="small" danger>
-          {/* {t("delete", { defaultValue: "Delete" })} */}
-          Delete
-        </Button>
-      </Space>
+      <MoreOutlined />
+      // <Space>
+      //   <Button size="small" type="primary">
+      //     {/* {t("edit", { defaultValue: "Edit" })} */}
+      //     Edit
+      //   </Button>
+      //   <Button size="small" danger>
+      //     {/* {t("delete", { defaultValue: "Delete" })} */}
+      //     Delete
+      //   </Button>
+      // </Space>
     ),
   },
+
 ];
 
 
@@ -85,12 +76,12 @@ function Groups() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
-            >
+          >
             {/* {t("add_group", { defaultValue: "Add Group" })} */}
             Add Group
           </Button>
 
-          <AddGroup      
+          <AddGroup
             open={AddGroupOpen}
             onClose={() => setAddGroupOpen(false)} />
         </Space>

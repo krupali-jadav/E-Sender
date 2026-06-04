@@ -7,6 +7,8 @@ import { logout } from "../../redux/action";
 import { changeLanguage, setPanel, setTheme } from "../../redux/reducers/reducer.app";
 import i18next from "i18next";
 import lang from "../../util/lang/lang";
+import { LuLogs } from "react-icons/lu";
+import { IoSettingsOutline } from "react-icons/io5";
 // import { t } from "i18next";
 
 const { Title, Text } = Typography;
@@ -97,7 +99,7 @@ const ProLayouts = ({ children }) => {
       {
         path: "/logs",
         name: "Logs",
-        icon: <ShoppingCartOutlined />,
+        icon: <LuLogs />,
       },
       {
         path: "/orders",
@@ -107,7 +109,7 @@ const ProLayouts = ({ children }) => {
       {
         path: "/settings",
         name: "Settings",
-        icon: <SettingFilled />,
+        icon: <IoSettingsOutline />,
       },
       {
         path: "/documentation",
