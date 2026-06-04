@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { getCurrentTime } from '../../util/commom.utils';
 // import { t } from 'i18next'
 import dayjs from 'dayjs';
-import { message } from 'antd';
 const data = [
     {
         key: "1",
