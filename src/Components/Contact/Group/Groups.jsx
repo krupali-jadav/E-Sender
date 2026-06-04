@@ -88,7 +88,7 @@ function Groups() {
       }
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <SearchHeader />
+        <SearchHeader page="groups" />
 
         <Card >
           <Table

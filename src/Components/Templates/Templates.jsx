@@ -73,7 +73,7 @@ function Templates() {
                         type="primary"
                         icon={<EditOutlined />}
                         block
-                        shape="round"
+                        // shape="round"
                       >
                         {/* {t("edit", { defaultValue: "Edit" })} */}
                         Edit
@@ -85,7 +85,7 @@ function Templates() {
                         danger
                         icon={<DeleteOutlined />}
                         block
-                        shape="round"
+                        // shape="round"
                       >
                         {/* {t("delete", { defaultValue: "Delete" })} */}
                         Delete
