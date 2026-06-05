@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Select, Button, Space,Table, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { t } from "i18next";
 
 const { TextArea } = Input;
 
@@ -17,26 +18,22 @@ const ManualImport = ({ open, onClose }) => {
 
   const columns = [
     {
-      // title: t("sn", { defaultValue: "SN" }),
-      title: "SN",
+      title: t("sn", { defaultValue: "SN" }),
       dataIndex: "sn",
       key: "sn",
     },
     {
-      // title: t("name", { defaultValue: "Name" }),
-      title: "Name",
+      title: t("name", { defaultValue: "Name" }),
       dataIndex: "name",
       key: "name",
     },
     {
-      // title: t("phone_number", { defaultValue: "Phone Number" }),
-      title: "Phone Number",
+      title: t("phone_number", { defaultValue: "Phone Number" }),
       dataIndex: "phone",
       key: "phone",
     },
     {
-      // title: t("email", { defaultValue: "Email" }),
-      title: "Email",
+      title: t("email", { defaultValue: "Email" }),
       dataIndex: "email",
       key: "email",
     }
@@ -44,34 +41,32 @@ const ManualImport = ({ open, onClose }) => {
 
   return (
     <Modal
-      title="Manual Import"
+      title={t("manual_import", { defaultValue: "Manual Import" })} 
       open={open}
       onCancel={onClose}
       width={900}
       centered
       footer={[
         <Button key="cancel" onClick={onClose}>
-          {/* {t("cancel", { defaultValue: "Cancel" })} */}
-          Cancel
+          {t("cancel", { defaultValue: "Cancel" })}
         </Button>,
         <Button key="import" type="primary">
-          {/* {t("excel_import", { defaultValue: "Excel Import" })} */}
-          Import
+          {t("excel_import", { defaultValue: "Excel Import" })}
         </Button>,
       ]}
     >
       <Form layout="vertical">
-        <Form.Item label="Contacts">
+        <Form.Item label={t("contacts", { defaultValue: "Contacts" })}>
           <TextArea rows={5} />
         </Form.Item>
 
-        <Form.Item label="Groups">
+        <Form.Item label={t("groups", { defaultValue: "Groups" })}>
           <Select
             mode="multiple"
             value={selectedGroups}
             onChange={(value) => setSelectedGroups(value)}
             showSearch
-            placeholder="Select Groups"
+            placeholder={t("select_groups", { defaultValue: "Select Groups" })}
             options={groups.map((group) => ({
               label: group,
               value: group,
@@ -82,8 +77,7 @@ const ManualImport = ({ open, onClose }) => {
 
                 <Space.Compact block>
                   <Input
-                    // placeholder={t("group_name", { defaultValue: "Enter Group Name",})}
-                    placeholder="Enter Group Name"
+                    placeholder={t("group_name", { defaultValue: "Enter Group Name",})}
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                   />
@@ -93,8 +87,7 @@ const ManualImport = ({ open, onClose }) => {
                     icon={<PlusOutlined />}
                     onClick={handleAddGroup}
                   >
-                    {/* {t("add_group", { defaultValue: "Add Group" })} */}
-                    Add Group
+                    {t("add_group", { defaultValue: "Add Group" })}
                   </Button>
                 </Space.Compact>
               </>

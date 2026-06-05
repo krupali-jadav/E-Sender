@@ -1,10 +1,13 @@
 import { Row, Col, Card, Input, Button, Switch, Space, Typography, } from "antd";
 import { SearchOutlined, PlusCircleOutlined, DeleteOutlined, EditOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
-
+import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 const { Title } = Typography;
 
+
 function Templates() {
+  const navigate = useNavigate();
   const templates = [
     {
       id: 1,
@@ -20,19 +23,21 @@ function Templates() {
           {/* Header */}
           <Row justify="space-between" align="middle">
             <Col>
-              <Title level={3}>Templates</Title>
+              <Title level={3}>{t("templates", { defaultValue: "Templates" })}</Title>
             </Col>
 
             <Col>
               <Space>
                 <Button danger icon={<DeleteOutlined />}>
-                  {/* {t("delete_all", { defaultValue: "Delete All" })} */}
-                  Delete All
+                  {t("delete_all", { defaultValue: "Delete All" })}
                 </Button>
 
-                <Button type="primary" icon={<PlusCircleOutlined />}>
-                  {/* {t("create_template", { defaultValue: "Create Template" })} */}
-                  Create Template
+                <Button
+                  type="primary"
+                  icon={<PlusCircleOutlined />}
+                  onClick={() => navigate("/templates/create-template")}
+                >
+                  {t("create_template", { defaultValue: "Create Template" })}
                 </Button>
               </Space>
             </Col>
@@ -43,10 +48,9 @@ function Templates() {
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8}>
                 <Input.Search
-                  // placeholder={t("search_leads", {
-                  //     defaultValue: "Search Leads",
-                  // })}
-                  placeholder="Search Contacts"
+                  placeholder={t("search_leads", {
+                      defaultValue: "Search Leads",
+                  })}
                   enterButton={<SearchOutlined />}
                   allowClear
                 />
@@ -59,7 +63,7 @@ function Templates() {
             {templates.map((item) => (
               <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
                 <Card
-                  title={item.name}
+                  title={t("template", { defaultValue: item.name })}
                   extra={<Switch defaultChecked={item.active} />}
                 >
                   <Card style={{ height: 380 }}>
@@ -73,10 +77,9 @@ function Templates() {
                         type="primary"
                         icon={<EditOutlined />}
                         block
-                        // shape="round"
+                      // shape="round"
                       >
-                        {/* {t("edit", { defaultValue: "Edit" })} */}
-                        Edit
+                        {t("edit", { defaultValue: "Edit" })}
                       </Button>
                     </Col>
 
@@ -85,11 +88,10 @@ function Templates() {
                         danger
                         icon={<DeleteOutlined />}
                         block
-                        // shape="round"
-                    
+                      // shape="round"
+
                       >
-                        {/* {t("delete", { defaultValue: "Delete" })} */}
-                        Delete
+                        {t("delete", { defaultValue: "Delete" })}
                       </Button>
                     </Col>
                   </Row>

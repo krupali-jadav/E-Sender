@@ -132,7 +132,7 @@ function Groups() {
         exporting={exporting}
         page="groups" />
 
-        <Card >
+        <Card bodyStyle={{padding:0}}>
           <Table
             columns={columns}
             // dataSource={data}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Form, Input, Select, Button, Row, Col,Space, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
+import { t } from "i18next";
 
 
 function AddContact({ open, onClose }) {
@@ -34,12 +35,10 @@ function AddContact({ open, onClose }) {
             centered
             footer={[
                 <Button key="cancel" onClick={onClose}>
-                    {/* {t("cancel", { defaultValue: "Cancel" })} */}
-                    Cancel
+                    {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
                 <Button key="add" type="primary">
-                    {/* {t("add", { defaultValue: "Add" })} */}
-                    Add
+                    {t("add", { defaultValue: "Add" })}
                 </Button>,
             ]}
         >
@@ -47,7 +46,7 @@ function AddContact({ open, onClose }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            label="Name"
+                            label={t("name", { defaultValue: "Name" })}
                             name="name"
                             rules={[
                                 {
@@ -57,12 +56,11 @@ function AddContact({ open, onClose }) {
                             ]}
                         >
                             <Input 
-                            // placeholder={t("name", { defaultValue: "Enter Name", })}
-                            placeholder="Enter name" />
+                            placeholder={t("name", { defaultValue: "Enter Name", })} />
                         </Form.Item>
 
                         <Form.Item
-                            label="Email"
+                            label={t("email", { defaultValue: "Email" })}
                             name="email"
                             rules={[
                                 {
@@ -72,12 +70,11 @@ function AddContact({ open, onClose }) {
                             ]}
                         >
                             <Input
-                                // placeholder={t("email", { defaultValue: "Enter Email", })}
-                                placeholder="Enter Email" />
+                                placeholder={t("email", { defaultValue: "Enter Email", })}/>
                         </Form.Item>
 
                         <Form.Item
-                            label="Custom Fields"
+                            label={t("custom_fields", { defaultValue: "Custom Fields" })}
                             name="Custom Fields"
                             rules={[
                                 {
@@ -87,14 +84,13 @@ function AddContact({ open, onClose }) {
                             ]}
                         >
                             <Input
-                                // placeholder={t("custome_fields", { defaultValue: "Enter Custom Fields", })}
-                                placeholder="Enter Custom Fields" />
+                                placeholder={t("custom_fields", { defaultValue: "Enter Custom Fields", })} />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
                         <Form.Item
-                            label="Phone Number"
+                            label={t("phone_number", { defaultValue: "Phone Number" })}
                             name="phone"
                             rules={[
                                 {
@@ -108,27 +104,25 @@ function AddContact({ open, onClose }) {
                                 country={"in"}
                                 value={phone}
                                 onChange={handlePhoneChange}
-                                // placeholder={t("phone_number", {defaultValue: "Enter Phone Number", })}
-                                placeholder="Enter phone number"
+                                placeholder={t("phone_number", { defaultValue: "Enter Phone Number", })}
                             />
                         </Form.Item>
 
-                        <Form.Item label="Groups">
+                        <Form.Item label={t("groups", { defaultValue: "Groups" })}>
                             <Select
                                 showSearch
-                                placeholder="Select Groups"
-                                options={groups.map((group) => ({
-                                    label: group,
-                                    value: group,
-                                }))}
+                                placeholder={t("select_groups", { defaultValue: "Select Groups", })}
+                                    options={groups.map((group) => ({
+                                        label: group,
+                                        value: group,
+                                    }))}
                                 popupRender={(menu) => (
                                     <>
                                         {menu}
 
                                         <Space.Compact block>
                                             <Input
-                                                // placeholder={t("group_name", {defaultValue: "Enter Group Name", })}
-                                                placeholder="Enter Group Name"
+                                                placeholder={t("group_name", {defaultValue: "Enter Group Name", })}
                                                 value={groupName}
                                                 onChange={(e) =>
                                                     setGroupName(e.target.value)
@@ -140,8 +134,7 @@ function AddContact({ open, onClose }) {
                                                 icon={<PlusOutlined />}
                                                 onClick={handleAddGroup}
                                             >
-                                                {/* {t("add_group", { defaultValue: "Add Group" })} */}
-                                                Add Group
+                                                {t("add_group", { defaultValue: "Add Group" })}
                                             </Button>
                                         </Space.Compact>
                                     </>

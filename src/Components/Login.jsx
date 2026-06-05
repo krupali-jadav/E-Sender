@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../redux/reducers/Reducer.user";
 import { getMediaPath } from "../util/getMediaPath";
 import axiosInstance from "../util/axiosInstance";
+import { t } from "i18next";
 
 const { Text } = Typography;
 const { Content } = Layout;
@@ -144,7 +145,7 @@ function Login() {
                                 <Form layout="vertical" onFinish={onSendOtp}>
                                     <Form.Item
                                         name="phone"
-                                        label="Phone Number"
+                                        label={t("phone_number", { defaultValue: "Phone Number" })}
                                         initialValue={phone}
                                     >
                                         <PhoneInput
@@ -152,8 +153,7 @@ function Login() {
                                             country={"in"}
                                             value={phone}
                                             onChange={handlePhoneChange}
-                                            // placeholder={t("phone_number", { defaultValue: "Enter Phone Number" })}
-                                            placeholder="Enter phone number"
+                                            placeholder={t("phone_number", { defaultValue: "Enter Phone Number" })}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
                                                     e.preventDefault();
@@ -172,10 +172,11 @@ function Login() {
                                                         setCheckTerms(e.target.checked)
                                                     }
                                                 >
-                                                    Keep me signed in
+                                                   {t("keep_signed_in", { defaultValue: "Keep me signed in" })}
                                                 </Checkbox>
 
-                                                <Tooltip title="This will keep you signed in until you manually sign out">
+                                                <Tooltip 
+                                                title={t("keep_signed_in_tooltip", { defaultValue: "This will keep you signed in until you manually sign out" })}   >
                                                     <ExclamationCircleOutlined />
                                                 </Tooltip>
                                             </Space>
@@ -183,19 +184,19 @@ function Login() {
                                             <Divider />
 
                                             <Text type="secondary">
-                                                By continuing, you agree to our{" "}
+                                                {t("terms_agreement", { defaultValue: "By continuing, you agree to our" })} {" "}
                                                 <Link
                                                     to="/privacy-policy"
                                                     target="_blank"
                                                 >
-                                                    Privacy Policy
+                                                  {t("privacy_policy", { defaultValue: "Privacy Policy" })}
                                                 </Link>{" "}
                                                 &{" "}
                                                 <Link
                                                     to="/terms-and-conditions"
                                                     target="_blank"
                                                 >
-                                                    Terms and Conditions
+                                                    {t("terms_and_conditions", { defaultValue: "Terms and Conditions" })}
                                                 </Link>
                                             </Text>
                                         </Space>
@@ -209,7 +210,7 @@ function Login() {
                                             disabled={!canSendOtp}
                                             block
                                         >
-                                            Send OTP
+                                          {t("send_otp", { defaultValue: "Send OTP" })}
                                         </Button>
                                     </Form.Item>
                                 </Form>
@@ -232,7 +233,7 @@ function Login() {
                                 <Form layout="vertical" onFinish={onOtpVerify}>
                                     <Space direction="vertical" size="small">
                                         <Text type="secondary">
-                                            We've sent a verification code to{" "}
+                                            {t("verification_code_sent", { defaultValue: "We've sent a verification code to" })} {" "}
                                             <b>{phone}</b>
 
                                             <Button
@@ -242,7 +243,7 @@ function Login() {
                                             />
                                         </Text>
 
-                                        <Form.Item label="Enter OTP">
+                                        <Form.Item label={t("enter_otp", { defaultValue: "Enter OTP" })} name="otp">
                                             <Input.OTP
                                                 ref={otpRef}
                                                 length={6}
@@ -268,24 +269,22 @@ function Login() {
                                                 disabled={!otpValid}
                                                 block
                                             >
-                                                {/* {t("submit", { defaultValue: "Submit" })} */}
-                                                Submit
+                                                {t("submit", { defaultValue: "Submit" })}
                                             </Button>
                                         </Form.Item>
 
                                         <Space>
-                                            <Text>Didn't get the OTP?</Text>
+                                            <Text>{t(" didnt_get_otp", { defaultValue: "Didn't get the OTP?" })}</Text>
                                             {resend ? (
                                                 <Button
                                                     type="link"
                                                     onClick={onSendOtp}
                                                 >
-                                                    {/* {t("resend", { defaultValue: "Resend" })} */}
-                                                    Resend
+                                                    {t("resend", { defaultValue: "Resend" })}
                                                 </Button>
                                             ) : (
                                                 <Text type="secondary">
-                                                    Resend
+                                                    {t("resend", { defaultValue: "Resend" })}
                                                 </Text>
                                             )}
                                         </Space>

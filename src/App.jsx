@@ -20,6 +20,7 @@ import Documentation from "./Components/Documentation/Documentation";
 import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
 import { ConfigProvider, theme as antdTheme } from "antd";
+import CreateTemplates from "./Components/Templates/CreateTemplates";
 
 const ProtectedRoute = ({
   component: Component,
@@ -63,6 +64,7 @@ function App() {
     { path: "/orders", component: Orders },
     { path: "/orders/:order_id", component: Invoice },
     { path: "/templates", component: Templates },
+    { path: "/templates/create-template", component: CreateTemplates },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },
     { path: "/contact/custom-fields", component: CustomFields },

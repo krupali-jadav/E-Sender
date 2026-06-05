@@ -6,7 +6,7 @@ import axiosInstance from '../../util/axiosInstance';
 import { exportToExcel } from "react-json-to-excel";
 import { useEffect, useState } from 'react';
 import { getCurrentTime } from '../../util/commom.utils';
-// import { t } from 'i18next'
+import { t } from 'i18next'
 import dayjs from 'dayjs';
 const data = [
     {
@@ -144,15 +144,13 @@ function Orders() {
 
     const columns = [
         {
-            // title: t("sn", { defaultValue: "SN" }),
-            title: "S/N",
+            title: t("sn", { defaultValue: "SN" }),
             dataIndex: "sn",
             width: 100,
             key: "sn",
         },
         {
-            // title: t("order_id", { defaultValue: "Order ID" }),
-            title: "Order ID",
+            title: t("order_id", { defaultValue: "Order ID" }),
             dataIndex: "orderId",
             width: 150,
             key: "orderId",
@@ -161,14 +159,12 @@ function Orders() {
             ),
         },
         {
-            // title: t("type", { defaultValue: "Type" }),
-            title: "Type",
+            title: t("type", { defaultValue: "Type" }),
             dataIndex: "type",
             key: "type",
         },
         {
-            // title: t("status", { defaultValue: "Status" }),
-            title: "Status",
+            title: t("status", { defaultValue: "Status" }),
             dataIndex: "status",
             key: "status",
             render: (status) => (
@@ -178,8 +174,7 @@ function Orders() {
             ),
         },
         {
-            // title: t("payment", { defaultValue: "Payment" }),
-            title: "Payment",
+            title: t("payment", { defaultValue: "Payment" }),
             dataIndex: "payment",
             key: "payment",
             render: (payment) => (
@@ -189,21 +184,18 @@ function Orders() {
             ),
         },
         {
-            // title: t("amount", { defaultValue: "Amount" }),
-            title: "Amount",
+            title: t("amount", { defaultValue: "Amount" }),
             dataIndex: "amount",
             key: "amount",
         },
         {
-            // title: t("payment_method", { defaultValue: "Payment Method" }),
-            title: "Payment Method",
+            title: t("payment_method", { defaultValue: "Payment Method" }),
             dataIndex: "paymentMethod",
             key: "paymentMethod",
         },
 
         {
-            // title: t("created_at", { defaultValue: "Created At" }),
-            title: "Created At",
+            title: t("created_at", { defaultValue: "Created At" }),
             dataIndex: "createdAt",
             key: "createdAt",
         },
@@ -226,7 +218,7 @@ function Orders() {
                         exporting={exporting}
                     />
 
-                    <Card >
+                    <Card bodyStyle={{padding:0}}>
                         <Table
                             columns={columns}
                             dataSource={data}
@@ -236,15 +228,12 @@ function Orders() {
                     </Card>
 
                     <Modal
-                        // title={t("filter.orders", { defaultValue: "Filter Orders" })}
-                        title="Filter Orders"
+                        title={t("filter.orders", { defaultValue: "Filter Orders" })}
                         open={showFilterModal}
                         centered
                         onCancel={() => setShowFilterModal(false)}
-                        // okText={t("apply", { defaultValue: "Apply" })}
-                        okText="Apply"
-                        // cancelText={t("cancel", { defaultValue: "Cancel" })}
-                        cancelText="Cancel"
+                        okText={t("apply", { defaultValue: "Apply" })}
+                        cancelText={t("cancel", { defaultValue: "Cancel" })}
                         onOk={() => {
                             filterForm.validateFields().then(() => {
                                 setShowFilterModal(false);
@@ -263,36 +252,31 @@ function Orders() {
                                     onChange={(e) => setFilterType(e.target.value)}
                                 >
                                     <Radio value={"all-time"}>
-                                        {/* {t("allTime", { defaultValue: "All Time" })} */}
-                                        All Time
+                                        {t("allTime", { defaultValue: "All Time" })}
                                     </Radio>
                                     <Radio value={"specific"}>
-                                        {/* {t("specificTime", { defaultValue: "Specific Time" })} */}
-                                        Specific Time
+                                        {t("specificTime", { defaultValue: "Specific Time" })}
                                     </Radio>
                                 </Radio.Group>
                             </Form.Item>
 
                             {filterType == "specific" && (
                                 <Form.Item
-                                    // label={t("filterbydate", { defaultValue: "Filter by Date" })}
-                                    label="Filter by Date"
+                                    label={t("filterbydate", { defaultValue: "Filter by Date" })}
                                     name="date"
                                     rules={[
                                         {
                                             required: true,
-                                            // message: t("please.select.date", {
-                                            //     defaultValue: "Please select a date",
-                                            // }),
+                                            message: t("please.select.date", {
+                                                defaultValue: "Please select a date",
+                                            }),
                                         },
                                     ]}
                                 >
                                     <RangePicker
                                         placeholder={[
-                                            // t("start.date", { defaultValue: "Start Date" }),
-                                            "Start Date",
-                                            // t("end.date", { defaultValue: "End Date" }),
-                                            "End Date"
+                                            t("start.date", { defaultValue: "Start Date" }),
+                                            t("end.date", { defaultValue: "End Date" })
                                         ]}
                                         maxDate={dayjs()}
                                         style={{
@@ -308,8 +292,7 @@ function Orders() {
                             )}
 
                             <Form.Item
-                                // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
-                                label="Filter by status"
+                                label={t("filterbystatus", { defaultValue: "Filter by Status" })}
                             >
                                 <Select
                                     value={status}
@@ -318,8 +301,7 @@ function Orders() {
                                 // }}
                                 >
                                     <Option value="all">
-                                        {/* {t("all", { defaultValue: "All" })} */}
-                                        All
+                                        {t("all", { defaultValue: "All" })}
                                     </Option>
                                     {OrderStatuses?.map((status) => (
                                         <Option key={status} value={status}>

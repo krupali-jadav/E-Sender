@@ -5,6 +5,7 @@ import {
     RightOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { t } from "i18next";
 
 const { Dragger } = Upload;
 
@@ -26,7 +27,7 @@ function ExcelImport({ open, onClose }) {
     };
     return (
         <Modal
-            title="Excel Import"
+            title={t("excel_import", { defaultValue: "Excel Import" })}
             open={open}
             onCancel={onClose}
             footer={null}
@@ -41,8 +42,7 @@ function ExcelImport({ open, onClose }) {
                             shape="round"
                             icon={<CheckCircleOutlined />}
                         >
-                            {/* {t("upload", { defaultValue: "Upload" })} */}
-                            Upload
+                            {t("upload", { defaultValue: "Upload" })}
                         </Button>
 
                         <RightOutlined />
@@ -52,8 +52,7 @@ function ExcelImport({ open, onClose }) {
                             disabled
                             icon={<CheckCircleOutlined />}
                         >
-                            {/* {t("save_contacts", { defaultValue: "Save Contacts" })} */}
-                            Save Contacts
+                            {t("save_contacts", { defaultValue: "Save Contacts" })}
                         </Button>
                     </Space>
                 </Flex>
@@ -64,20 +63,18 @@ function ExcelImport({ open, onClose }) {
                         </p>
 
                         <p className="ant-upload-text">
-                            Upload Popup Excel File
+                            {t("upload_popup_excel_file", { defaultValue: "Upload Popup Excel File" })}
                         </p>
                     </Dragger>
                 </Card>
 
                 <Flex justify="end" gap="small">
                     <Button onClick={onClose}>
-                        {/* {t("cancel", { defaultValue: "Cancel" })} */}
-                        Cancel
+                        {t("cancel", { defaultValue: "Cancel" })}
                     </Button>
 
                     <Button type="primary" disabled>
-                        {/* {t("next", { defaultValue: "Next" })} */}
-                        Next
+                        {t("next", { defaultValue: "Next" })}
                     </Button>
                 </Flex>
             </Space>

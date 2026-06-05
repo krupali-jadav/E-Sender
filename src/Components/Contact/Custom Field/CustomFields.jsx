@@ -8,6 +8,7 @@ import AddCustomeField from './AddCustomField';
 import axiosInstance from '../../../util/axiosInstance';
 import { getCurrentTime } from '../../../util/commom.utils';
 import { exportToExcel } from 'react-json-to-excel';
+import { t } from 'i18next';
 
 const columns = [
   {
@@ -82,14 +83,10 @@ function CustomFields() {
   };
 
   const OrderStatuses = [
-    // t("text", { defaultValue: "Text" }),
-    "Text",
-    // t("number", { defaultValue: "Number" }),
-    'number',
-    // t("boolean", { defaultValue: "Boolean" }),
-    "boolean",
-    // t("date", { defaultValue: "Date" }),
-    "Date",
+    t("text", { defaultValue: "Text" }),
+    t("number", { defaultValue: "Number" }),
+    t("boolean", { defaultValue: "Boolean" }),
+    t("date", { defaultValue: "Date" }),
   ];
 
   const onExport = async () => {
@@ -134,8 +131,7 @@ function CustomFields() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setCustomFieldOpen(true)}>
-            {/* {t("add_custom_field", { defaultValue: "Add Custom Field" })} */}
-            Add Custom Field
+            {t("add_custom_field", { defaultValue: "Add Custom Field" })}
           </Button>
 
           <AddCustomeField
@@ -153,7 +149,7 @@ function CustomFields() {
           exporting={exporting}
           onFilterClick={() => setShowFilterModal(true)} page="custom-fields" />
 
-        <Card >
+        <Card bodyStyle={{padding:0}}>
           <Table
             columns={columns}
             // dataSource={data}
@@ -163,15 +159,12 @@ function CustomFields() {
         </Card>
 
         <Modal
-          // title={t("filter.orders", { defaultValue: "Filter Orders" })}
-          title="Filter Instance"
+          title={t("filter.custom_fields", { defaultValue: "Filter Custom Fields" })}
           open={showFilterModal}
           centered
           onCancel={() => setShowFilterModal(false)}
-          // okText={t("apply", { defaultValue: "Apply" })}
-          okText="Apply"
-          // cancelText={t("cancel", { defaultValue: "Cancel" })}
-          cancelText="Cancel"
+          okText={t("apply", { defaultValue: "Apply" })}
+          cancelText={t("cancel", { defaultValue: "Cancel" })}
           onOk={() => {
             filterForm.validateFields().then(() => {
               setShowFilterModal(false);
@@ -185,8 +178,7 @@ function CustomFields() {
         >
           <Form layout="vertical" form={filterForm}>
             <Form.Item
-              // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
-              label="Filter by status"
+              label={t("filterbystatus", { defaultValue: "Filter by Status" })}
             >
               <Select
                 value={status}
@@ -195,8 +187,7 @@ function CustomFields() {
               // }}
               >
                 <Option value="all">
-                  {/* {t("all", { defaultValue: "All" })} */}
-                  All
+                  {t("all", { defaultValue: "All" })}
                 </Option>
                 {OrderStatuses?.map((status) => (
                   <Option key={status} value={status}>

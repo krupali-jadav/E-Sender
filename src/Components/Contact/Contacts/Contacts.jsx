@@ -3,7 +3,7 @@ import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 import { Button, Card, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
-// import { t } from 'i18next'
+import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
 import ManualImport from '../Contacts/ManualImport'
 import AddContact from '../Contacts/AddContact'
@@ -98,32 +98,27 @@ function Contacts() {
 
     const columns = [
         {
-            // title: t("sn", { defaultValue: "SN" }),
-            title: "SN",
+            title: t("sn", { defaultValue: "SN" }),
             dataIndex: "sn",
             key: "sn",
         },
         {
-            // title: t("name", { defaultValue: "Name" }),
-            title: "Name",
+            title: t("name", { defaultValue: "Name" }),
             dataIndex: "name",
             key: "name",
         },
         {
-            // title: t("phonenumber", { defaultValue: "Phone Number" }),
-            title: "Phone Number",
+            title: t("phonenumber", { defaultValue: "Phone Number" }),
             dataIndex: "phonenumber",
             key: "phonenumber",
         },
         {
-            // title: t("email", { defaultValue: "Email" }),
-            title: "Email",
+            title: t("email", { defaultValue: "Email" }),
             dataIndex: "email",
             key: "email",
         },
         {
-            // title: t("groups", { defaultValue: "Groups" }),
-            title: "Groups",
+            title: t("groups", { defaultValue: "Groups" }),
             dataIndex: "groups",
             key: "groups",
             render: (_, record) => (
@@ -134,8 +129,7 @@ function Contacts() {
                 )),
         },
         {
-            // title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
-            title: "Unsubscribed",
+            title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
             dataIndex: "unsubscribed",
             key: "unsubscribed",
             render: (_, record) => (
@@ -146,7 +140,7 @@ function Contacts() {
                 )),
         },
         {
-            title: "Blocked",
+            title: t("blocked", { defaultValue: "Blocked" }),
             dataIndex: "blocked",
             key: "blocked",
             render: (_, record) => (
@@ -159,26 +153,22 @@ function Contacts() {
             ),
         },
         {
-            // title: t("created_at", { defaultValue: "Created At" }),
-            title: "Created At",
+            title: t("created_at", { defaultValue: "Created At" }),
             dataIndex: "createdAt",
             key: "createdAt",
         },
         {
-            // title: t("test", { defaultValue: "Test" }),
-            title: "Test",
+            title: t("test", { defaultValue: "Test" }),
             dataIndex: "test",
             key: "test",
         },
         {
-            // title: t("country", { defaultValue: "Country" }),
-            title: "Country",
+            title: t("country", { defaultValue: "Country" }),
             dataIndex: "country",
             key: "country",
         },
         {
-            // title: t("actions", { defaultValue: "Actions" }),
-            title: "Actions",
+            title: t("actions", { defaultValue: "Actions" }),
             key: "actions",
             render: () => (
                 <MoreOutlined />
@@ -207,8 +197,8 @@ function Contacts() {
                             icon={<ImportOutlined />}
                             onClick={() => setManualImportOpen(true)}
                         >
-                            {/* {t("manual_import", { defaultValue: "Manual Import" })} */}
-                            Manual Import
+                            {t("manual_import", { defaultValue: "Manual Import" })}
+                           
                         </Button>
 
                         <ManualImport
@@ -221,8 +211,8 @@ function Contacts() {
                             icon={<ImportOutlined />}
                             onClick={() => setExcelOpen(true)}
                         >
-                            {/* {t("excel_import", { defaultValue: "Excel Import" })} */}
-                            Excel Import
+                            {t("excel_import", { defaultValue: "Excel Import" })}
+                          
                         </Button>
 
                         <ExcelImport
@@ -235,8 +225,7 @@ function Contacts() {
                             icon={<PlusOutlined />}
                             onClick={() => setAddContactOpen(true)}
                         >
-                            {/* {t("add_contact", { defaultValue: "Add Contact" })} */}
-                            Add Contact
+                            {t("add_contact", { defaultValue: "Add Contact" })}
                         </Button>
 
                         <AddContact
@@ -257,8 +246,9 @@ function Contacts() {
                         exporting={exporting}
                     />
 
-                    <Card >
+                    <Card bodyStyle={{padding:0}}>
                         <Table
+                        style={{padding:0}}
                             columns={columns}
                             dataSource={data}
                             pagination={false}
@@ -267,15 +257,12 @@ function Contacts() {
                     </Card>
 
                     <Modal
-                        // title={t("filter.orders", { defaultValue: "Filter Orders" })}
-                        title="Filter Contacts"
+                        title={t("filter.contacts", { defaultValue: "Filter Contacts" })}
                         open={showFilterModal}
                         centered
                         onCancel={() => setShowFilterModal(false)}
-                        // okText={t("apply", { defaultValue: "Apply" })}
-                        okText="Apply"
-                        // cancelText={t("cancel", { defaultValue: "Cancel" })}
-                        cancelText="Cancel"
+                        okText={t("apply", { defaultValue: "Apply" })}
+                        cancelText={t("cancel", { defaultValue: "Cancel" })}
                         onOk={() => {
                             filterForm.validateFields().then(() => {
                                 setShowFilterModal(false);
@@ -289,8 +276,7 @@ function Contacts() {
                     >
                         <Form layout="vertical" form={filterForm}>
                             <Form.Item
-                                // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
-                                label="Filter by Groups"
+                                label={t("filter.by_groups", { defaultValue: "Filter by Groups" })}
                             >
                                 <Select
                                     value={status}
@@ -299,15 +285,13 @@ function Contacts() {
                                 // }}
                                 >
                                     <Option value="all">
-                                        {/* {t("all", { defaultValue: "All" })} */}
-                                        All
+                                        {t("all", { defaultValue: "All" })}
                                     </Option>
 
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
-                                label="Filter by Blocked"
+                                label={t("filter.by_blocked", { defaultValue: "Filter by Blocked" })}
                             >
                                 <Select
                                     value={status}
@@ -316,14 +300,12 @@ function Contacts() {
                                 // }}
                                 >
                                     <Option value="all">
-                                        {/* {t("all", { defaultValue: "All" })} */}
-                                        All
+                                        {t("all", { defaultValue: "All" })}
                                     </Option>
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                // label={t("filterbystatus", { defaultValue: "Filter by Status" })}
-                                label="Filter by Unsubscribed"
+                                label={t("filter.by_unsubscribed", { defaultValue: "Filter by Unsubscribed" })}
                             >
                                 <Select
                                     value={status}
@@ -332,8 +314,7 @@ function Contacts() {
                                 // }}
                                 >
                                     <Option value="all">
-                                        {/* {t("all", { defaultValue: "All" })} */}
-                                        All
+                                        {t("all", { defaultValue: "All" })}
                                     </Option>
                                 </Select>
                             </Form.Item>
