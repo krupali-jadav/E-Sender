@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col,Space, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, Empty, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 
@@ -56,9 +56,9 @@ function AddContact({ open, onClose }) {
                                 },
                             ]}
                         >
-                            <Input 
-                            // placeholder={t("name", { defaultValue: "Enter Name", })}
-                            placeholder="Enter name" />
+                            <Input
+                                // placeholder={t("name", { defaultValue: "Enter Name", })}
+                                placeholder="Enter name" />
                         </Form.Item>
 
                         <Form.Item
@@ -115,6 +115,12 @@ function AddContact({ open, onClose }) {
 
                         <Form.Item label="Groups">
                             <Select
+                                notFoundContent={
+                                    <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                        description="No Groups Found"
+                                    />
+                                }
                                 showSearch
                                 placeholder="Select Groups"
                                 options={groups.map((group) => ({

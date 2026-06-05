@@ -1,6 +1,6 @@
 import SearchHeader from '../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Card, DatePicker, Form, message, Modal, Radio, Select, Space, Table, Tag } from 'antd'
+import { Card, DatePicker, Empty, Form, message, Modal, Radio, Select, Space, Table, Tag } from 'antd'
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../util/axiosInstance';
 import { exportToExcel } from "react-json-to-excel";
@@ -232,6 +232,14 @@ function Orders() {
                             dataSource={data}
                             pagination={false}
                             scroll={{ x: "max-content" }}
+                            locale={{
+                                emptyText: (
+                                    <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                        description="No Data Found"
+                                    />
+                                ),
+                            }}
                         />
                     </Card>
 

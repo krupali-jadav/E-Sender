@@ -1,6 +1,7 @@
 import { Row, Col, Card, Input, Button, Switch, Space, Typography, } from "antd";
 import { SearchOutlined, PlusCircleOutlined, DeleteOutlined, EditOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
+import SearchHeader from "../Search Header/SearchHeader";
 
 const { Title } = Typography;
 
@@ -38,21 +39,8 @@ function Templates() {
             </Col>
           </Row>
 
-          {/* Search */}
-          <Card>
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8}>
-                <Input.Search
-                  // placeholder={t("search_leads", {
-                  //     defaultValue: "Search Leads",
-                  // })}
-                  placeholder="Search Contacts"
-                  enterButton={<SearchOutlined />}
-                  allowClear
-                />
-              </Col>
-            </Row>
-          </Card>
+          {/* Header */}
+          <SearchHeader />
 
           {/* Template Cards */}
           <Row gutter={[16, 16]}>
@@ -73,7 +61,7 @@ function Templates() {
                         type="primary"
                         icon={<EditOutlined />}
                         block
-                        // shape="round"
+                      // shape="round"
                       >
                         {/* {t("edit", { defaultValue: "Edit" })} */}
                         Edit
@@ -85,8 +73,8 @@ function Templates() {
                         danger
                         icon={<DeleteOutlined />}
                         block
-                        // shape="round"
-                    
+                      // shape="round"
+
                       >
                         {/* {t("delete", { defaultValue: "Delete" })} */}
                         Delete

@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Search Header/SearchHeader'
-import { Button, Card, message, Space, Table, Tag } from 'antd'
+import { Button, Card, Empty, message, Space, Spin, Table, Tag } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { useState } from 'react';
@@ -14,41 +14,48 @@ const columns = [
     title: "SN",
     dataIndex: "sn",
     key: "sn",
+    width: 20,
   },
   {
     // title: t("name", { defaultValue: "Name" }),
     title: "Name",
     dataIndex: "name",
     key: "name",
+    width: 250,
   },
   {
     // title: t("totalContacts", { defaultValue: "Total Contacts" }),
     title: "Total Contacts",
     dataIndex: "totalContacts",
     key: "totalContacts",
+    width: 250,
   },
   {
     // title: t("blocked", { defaultValue: "Blocked" }),
     title: "Blocked",
     dataIndex: "blocked",
     key: "blocked",
+    width: 250,
   },
   {
     // title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
     title: "Unsubscribed",
     dataIndex: "unsubscribed",
     key: "unsubscribed",
+    width: 250,
   },
   {
     // title: t("created_at", { defaultValue: "Created At" }),
     title: "Created At",
     dataIndex: "createdAt",
     key: "createdAt",
+    width: 250,
   },
   {
     // title: t("actions", { defaultValue: "Actions" }),
     title: "Actions",
     key: "actions",
+    width: 250,
     render: () => (
       <MoreOutlined />
       // <Space>
@@ -100,7 +107,7 @@ function Groups() {
         message.error(data?.message || "Failed to fetch groups for export");
       }
     } catch (error) {
-      message.error("An error occurred while exporting Groups",error);
+      message.error("An error occurred while exporting Groups", error);
     } finally {
       setExporting(false);
     }
@@ -127,17 +134,25 @@ function Groups() {
       }
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        <SearchHeader 
-        onExport={onExport}
-        exporting={exporting}
-        page="groups" />
+        <SearchHeader
+          onExport={onExport}
+          exporting={exporting}
+          page="groups" />
 
         <Card >
           <Table
             columns={columns}
             // dataSource={data}
-            pagination={false}
+            pagination={true}
             scroll={{ x: "max-content" }}
+            locale={{
+              emptyText: (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="No Data Found"
+                />
+              ),
+            }}
           />
         </Card>
       </Space>

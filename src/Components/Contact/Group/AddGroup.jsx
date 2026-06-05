@@ -1,4 +1,5 @@
 import { Button, Form, Input, Modal } from 'antd'
+import { t } from 'i18next'
 
 function AddGroup({ open, onClose }) {
     return (
@@ -12,19 +13,16 @@ function AddGroup({ open, onClose }) {
                 centered
                 footer={[
                     <Button key="cancel" onClick={onClose}>
-                        {/* {t("cancel", { defaultValue: "Cancel" })} */}
-                        Cancel
+                        {t("cancel", { defaultValue: "Cancel" })}
                     </Button>,
                     <Button key="add" type="primary">
-                        {/* {t("add", { defaultValue: "Add" })} */}
-                        Add
+                        {t("add", { defaultValue: "Add" })}
                     </Button>,
                 ]}
             >
                 <Form layout="vertical">
                     <Form.Item
-                        label="Group Name"
-                        // label={t("group_name", { defaultValue: "Group Name" })}
+                        label={t("group_name", { defaultValue: "Group Name" })}
                         name="name"
                         rules={[
                             {
@@ -33,8 +31,8 @@ function AddGroup({ open, onClose }) {
                             },
                         ]}
                     >
-                        <Input placeholder="Enter Group name"
-                        //  placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })} 
+                        <Input
+                         placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })} 
                          />
                     </Form.Item>
                 </Form>
