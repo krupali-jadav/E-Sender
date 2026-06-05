@@ -1,7 +1,7 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
 
-import { Button, Card, Flex, Form, message, Modal, Select, Space, Table, Tag } from 'antd'
+import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Table, Tag } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import AddCustomeField from './AddCustomField';
@@ -115,7 +115,7 @@ function CustomFields() {
         message.error(data?.message || "Failed to fetch Fields for export");
       }
     } catch (error) {
-      message.error("An error occurred while exporting Fields",error);
+      message.error("An error occurred while exporting Fields", error);
     } finally {
       setExporting(false);
     }
@@ -155,6 +155,14 @@ function CustomFields() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
+            locale={{
+              emptyText: (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="No Data Found"
+                />
+              ),
+            }}
           />
         </Card>
 

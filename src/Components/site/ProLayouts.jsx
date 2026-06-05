@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action";
 import { changeLanguage, setPanel, setTheme } from "../../redux/reducers/reducer.app";
-import i18next from "i18next";
+import i18next, { t } from "i18next";
 import lang from "../../util/lang/lang";
 import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -169,8 +169,7 @@ const ProLayouts = ({ children }) => {
                     icon: <UserOutlined />,
                     label: (
                       <span onClick={() => { navigate("/edit-profile") }}>
-                        Edit Profile
-                      {/* {t("edit_profile", { defaultValue: "Edit Profile" })} */}
+                      {t("edit_profile", { defaultValue: "Edit Profile" })}
                       </span>
                     ),
                   },
@@ -195,8 +194,7 @@ const ProLayouts = ({ children }) => {
                     icon: <LaptopOutlined />,
                     label: (
                       <span onClick={() => { navigate("/sessions") }}>
-                        Session
-                    {/* {t("session", { defaultValue: "Session" })} */}
+                    {t("session", { defaultValue: "Session" })}
                       </span>
                     ),
                   },
@@ -208,8 +206,7 @@ const ProLayouts = ({ children }) => {
                         dispatch(logout());
                         navigate("/");
                       }}>
-                        Logout
-                      {/* {t("logout", { defaultValue: "Logout" })} */}
+                      {t("logout", { defaultValue: "Logout" })}
                       </span>
                     ),
                   },

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
@@ -90,7 +90,7 @@ function Contacts() {
                 message.error(data?.message || "Failed to fetch contacts for export");
             }
         } catch (error) {
-            message.error("An error occurred while exporting Contacts",error);
+            message.error("An error occurred while exporting Contacts", error);
         } finally {
             setExporting(false);
         }
@@ -253,6 +253,14 @@ function Contacts() {
                             dataSource={data}
                             pagination={false}
                             scroll={{ x: "max-content" }}
+                            locale={{
+                                emptyText: (
+                                    <Empty
+                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                        description="No Data Found"
+                                    />
+                                ),
+                            }}
                         />
                     </Card>
 

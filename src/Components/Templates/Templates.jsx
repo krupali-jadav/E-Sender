@@ -3,6 +3,7 @@ import { SearchOutlined, PlusCircleOutlined, DeleteOutlined, EditOutlined, } fro
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
+import SearchHeader from "../Search Header/SearchHeader";
 const { Title } = Typography;
 
 
@@ -43,20 +44,8 @@ function Templates() {
             </Col>
           </Row>
 
-          {/* Search */}
-          <Card>
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8}>
-                <Input.Search
-                  placeholder={t("search_leads", {
-                      defaultValue: "Search Leads",
-                  })}
-                  enterButton={<SearchOutlined />}
-                  allowClear
-                />
-              </Col>
-            </Row>
-          </Card>
+          {/* Header */}
+          <SearchHeader />
 
           {/* Template Cards */}
           <Row gutter={[16, 16]}>

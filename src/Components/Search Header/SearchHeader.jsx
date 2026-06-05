@@ -9,14 +9,12 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                // label: t("sort_by._name", {defaultValue: "Sort by Name",}),
-                label: "Sort by Name",
+                label: t("sort_by._name", { defaultValue: "Sort by Name", }),
                 value: "name",
             },
             {
                 key: 2,
-                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
-                label: "Sort by Created At",
+                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ];
@@ -24,20 +22,17 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                // label: t("sort_by_type", {defaultValue: "Sort by type",}),
-                label: "Sort by Type",
+                label: t("sort_by_type", { defaultValue: "Sort by type", }),
                 value: "type",
             },
             {
                 key: 2,
-                // label: t("sort_by_status", {defaultValue: "Sort by Status",}),
-                label: "Sort by Status",
+                label: t("sort_by_status", { defaultValue: "Sort by Status", }),
                 value: "status",
             },
             {
                 key: 3,
-                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
-                label: "Sort by Created At",
+                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ]
@@ -45,14 +40,12 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                // label: t("sort_by._name", {defaultValue: "Sort by Name",}),
-                label: "Sort by Name",
+                label: t("sort_by._name", { defaultValue: "Sort by Name", }),
                 value: "name",
             },
             {
                 key: 2,
-                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
-                label: "Sort by Created At",
+                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ];
@@ -60,20 +53,17 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                // label: t("sort_by_type", {defaultValue: "Sort by type",}),
-                label: "Sort by Type",
+                label: t("sort_by_type", { defaultValue: "Sort by type", }),
                 value: "type",
             },
             {
                 key: 2,
-                // label: t("sort_by_status", {defaultValue: "Sort by Status",}),
-                label: "Sort by Status",
+                label: t("sort_by_status", { defaultValue: "Sort by Status", }),
                 value: "status",
             },
             {
                 key: 3,
-                // label: t("sort_by_createat", {defaultValue: "Sort by Created At",}),
-                label: "Sort by Created At",
+                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ]
@@ -84,10 +74,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
             <Row gutter={[16, 16]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8}>
                     <Input.Search
-                        // placeholder={t("search_leads", {
-                        //     defaultValue: "Search Leads",
-                        // })}
-                        placeholder="Search Contacts"
+                        placeholder={t("search_leads", { defaultValue: "Search Leads", })}
                         enterButton={<SearchOutlined />}
                         allowClear
                     />
@@ -95,20 +82,16 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
 
                 <Col xs={0} sm={0} md={0} lg={0} xl={4} xxl={4} />
 
-
-
                 <Col xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     <Flex justify="end" gap={10} wrap>
                         <Button style={{ minWidth: "18%" }}>
                             <RedoOutlined />
-                            {/* {t("reset", { defaultValue: "Reset" })} */}
-                            Reset
+                            {t("reset", { defaultValue: "Reset" })}
                         </Button>
 
                         <Button style={{ minWidth: "18%" }} onClick={onFilterClick}>
                             <FilterOutlined />{" "}
-                            {/* {t("filter", { defaultValue: "Filter" })} */}
-                            Filter
+                            {t("filter", { defaultValue: "Filter" })}
                         </Button>
 
                         <Select
@@ -118,8 +101,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
                             // onChange={(value) => setSortBy(value)}
                             options={sortByItems}
                             style={{ minWidth: "22%" }}
-                            // placeholder={t("sort_by_createdAt", { defaultValue: "Sort By Create At",})}
-                            placeholder="Sort By Create At"
+                            placeholder={t("sort_by_createdAt", { defaultValue: "Sort By Create At", })}
                         />
 
                         <Button
@@ -130,8 +112,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
                             onClick={onExport}
                             icon={<DownloadOutlined />}
                         >
-                            {/* {t("export", { defaultValue: "Export", })} */}
-                            Export
+                            {t("export", { defaultValue: "Export", })}
                         </Button>
                     </Flex>
                 </Col>
