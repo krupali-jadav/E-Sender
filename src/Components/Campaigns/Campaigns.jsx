@@ -116,7 +116,7 @@ function Campaigns() {
             onClick={() => setAddGroupOpen(true)}
           >
             {/* {t("add_group", { defaultValue: "Add Group" })} */}
-            Add Group
+            Add Campaigns
           </Button>
           {/* 
           <AddGroup

@@ -19,7 +19,6 @@ function Templates() {
 
   return (
     <PageContainer title={false}>
-      <Card >
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
           {/* Header */}
           <Row justify="space-between" align="middle">
@@ -89,7 +88,6 @@ function Templates() {
             ))}
           </Row>
         </Space>
-      </Card>
     </PageContainer>
   );
 }

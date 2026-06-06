@@ -116,7 +116,7 @@ function Domains() {
             onClick={() => setAddGroupOpen(true)}
           >
             {/* {t("add_group", { defaultValue: "Add Group" })} */}
-            Add Group
+            Add Domain
           </Button>
           {/* 
           <AddGroup
