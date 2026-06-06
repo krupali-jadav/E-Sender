@@ -1,52 +1,46 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Components/Search Header/SearchHeader'
-import { Button, Card, Empty, message, Space, Table, Tag } from 'antd'
+import { Button, Card, Empty, message, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 import { exportToExcel } from 'react-json-to-excel';
 import { getCurrentTime } from '../../util/commom.utils';
 import axiosInstance from '../../util/axiosInstance';
+import { t } from 'i18next';
 
 const columns = [
   {
-    // title: t("sn", { defaultValue: "SN" }),
-    title: "SN",
+    title: t("sn", { defaultValue: "SN" }),
     dataIndex: "sn",
     key: "sn",
   },
   {
-    // title: t("name", { defaultValue: "Name" }),
-    title: "Name",
+    title: t("name", { defaultValue: "Name" }),
     dataIndex: "name",
     key: "name",
   },
   {
-    // title: t("totalContacts", { defaultValue: "Total Contacts" }),
-    title: "Total Contacts",
+    title: t("totalContacts", { defaultValue: "Total Contacts" }),
     dataIndex: "totalContacts",
     key: "totalContacts",
   },
   {
-    // title: t("blocked", { defaultValue: "Blocked" }),
-    title: "Blocked",
+    title: t("blocked", { defaultValue: "Blocked" }),
     dataIndex: "blocked",
     key: "blocked",
   },
   {
-    // title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
-    title: "Unsubscribed",
+    title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
     dataIndex: "unsubscribed",
     key: "unsubscribed",
   },
   {
-    // title: t("created_at", { defaultValue: "Created At" }),
-    title: "Created At",
+    title: t("created_at", { defaultValue: "Created At" }),
     dataIndex: "createdAt",
     key: "createdAt",
   },
   {
-    // title: t("actions", { defaultValue: "Actions" }),
-    title: "Actions",
+    title: t("actions", { defaultValue: "Actions" }),
     key: "actions",
     render: () => (
       <MoreOutlined />
@@ -115,8 +109,7 @@ function Campaigns() {
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
           >
-            {/* {t("add_group", { defaultValue: "Add Group" })} */}
-            Add Group
+            {t("add_group", { defaultValue: "Add Group" })}
           </Button>
           {/* 
           <AddGroup

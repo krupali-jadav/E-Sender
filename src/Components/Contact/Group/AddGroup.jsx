@@ -5,8 +5,7 @@ function AddGroup({ open, onClose }) {
     return (
         <>
             <Modal
-                title="Add Group"
-                // title= {t("add_group", { defaultValue: "Add Group" })} 
+                title= {t("add_group", { defaultValue: "Add Group" })} 
                 open={open}
                 onCancel={onClose}
                 width={500}

@@ -1,7 +1,6 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-
-import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Table, Tag } from 'antd'
+import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import AddCustomeField from './AddCustomField';
@@ -12,32 +11,27 @@ import { t } from 'i18next';
 
 const columns = [
   {
-    // title: t("sn", { defaultValue: "SN" }),
-    title: "SN",
+    title: t("sn", { defaultValue: "SN" }),
     dataIndex: "sn",
     key: "sn",
   },
   {
-    // title: t("name", { defaultValue: "Name" }),
-    title: "Name",
+    title: t("name", { defaultValue: "Name" }),
     dataIndex: "name",
     key: "name",
   },
   {
-    // title: t("type", { defaultValue: "Type" }),
-    title: "Type",
+    title: t("type", { defaultValue: "Type" }),
     dataIndex: "type",
     key: "type",
   },
   {
-    // title: t("created_at", { defaultValue: "Created At" }),
-    title: "Created At",
+    title: t("created_at", { defaultValue: "Created At" }),
     dataIndex: "createdAt",
     key: "createdAt",
   },
   {
-    // title: t("actions", { defaultValue: "Actions" }),
-    title: "Actions",
+    title: t("actions", { defaultValue: "Actions" }),
     key: "actions",
     render: () => (
       <MoreOutlined />

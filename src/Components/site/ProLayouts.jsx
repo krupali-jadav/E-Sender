@@ -23,7 +23,6 @@ const ProLayouts = ({ children }) => {
   const panel = useSelector((state) => state?.app?.panel);
   const language = useSelector((state) => state?.app?.lang);
   const theme = useSelector((state) => state?.app?.theme);
-  console.log("Current Theme:", theme);
 
   const toggleTheme = () => {
     const newTheme = !theme;
@@ -169,7 +168,7 @@ const ProLayouts = ({ children }) => {
                     icon: <UserOutlined />,
                     label: (
                       <span onClick={() => { navigate("/edit-profile") }}>
-                      {t("edit_profile", { defaultValue: "Edit Profile" })}
+                        {t("edit_profile", { defaultValue: "Edit Profile" })}
                       </span>
                     ),
                   },
@@ -194,7 +193,7 @@ const ProLayouts = ({ children }) => {
                     icon: <LaptopOutlined />,
                     label: (
                       <span onClick={() => { navigate("/sessions") }}>
-                    {t("session", { defaultValue: "Session" })}
+                        {t("session", { defaultValue: "Session" })}
                       </span>
                     ),
                   },
@@ -206,7 +205,7 @@ const ProLayouts = ({ children }) => {
                         dispatch(logout());
                         navigate("/");
                       }}>
-                      {t("logout", { defaultValue: "Logout" })}
+                        {t("logout", { defaultValue: "Logout" })}
                       </span>
                     ),
                   },
@@ -230,18 +229,38 @@ const ProLayouts = ({ children }) => {
         if (props?.isMobile)
           return [
             theme ? (
-              <SunOutlined
-                key="SunOutlined"
-                onClick={toggleTheme}
-                style={{ marginRight: 20 }}
-              />
-            ) : (
               <MoonOutlined
                 key="MoonOutlined"
                 onClick={toggleTheme}
                 style={{ marginRight: 20 }}
               />
+            ) : (
+              <SunOutlined
+                key="SunOutlined"
+                onClick={toggleTheme}
+                style={{ marginRight: 20 }}
+              />
             ),
+
+            <Select
+              value={language ?? "en"}
+              listHeight={200}
+              showSearch
+              style={{
+                height: 45,
+                width: 150,
+              }}
+              onChange={handleLanguageChange}
+              options={lang?.map((x) => ({
+                value: x.key,
+                label: x.name,
+              }))}
+              filterOption={(input, option) => {
+                return option.label
+                  .toLowerCase()
+                  .includes(input.toLowerCase());
+              }}
+            />
           ];
         if (typeof window === "undefined") return [];
         return [
