@@ -74,7 +74,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
             <Row gutter={[16, 16]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8}>
                     <Input.Search
-                        placeholder={t("search_leads", { defaultValue: "Search Leads", })}
+                        placeholder={t("search...", { defaultValue: "Search...", })}
                         enterButton={<SearchOutlined />}
                         allowClear
                     />

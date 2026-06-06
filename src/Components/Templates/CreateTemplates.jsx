@@ -55,7 +55,7 @@ function CreateTemplates() {
                         </Row>
                     </Form>
                 </Card>
-                <Card style={{ height: 650 }}>
+                <Card style={{ minHeight: 600 }}>
                     <Row>
                         <Col span={24}>
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Data" />

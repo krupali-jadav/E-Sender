@@ -109,7 +109,7 @@ function Campaigns() {
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
           >
-            {t("add_group", { defaultValue: "Add Group" })}
+            {t("add_campaigns", { defaultValue: "Add Campaigns" })}
           </Button>
           {/* 
           <AddGroup

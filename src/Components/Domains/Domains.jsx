@@ -109,7 +109,7 @@ function Domains() {
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
           >
-            {t("add_group", { defaultValue: "Add Group" })}
+            {t("add_domain", { defaultValue: "Add Domain" })}
           </Button>
           {/* 
           <AddGroup
