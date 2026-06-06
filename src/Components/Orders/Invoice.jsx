@@ -1,4 +1,4 @@
-import React, {
+import  {
   useEffect,
   useState,
   useCallback,
@@ -9,7 +9,6 @@ import {
   Typography,
   Row,
   Col,
-  Table,
   Divider,
   Button,
   message,
@@ -33,7 +32,6 @@ import axiosInstance from "../../util/axiosInstance";
 import { getMediaPath } from "../../util/getMediaPath";
 import { changePageTitle } from "../../redux/reducers/reducer.app";
 import { Space } from "antd/lib";
-import Orders from "./Orders";
 const { Title, Text, Paragraph } = Typography;
 const Invoice = ({ isEdit = false }) => {
   const { order_id } = useParams();
@@ -164,7 +162,6 @@ const Invoice = ({ isEdit = false }) => {
       }),
       dataIndex: "SN",
       key: "SN",
-      width: 30,
       fixed: "left",
       render: (_, __, index) => <Text>{index + 1}</Text>,
     },
@@ -174,7 +171,6 @@ const Invoice = ({ isEdit = false }) => {
       }),
       dataIndex: "type",
       key: "type",
-      width: 150,
       render: (_, record) => {
         if (order?.type === "pack") return itemName(record);
         if (["buy-telecaller", "renew-telecaller"].includes(order?.type)) {
@@ -193,7 +189,6 @@ const Invoice = ({ isEdit = false }) => {
       }),
       dataIndex: "price",
       key: "price",
-      width: 60,
       render: (_, record) => (
         <>
           {`${CURRENCIES_SYMBOL[order?.paymentId?.currency] || "$"}`}
@@ -214,7 +209,6 @@ const Invoice = ({ isEdit = false }) => {
       }),
       dataIndex: "quantity",
       key: "quantity",
-      width: 50,
       render: (_, record) => record?.quantity || 0,
     },
     {
@@ -223,7 +217,6 @@ const Invoice = ({ isEdit = false }) => {
       }),
       dataIndex: "salePrice",
       key: "salePrice",
-      width: 50,
       align: "right",
       render: (_, record) =>
         `${CURRENCIES_SYMBOL[order?.paymentId?.currency] || "$"}${((record?.amount || 0) * (record?.quantity || 0)).toFixed(2)}`,
@@ -359,16 +352,6 @@ const Invoice = ({ isEdit = false }) => {
         message.error("Failed to capture invoice");
       });
   }, [order_id]);
-
-  const demoOrder = {
-    name: "John Smith",
-    email: "john@gmail.com",
-    phone: "+91 9876543210",
-    createdAt: "2025-02-10",
-    subTotal: 100,
-    handlingFee: 10,
-    total: 110,
-  };
   return (
     <>
       <Row
@@ -452,24 +435,6 @@ const Invoice = ({ isEdit = false }) => {
               border: "1px solid #ececec",
             }}
           >
-            {/* <Col
-            span={8}
-            style={{
-              padding: "20px",
-            }}
-          >
-            <Text strong>Issued</Text>
-
-            <br />
-            <br />
-
-            <Text>
-              {order?.createdAt
-                ? formatDate(order?.createdAt)
-                : "-"}
-            </Text>
-          </Col> */}
-
             <Col
               span={12}
               style={{
@@ -522,45 +487,28 @@ const Invoice = ({ isEdit = false }) => {
             </Col>
           </Row>
 
-          {/* SERVICE TABLE */}
-          {/* <div
-          style={{
-            marginTop: "30px",
-            border: "1px solid #ececec",
-          }}
-        > */}
-          {/* <Row
-            style={{
-              background: "#fafafa",
-              padding: "12px 15px",
-              fontWeight: 600,
-              borderBottom: "1px solid #ececec",
-            }}
-          >
-            <Col span={4}>SN</Col>
-            <Col span={9}>Name</Col>
-            <Col span={4}>Price</Col>
-            <Col span={5}>Quantity</Col>
-            <Col span={2}>Total</Col>
-          </Row> */}
           <Row
             style={{
-              background:theme ? "#686767" : "#d8d8d8",
+              background: theme ? "#686767" : "#d8d8d8",
               padding: "12px 15px",
               fontWeight: 600,
               borderBottom: "1px solid #ececec",
             }}
           >
-            <Col span={4}>SN</Col>
-            <Col span={9}>Name</Col>
-            <Col span={4}>Price</Col>
-            <Col span={5}>Quantity</Col>
-            <Col span={2}>Total</Col>
+            {columns.map((col, index) => {
+              const spans = [4, 9, 4, 5, 2];
+
+              return (
+                <Col key={col.key || index} span={spans[index]}>
+                  {col.title}
+                </Col>
+              );
+            })}
           </Row>
 
           <Row
             style={{
-              padding: "12px 15px",
+              padding: "5px 15px",
               borderBottom: "1px solid #ececec",
             }}
           >
@@ -625,7 +573,7 @@ const Invoice = ({ isEdit = false }) => {
               <Col span={12} style={{ textAlign: "right" }}>
                 {CURRENCIES_SYMBOL[
                   order?.paymentId?.currency
-                ] || "$"}
+                ] || "$0"}
                 {order?.subTotal?.toFixed(2)}
               </Col>
             </Row>
@@ -636,62 +584,27 @@ const Invoice = ({ isEdit = false }) => {
               <Col span={12} style={{ textAlign: "right" }}>
                 {CURRENCIES_SYMBOL[
                   order?.paymentId?.currency
-                ] || "$"}
+                ] || "$0"}
                 {order?.handlingFee?.toFixed(2)}
               </Col>
             </Row>
 
-            <Divider />
+            <Divider style={{  borderTop: "1px solid black",marginBottom: 10, marginTop: 10}} />
 
-            <Row>
+            <Row >
               <Col span={12}>
-                <Text strong>Total</Text>
+                <Text strong>{t("grand_total", { defaultValue: "Grand Total" })}</Text>
               </Col>
 
               <Col span={12} style={{ textAlign: "right" }}>
                 <Text strong>
                   {CURRENCIES_SYMBOL[
                     order?.paymentId?.currency
-                  ] || "$"}
+                  ] || "$0"}
                   {order?.total?.toFixed(2)}
                 </Text>
               </Col>
             </Row>
-
-            <div
-              style={{
-                marginTop: 15,
-                borderTop: "1px solid black",
-                borderBottom: "1px solid black",
-                padding: "8px 0",
-              }}
-            >
-              <Row>
-                <Col span={12}>
-                  <Text
-                    strong
-                  >
-                    Amount Due
-                  </Text>
-                </Col>
-
-                <Col
-                  span={12}
-                  style={{
-                    textAlign: "right",
-                  }}
-                >
-                  <Text
-                    strong
-                  >
-                    {CURRENCIES_SYMBOL[
-                      order?.paymentId?.currency
-                    ] || "$"}
-                    {order?.total?.toFixed(2)}
-                  </Text>
-                </Col>
-              </Row>
-            </div>
           </Col>
         </Row>
 

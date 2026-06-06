@@ -9,46 +9,6 @@ import { getCurrentTime } from '../../../util/commom.utils';
 import { exportToExcel } from 'react-json-to-excel';
 import { t } from 'i18next';
 
-const columns = [
-  {
-    title: t("sn", { defaultValue: "SN" }),
-    dataIndex: "sn",
-    key: "sn",
-  },
-  {
-    title: t("name", { defaultValue: "Name" }),
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: t("type", { defaultValue: "Type" }),
-    dataIndex: "type",
-    key: "type",
-  },
-  {
-    title: t("created_at", { defaultValue: "Created At" }),
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-  {
-    title: t("actions", { defaultValue: "Actions" }),
-    key: "actions",
-    render: () => (
-      <MoreOutlined />
-      // <Space>
-      //   <Button size="small" type="primary">
-      //     Edit
-      //   </Button>
-      //   <Button size="small" danger>
-      //     Delete
-      //   </Button>
-      // </Space>
-    ),
-  },
-
-];
-
-
 function CustomFields() {
 
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -114,6 +74,44 @@ function CustomFields() {
       setExporting(false);
     }
   };
+  const columns = [
+    {
+      title: t("sn", { defaultValue: "SN" }),
+      dataIndex: "sn",
+      key: "sn",
+    },
+    {
+      title: t("name", { defaultValue: "Name" }),
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: t("type", { defaultValue: "Type" }),
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: t("created_at", { defaultValue: "Created At" }),
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: t("actions", { defaultValue: "Actions" }),
+      key: "actions",
+      render: () => (
+        <MoreOutlined />
+        // <Space>
+        //   <Button size="small" type="primary">
+        //     Edit
+        //   </Button>
+        //   <Button size="small" danger>
+        //     Delete
+        //   </Button>
+        // </Space>
+      ),
+    },
+
+  ];
 
   return (
     <PageContainer
@@ -143,7 +141,7 @@ function CustomFields() {
           exporting={exporting}
           onFilterClick={() => setShowFilterModal(true)} page="custom-fields" />
 
-        <Card bodyStyle={{padding:0}}>
+        <Card bodyStyle={{ padding: 0 }}>
           <Table
             columns={columns}
             // dataSource={data}

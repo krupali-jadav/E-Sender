@@ -8,57 +8,6 @@ import { getCurrentTime } from '../../util/commom.utils';
 import axiosInstance from '../../util/axiosInstance';
 import { t } from 'i18next';
 
-const columns = [
-  {
-    title: t("sn", { defaultValue: "SN" }),
-    dataIndex: "sn",
-    key: "sn",
-  },
-  {
-    title: t("name", { defaultValue: "Name" }),
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: t("totalContacts", { defaultValue: "Total Contacts" }),
-    dataIndex: "totalContacts",
-    key: "totalContacts",
-  },
-  {
-    title: t("blocked", { defaultValue: "Blocked" }),
-    dataIndex: "blocked",
-    key: "blocked",
-  },
-  {
-    title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
-    dataIndex: "unsubscribed",
-    key: "unsubscribed",
-  },
-  {
-    title: t("created_at", { defaultValue: "Created At" }),
-    dataIndex: "createdAt",
-    key: "createdAt",
-  },
-  {
-    title: t("actions", { defaultValue: "Actions" }),
-    key: "actions",
-    render: () => (
-      <MoreOutlined />
-      // <Space>
-      //   <Button size="small" type="primary">
-      //     {/* {t("edit", { defaultValue: "Edit" })} */}
-      //     Edit
-      //   </Button>
-      //   <Button size="small" danger>
-      //     {/* {t("delete", { defaultValue: "Delete" })} */}
-      //     Delete
-      //   </Button>
-      // </Space>
-    ),
-  },
-
-];
-
 
 function Campaigns() {
   const [AddGroupOpen, setAddGroupOpen] = useState(false);
@@ -98,6 +47,56 @@ function Campaigns() {
       setExporting(false);
     }
   };
+  const columns = [
+    {
+      title: t("sn", { defaultValue: "SN" }),
+      dataIndex: "sn",
+      key: "sn",
+    },
+    {
+      title: t("name", { defaultValue: "Name" }),
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: t("totalContacts", { defaultValue: "Total Contacts" }),
+      dataIndex: "totalContacts",
+      key: "totalContacts",
+    },
+    {
+      title: t("blocked", { defaultValue: "Blocked" }),
+      dataIndex: "blocked",
+      key: "blocked",
+    },
+    {
+      title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
+      dataIndex: "unsubscribed",
+      key: "unsubscribed",
+    },
+    {
+      title: t("created_at", { defaultValue: "Created At" }),
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: t("actions", { defaultValue: "Actions" }),
+      key: "actions",
+      render: () => (
+        <MoreOutlined />
+        // <Space>
+        //   <Button size="small" type="primary">
+        //     {/* {t("edit", { defaultValue: "Edit" })} */}
+        //     Edit
+        //   </Button>
+        //   <Button size="small" danger>
+        //     {/* {t("delete", { defaultValue: "Delete" })} */}
+        //     Delete
+        //   </Button>
+        // </Space>
+      ),
+    },
+
+  ];
   return (
     <PageContainer
       title="Campaigns"
