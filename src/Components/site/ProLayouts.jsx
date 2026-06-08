@@ -283,7 +283,7 @@ const ProLayouts = ({ children }) => {
               listHeight={200}
               showSearch
               style={{
-                height: 45,
+                height: 35,
                 width: 150,
               }}
               onChange={handleLanguageChange}

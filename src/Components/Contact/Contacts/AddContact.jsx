@@ -5,10 +5,12 @@ import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
 
 
+
 function AddContact({ open, onClose }) {
     const [groups, setGroups] = useState([]);
     const [groupName, setGroupName] = useState("");
     const [phone, setPhone] = useState("");
+    const [form] = Form.useForm();
 
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {
@@ -37,12 +39,12 @@ function AddContact({ open, onClose }) {
                 <Button key="cancel" onClick={onClose}>
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary">
+                <Button key="add" type="primary" onClick={() => form.submit()}>
                     {t("add", { defaultValue: "Add" })}
                 </Button>,
             ]}
         >
-            <Form layout="vertical">
+            <Form layout="vertical"  form={form}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -55,8 +57,8 @@ function AddContact({ open, onClose }) {
                                 },
                             ]}
                         >
-                            <Input 
-                            placeholder={t("name", { defaultValue: "Enter Name", })} />
+                            <Input
+                                placeholder={t("name", { defaultValue: "Enter Name", })} />
                         </Form.Item>
 
                         <Form.Item
@@ -70,7 +72,7 @@ function AddContact({ open, onClose }) {
                             ]}
                         >
                             <Input
-                                placeholder={t("email", { defaultValue: "Enter Email", })}/>
+                                placeholder={t("email", { defaultValue: "Enter Email", })} />
                         </Form.Item>
 
                         <Form.Item
@@ -118,17 +120,17 @@ function AddContact({ open, onClose }) {
                                 }
                                 showSearch
                                 placeholder={t("select_groups", { defaultValue: "Select Groups", })}
-                                    options={groups.map((group) => ({
-                                        label: group,
-                                        value: group,
-                                    }))}
+                                options={groups.map((group) => ({
+                                    label: group,
+                                    value: group,
+                                }))}
                                 popupRender={(menu) => (
                                     <>
                                         {menu}
 
                                         <Space.Compact block>
                                             <Input
-                                                placeholder={t("group_name", {defaultValue: "Enter Group Name", })}
+                                                placeholder={t("group_name", { defaultValue: "Enter Group Name", })}
                                                 value={groupName}
                                                 onChange={(e) =>
                                                     setGroupName(e.target.value)
