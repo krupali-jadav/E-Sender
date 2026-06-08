@@ -2,10 +2,11 @@ import { Button, Form, Input, Modal } from 'antd'
 import { t } from 'i18next'
 
 function AddGroup({ open, onClose }) {
+    const [form] = Form.useForm();
     return (
         <>
             <Modal
-                title= {t("add_group", { defaultValue: "Add Group" })} 
+                title={t("add_group", { defaultValue: "Add Group" })}
                 open={open}
                 onCancel={onClose}
                 width={500}
@@ -14,12 +15,12 @@ function AddGroup({ open, onClose }) {
                     <Button key="cancel" onClick={onClose}>
                         {t("cancel", { defaultValue: "Cancel" })}
                     </Button>,
-                    <Button key="add" type="primary">
+                    <Button key="add" type="primary" onClick={() => form.submit()}>
                         {t("add", { defaultValue: "Add" })}
                     </Button>,
                 ]}
             >
-                <Form layout="vertical">
+                <Form layout="vertical" form={form}>
                     <Form.Item
                         label={t("group_name", { defaultValue: "Group Name" })}
                         name="name"
@@ -31,8 +32,8 @@ function AddGroup({ open, onClose }) {
                         ]}
                     >
                         <Input
-                         placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })} 
-                         />
+                            placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })}
+                        />
                     </Form.Item>
                 </Form>
 
