@@ -1,107 +1,72 @@
-import React from "react";
-import {
-  Card,
-  Tabs,
-  Form,
-  Input,
-  Row,
-  Col,
-  Button,
-} from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Card, Tabs } from "antd";
 import { PageContainer } from "@ant-design/pro-components";
-import BasicInformation from "./BasicInformation";
 
-const { TextArea } = Input;
+import BasicInformation from "./BasicInformation";
+import BillingDetails from "./BillingDetails";
+import Support from "./Support";
+import SocialMedia from "./SocialMedia";
+import ApiKey from "./ApiKey";
 
 const Settings = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("basic");
 
   const tabItems = [
     {
-      key: "/basic-information",
+      key: "basic",
       label: "Basic Information",
     },
     {
-      key: "/billing-details",
+      key: "billing",
       label: "Billing Details",
     },
     {
-      key: "/support",
+      key: "support",
       label: "Support",
     },
     {
-      key: "/social-media",
+      key: "social",
       label: "Social Media",
     },
     {
-      key: "/api-key",
+      key: "api",
       label: "API Key",
     },
   ];
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case "basic":
+        return <BasicInformation />;
+
+      case "billing":
+        return <BillingDetails />;
+
+      case "support":
+        return <Support />;
+
+      case "social":
+        return <SocialMedia />;
+
+      case "api":
+        return <ApiKey />;
+
+      default:
+        return <BasicInformation />;
+    }
+  };
+
   return (
     <PageContainer>
       <Card>
-        {/* Tabs Header */}
         <Tabs
           type="card"
-          activeKey={location.pathname}
+          activeKey={activeTab}
           items={tabItems}
-          onChange={(key) => navigate(key)}
+          onChange={(key) => setActiveTab(key)}
         />
-        <BasicInformation />
-        {/* Basic Information Form */}
-        {/* <Form layout="vertical">
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
-                label="Business Name"
-                required
-              >
-                <Input placeholder="Enter Business Name" />
-              </Form.Item>
-            </Col>
 
-            <Col span={12}>
-              <Form.Item
-                label="Business Category"
-                required
-              >
-                <Input placeholder="Enter Business Category" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
-                label="Address"
-                required
-              >
-                <Input placeholder="Enter Address" />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item label="Website URL">
-                <Input placeholder="Enter Website URL" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item
-            label="About Your Business"
-            required
-          >
-            <TextArea rows={5} />
-          </Form.Item>
-
-          <Button type="primary">
-            Save
-          </Button>
-        </Form> */}               
+        {renderContent()}
       </Card>
     </PageContainer>
   );
