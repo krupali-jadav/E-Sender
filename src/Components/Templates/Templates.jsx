@@ -18,76 +18,72 @@ function Templates() {
   ];
 
   return (
-    <PageContainer title={false}>
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          {/* Header */}
-          <Row justify="space-between" align="middle">
-            <Col>
-              <Title level={3}>{t("templates", { defaultValue: "Templates" })}</Title>
-            </Col>
+    <PageContainer
+      extra={
+        <Col>
+          <Space>
+            <Button danger icon={<DeleteOutlined />}>
+              {t("delete_all", { defaultValue: "Delete All" })}
+            </Button>
 
-            <Col>
-              <Space>
-                <Button danger icon={<DeleteOutlined />}>
-                  {t("delete_all", { defaultValue: "Delete All" })}
-                </Button>
-
-                <Button
-                  type="primary"
-                  icon={<PlusCircleOutlined />}
-                  onClick={() => navigate("/templates/create-template")}
-                >
-                  {t("create_template", { defaultValue: "Create Template" })}
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-
-          {/* Header */}
-          <SearchHeader />
-
-          {/* Template Cards */}
-          <Row gutter={[16, 16]}>
-            {templates.map((item) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
-                <Card
-                  title={t("template", { defaultValue: item.name })}
-                  extra={<Switch defaultChecked={item.active} />}
-                >
-                  <Card style={{ height: 380 }}>
-
-                  </Card>
+            <Button
+              type="primary"
+              icon={<PlusCircleOutlined />}
+              onClick={() => navigate("/templates/create-template")}
+            >
+              {t("create_template", { defaultValue: "Create Template" })}
+            </Button>
+          </Space>
+        </Col>
+      }>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
 
-                  <Row gutter={12} style={{ marginTop: 16 }}>
-                    <Col span={12}>
-                      <Button
-                        type="primary"
-                        icon={<EditOutlined />}
-                        block
-                      // shape="round"
-                      >
-                        {t("edit", { defaultValue: "Edit" })}
-                      </Button>
-                    </Col>
+        {/* Header */}
+        <SearchHeader />
 
-                    <Col span={12}>
-                      <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        block
-                      // shape="round"
+        {/* Template Cards */}
+        <Row gutter={[16, 16]}>
+          {templates.map((item) => (
+            <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
+              <Card
+                title={t("template", { defaultValue: item.name })}
+                extra={<Switch defaultChecked={item.active} />}
+              >
+                <Card style={{ height: 380 }}>
 
-                      >
-                        {t("delete", { defaultValue: "Delete" })}
-                      </Button>
-                    </Col>
-                  </Row>
                 </Card>
-              </Col>
-            ))}
-          </Row>
-        </Space>
+
+
+                <Row gutter={12} style={{ marginTop: 16 }}>
+                  <Col span={12}>
+                    <Button
+                      type="primary"
+                      icon={<EditOutlined />}
+                      block
+                    // shape="round"
+                    >
+                      {t("edit", { defaultValue: "Edit" })}
+                    </Button>
+                  </Col>
+
+                  <Col span={12}>
+                    <Button
+                      danger
+                      icon={<DeleteOutlined />}
+                      block
+                    // shape="round"
+
+                    >
+                      {t("delete", { defaultValue: "Delete" })}
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Space>
     </PageContainer>
   );
 }

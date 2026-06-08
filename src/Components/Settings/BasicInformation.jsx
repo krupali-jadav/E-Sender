@@ -1,8 +1,8 @@
-import { Button, Col, Flex, Form, Input, Row } from 'antd'
+import { Button, Col, Form, Input, Row } from 'antd'
 import PhoneInput from 'antd-phone-input';
 import TextArea from 'antd/es/input/TextArea'
 import { t } from 'i18next';
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 function BasicInformation() {
 

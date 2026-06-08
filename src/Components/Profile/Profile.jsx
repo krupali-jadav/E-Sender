@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, message, } from "antd";
+import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, message, Card, } from "antd";
 import PhoneInput from "antd-phone-input";
 import { PageContainer } from "@ant-design/pro-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,9 +95,8 @@ const Profile = () => {
 
   return (
     <PageContainer title="Profile">
-      <div
+      <Card
         style={{
-          background: "#fff",
           padding: "26px",
           borderRadius: "8px",
         }}
@@ -301,7 +300,7 @@ const Profile = () => {
           </Flex>
 
         </Form>
-      </div>
+      </Card>
     </PageContainer>
   );
 };
