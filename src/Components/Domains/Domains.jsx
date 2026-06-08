@@ -7,9 +7,10 @@ import { exportToExcel } from 'react-json-to-excel';
 import { getCurrentTime } from '../../util/commom.utils';
 import axiosInstance from '../../util/axiosInstance';
 import { t } from 'i18next';
+import AddDomain from './AddDomain';
 
 function Domains() {
-  const [AddGroupOpen, setAddGroupOpen] = useState(false);
+  const [AddDomainOpen, setAddDomainOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("created-at");
@@ -105,14 +106,14 @@ function Domains() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setAddGroupOpen(true)}
+            onClick={() => setAddDomainOpen(true)}
           >
             {t("add_domain", { defaultValue: "Add Domain" })}
           </Button>
-          {/* 
-          <AddGroup
-            open={AddGroupOpen}
-            onClose={() => setAddGroupOpen(false)} /> */}
+          
+          <AddDomain
+            open={AddDomainOpen}
+            onClose={() => setAddDomainOpen(false)} />
         </Space>
       }
     >
