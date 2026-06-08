@@ -1,4 +1,4 @@
-import  {
+import {
   useEffect,
   useState,
   useCallback,
@@ -405,14 +405,23 @@ const Invoice = ({ isEdit = false }) => {
                   ? formatDate(order.createdAt)
                   : "N/A"}
               </Text>
-              <Text type="secondary">
-                {t("order_id", { defaultValue: "Order Id" })}:
+              <Text copyable={{
+                text: order?._id || "N/A",
+                tooltips: ["Copy", "Copied"],
+              }} type="secondary">
+                {t("orderid", {
+                  defaultValue: "Order ID",
+                })}
+                : {order?._id || "N/A"}
               </Text>
               <Text type="secondary">
-                {t("date", { defaultValue: "Date" })}:
+                {t("date", { defaultValue: "Date" })}{" "}:{order?.createdAt ? formatDate(order.createdAt) : "N/A"}
               </Text>
               <Text type="secondary">
-                {t("order_status", { defaultValue: "Order Status" })}:
+                {t("order.status", {
+                  defaultValue: "Order Status",
+                })}{" "}
+                : {t(order?.status) || "N/A"}
               </Text>
             </Flex>
           </Col>
@@ -442,9 +451,12 @@ const Invoice = ({ isEdit = false }) => {
                 borderLeft: "1px solid #ececec",
               }}
             >
-              <Text strong>Invoice To :</Text>
-              <br />
-              <br />
+              <Title level={5}>
+                {t("invoiceto", {
+                  defaultValue: "Invoice To",
+                })}{" "}
+                :
+              </Title>
               <Flex vertical>
                 <Text strong>{panel?.billing?.name || "Company"}</Text>
                 <Text>
@@ -589,7 +601,7 @@ const Invoice = ({ isEdit = false }) => {
               </Col>
             </Row>
 
-            <Divider style={{  borderTop: "1px solid black",marginBottom: 10, marginTop: 10}} />
+            <Divider style={{ borderTop: "1px solid black", marginBottom: 10, marginTop: 10 }} />
 
             <Row >
               <Col span={12}>
@@ -609,43 +621,75 @@ const Invoice = ({ isEdit = false }) => {
         </Row>
 
         {/* PAYMENT INFO */}
-        <div style={{ marginTop: 40 }}>
-          <Title level={5}>Payment Information</Title>
+        <Row style={{ marginTop: 40 }}>
+          <Col span={12}>
+            <Title level={5}>
+              {t("paymentinfo", {
+                defaultValue: "Payment Info",
+              })}
+            </Title>
+            <Text copyable={{
+              text:order?.paymentId?._id || "N/A",
+              tooltips: ["Copy", "Copied"],
+            }}>
+              {t("paymentid", {
+                defaultValue: "Payment ID",
+              })}{" "}
+              : {order?.paymentId?._id || "N/A"}
+            </Text>
+            <br />
+            <Row align="middle" gutter={8}>
+              <Col>
+                <Text>
+                  {t("payment.gateway", {
+                    defaultValue: "Payment Gateway",
+                  })}{" "}
+                  :
+                </Text>
+              </Col>
+              <Col>
+                {order?.paymentId?.gateway ? (
+                  <Image
+                    src={getMediaPath(
+                      `/media/payment-gateway/${order?.paymentId?.gateway}.png`,
+                    )}
+                    preview={false}
+                    alt={order?.paymentId?.gateway}
+                    width={60}
+                  />
+                ) : (
+                  <Text>N/A</Text>
+                )}
+              </Col>
+            </Row>
+            <Text>
+              {t("status", {
+                defaultValue: "Status",
+              })}{" "}
+              :{" "}
+              {order?.paymentId?.status === "paid" ? (
+                <Tag color="#87d068">
+                  {t("paid", {
+                    defaultValue: "Paid",
+                  })}
+                </Tag>
+              ) : (
+                <Tag
+                  style={{
+                    marginRight: 10,
+                    backgroundColor: "#f50",
+                    color: "#fff"
+                  }}
+                >
+                  {t("unpaid", {
+                    defaultValue: "Unpaid",
+                  })}
+                </Tag>
+              )}
+            </Text>
+          </Col>
+        </Row>
 
-          <Text>
-            Payment ID: {order?.paymentId?._id}
-          </Text>
-          <br />
-
-          <Text>
-            Payment Gateway: {order?.paymentId?._id}
-          </Text>
-          <br />
-          <Text>
-            {t("payment_status", {
-              defaultValue: "Payment Status",
-            })}{" "}
-            :{" "}
-            {order?.paymentId?.status === "paid" ? (
-              <Tag color="#87d068">
-                {t("paid", {
-                  defaultValue: "Paid",
-                })}
-              </Tag>
-            ) : (
-              <Tag
-                color="#f50"
-                style={{
-                  marginRight: 10,
-                }}
-              >
-                {t("unpaid", {
-                  defaultValue: "Unpaid",
-                })}
-              </Tag>
-            )}
-          </Text>
-        </div>
         <Divider />
         <Row justify="space-between" style={{ textAlign: "Left" }}>
           <Col>
