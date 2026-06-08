@@ -1,8 +1,10 @@
+import { PageContainer } from "@ant-design/pro-components";
+
 function Documentation() {
   return (
-    <div>
-      Documentation
-    </div>
+    <PageContainer>
+
+    </PageContainer>
   )
 }
 

@@ -1,9 +1,10 @@
+import { PageContainer } from "@ant-design/pro-components"
 
 const Dashboard = () => {
   return (
-    <div>
-        <h1>Dashboard</h1>
-    </div>
+    <PageContainer>
+      
+    </PageContainer>
   )
 }
 
