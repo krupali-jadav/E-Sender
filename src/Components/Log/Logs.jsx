@@ -100,7 +100,6 @@ function Logs() {
   ];  
   return (
     <PageContainer
-      title="Domains"
       breadcrumb={false}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>

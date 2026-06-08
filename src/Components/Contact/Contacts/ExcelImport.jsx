@@ -56,8 +56,13 @@ function ExcelImport({ open, onClose }) {
                         </Button>
                     </Space>
                 </Flex>
-                <Card size="small" style={{ background: "#fafafa" }}>
-                    <Dragger style={{ padding: "20px", background: "#fff" }} {...uploadProps}>
+                <Card
+                    size="small"
+                // style={{ background: "#fafafa" }}
+                >
+                    <Dragger
+                        // style={{ padding: "20px", background: "#fff" }}
+                        {...uploadProps}>
                         <p className="ant-upload-drag-icon">
                             <UploadOutlined />
                         </p>

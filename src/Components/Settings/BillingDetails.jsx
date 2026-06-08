@@ -131,8 +131,8 @@ function BillingDetails() {
                             },
                         ]}
                     >
-                        <Card size="small" style={{ background: "#fafafa" }}>
-                            <Dragger style={{ padding: "20px", background: "#fff" }}>
+                        <Card size="small" >
+                            <Dragger style={{ padding: "20px"}}>
                                 <p className="ant-upload-drag-icon">
                                     <UploadOutlined />
                                 </p>

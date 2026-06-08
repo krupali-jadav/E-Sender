@@ -10,7 +10,7 @@ function ApiKey() {
   };
 
   return (
-    <Card>
+    <>
       <div style={{ marginBottom: 8 }}>
         Your API Key
       </div>
@@ -32,7 +32,7 @@ function ApiKey() {
           Generate
         </Button>
       </Input.Group>
-    </Card>
+      </>
   );
 }
 export default ApiKey

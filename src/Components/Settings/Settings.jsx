@@ -58,7 +58,6 @@ const Settings = () => {
 
   return (
     <PageContainer>
-      <Card>
         <Tabs
           type="card"
           activeKey={activeTab}
@@ -67,7 +66,6 @@ const Settings = () => {
         />
 
         {renderContent()}
-      </Card>
     </PageContainer>
   );
 };
