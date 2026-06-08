@@ -2,6 +2,8 @@ import { Button, Form, Input, Modal, Select } from "antd"
 import { t } from "i18next"
 
 function AddCustomField({ open, onClose }) {
+    const [form] = Form.useForm();
+
     return (
         <Modal
             title={t("add_custom_field", { defaultValue: "Add Custom Field" })}
@@ -13,13 +15,13 @@ function AddCustomField({ open, onClose }) {
                 <Button key="cancel" onClick={onClose}>
                 {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary">
+                <Button key="add" type="primary" onClick={()=>form.submit()}>
                     {t("add", { defaultValue: "Add" })}
                 </Button>,
             ]}
         >
 
-            <Form layout="vertical">
+            <Form layout="vertical" form={form}>
                 <Form.Item
                     label={t("name", { defaultValue: "Name" })}
                     name="name"
