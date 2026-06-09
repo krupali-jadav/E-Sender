@@ -7,10 +7,11 @@ import { exportToExcel } from 'react-json-to-excel';
 import { getCurrentTime } from '../../util/commom.utils';
 import axiosInstance from '../../util/axiosInstance';
 import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
 
 
 function Campaigns() {
-  const [AddGroupOpen, setAddGroupOpen] = useState(false);
+  const navigate = useNavigate();
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("created-at");
@@ -106,14 +107,10 @@ function Campaigns() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setAddGroupOpen(true)}
+            onClick={() => navigate("/campaigns/create-campaign")}
           >
             {t("add_campaigns", { defaultValue: "Add Campaigns" })}
           </Button>
-          {/* 
-          <AddGroup
-            open={AddGroupOpen}
-            onClose={() => setAddGroupOpen(false)} /> */}
         </Space>
       }
     >
