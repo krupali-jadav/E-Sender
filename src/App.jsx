@@ -21,6 +21,7 @@ import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
 import { ConfigProvider, theme as antdTheme } from "antd";
 import CreateTemplates from "./Components/Templates/CreateTemplates";
+import CreateCampaigns from "./Components/Campaigns/CreateCampaigns/CreateCampaigns";
 
 const ProtectedRoute = ({
   component: Component,
@@ -69,6 +70,7 @@ function App() {
     { path: "/contact/groups", component: Groups },
     { path: "/contact/custom-fields", component: CustomFields },
     { path: "/campaigns", component: Campaigns },
+    { path: "/campaigns/create-campaign", component: CreateCampaigns },
     { path: "/domains", component: Domains },
     { path: "/logs", component: Logs },
     { path: "/settings", component: Settings },
