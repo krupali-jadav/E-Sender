@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Card, Checkbox, Col, Divider, Empty, Flex, Input, Row, Space, Table, Typography, } from "antd";
+import { useState } from "react";
+import { Button, Card, Checkbox, Col, Divider, Flex, Input, Row, Space, Table, Typography, } from "antd";
 import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";
@@ -54,25 +54,25 @@ function ContactCampaigns() {
   ];
 
   return (
-    <>
+    <Space direction="vertical" style={{ width: "100%" }}>
       <Card>
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           {/* Header */}
           <Row justify="space-between" gutter={[16, 16]}>
             <Col>
               <Title level={5} style={{ margin: 0 }}>
-                {t("select_audience", { defaultValue: "Select Audience" })}
+                {t("select.audience", { defaultValue: "Select Audience" })}
               </Title>
             </Col>
 
             <Col>
               <Flex wrap="wrap" gap={8}>
                 <Button type="primary" icon={<UploadOutlined />}>
-                  {t("import_from_contacts", { defaultValue: "Import From Contacts" })}
+                  {t("import.from.contacts", { defaultValue: "Import From Contacts" })}
                 </Button>
 
                 <Button type="primary" icon={<UploadOutlined />} onClick={() => setManualImportOpen(true)}>
-                  {t("manual_import", { defaultValue: "Manual Import" })}
+                  {t("manual.import", { defaultValue: "Manual Import" })}
                 </Button>
                 <ManualImport
                   open={manualImportOpen}
@@ -80,7 +80,7 @@ function ContactCampaigns() {
                 />
 
                 <Button type="primary" icon={<UploadOutlined />} onClick={() => setExcelOpen(true)}>
-                  {t("excel_import", { defaultValue: "Excel Import" })}
+                  {t("excel.import", { defaultValue: "Excel Import" })}
                 </Button>
                 <ExcelImport
                   open={excelOpen}
@@ -88,7 +88,7 @@ function ContactCampaigns() {
                 />
 
                 <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => setAddContactOpen(true)}>
-                  {t("add_contact", { defaultValue: "Add Contact" })}
+                  {t("add.contact", { defaultValue: "Add Contact" })}
                 </Button>
                 <AddContact
                   open={AddContactOpen}
@@ -115,10 +115,10 @@ function ContactCampaigns() {
 
             <Col xs={24} md={16}>
               <Flex justify="end" wrap="wrap" gap={8}>
-                <Button disabled>{t("clear_all", { defaultValue: "Clear All" })}</Button>
-                <Button disabled>{t("remove_duplicate", { defaultValue: "Remove Duplicate" })}</Button>
-                <Button disabled>{t("remove_invalid", { defaultValue: "Remove Invalid" })}</Button>
-                <Button disabled>{t("apply_country_code", { defaultValue: "Applu Country Code" })}</Button>
+                <Button disabled>{t("clear.all", { defaultValue: "Clear All" })}</Button>
+                <Button disabled>{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
+                <Button disabled>{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
+                <Button disabled>{t("apply.country.code", { defaultValue: "Apply Country Code" })}</Button>
                 <Button disabled>{t("delete", { defaultValue: "Delete" })}</Button>
               </Flex>
             </Col>
@@ -131,14 +131,6 @@ function ContactCampaigns() {
             dataSource={[]}
             pagination={false}
             scroll={{ x: 1000 }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description={t("no_data", { defaultValue: "No Data" })}
-                />
-              ),
-            }}
           />
         </Space >
 
@@ -147,7 +139,7 @@ function ContactCampaigns() {
         <Button>{t("previous", { defaultValue: "Previous" })}</Button>
         <Button type="primary">{t("next", { defaultValue: "Next" })}</Button>
       </Flex>
-    </>
+    </Space>
   );
 }
 

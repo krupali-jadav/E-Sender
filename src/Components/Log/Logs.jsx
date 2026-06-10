@@ -115,14 +115,7 @@ function Logs() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No Data Found"
-                />
-              ),
-            }}
+            
           />
         </Card>
       </Space>

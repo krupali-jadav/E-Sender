@@ -91,7 +91,7 @@ function CustomFields() {
       key: "type",
     },
     {
-      title: t("created_at", { defaultValue: "Created At" }),
+      title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
     },
@@ -123,7 +123,7 @@ function CustomFields() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setCustomFieldOpen(true)}>
-            {t("add_custom_field", { defaultValue: "Add Custom Field" })}
+            {t("add.custom.field", { defaultValue: "Add Custom Field" })}
           </Button>
 
           <AddCustomeField
@@ -147,14 +147,6 @@ function CustomFields() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No Data Found"
-                />
-              ),
-            }}
           />
         </Card>
 

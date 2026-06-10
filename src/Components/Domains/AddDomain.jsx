@@ -41,21 +41,21 @@ export default function Domain({ onClose, open }) {
                                     <Col xs={24} lg={12}>
                                         <Form.Item>
                                             <Title level={3} style={{ marginBottom: 0 }}>
-                                                {t("add_domain", { defaultValue: "Add Domain" })}
+                                                {t("add.domain", { defaultValue: "Add Domain" })}
                                             </Title>
 
                                             <Text type="secondary">
-                                                {t("add_domain_description", { defaultValue: "Add your domain to start sending emails" })}
+                                                {t("add.domain.description", { defaultValue: "Add your domain to start sending emails" })}
                                             </Text>
                                         </Form.Item>
 
                                         <Form.Item
-                                            label={t("domain_name", { defaultValue: "Name" })}
+                                            label={t("domain.name", { defaultValue: "Name" })}
                                             name="domain"
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: t("please_enter_domain_name", { defaultValue: "Please enter domain name" }),
+                                                    message: t("please.enter.domain.name", { defaultValue: "Please enter domain name" }),
                                                 },
                                             ]}
                                         >
@@ -68,13 +68,13 @@ export default function Domain({ onClose, open }) {
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: "Please select country",
+                                                    message: t("please.select.country", { defaultValue: "Please select country" }),
                                                 },
                                             ]}
                                         >
                                             <Select
                                                 showSearch
-                                                placeholder="Select Country"
+                                                placeholder={t("select.country", { defaultValue: "Select Country" })}
                                                 options={countryList.map((c) => ({
                                                     value: c.countryCode,
                                                     label: c.countryNameEn,
@@ -85,11 +85,10 @@ export default function Domain({ onClose, open }) {
                                         <Form.Item>
                                             <Button
                                                 type="primary"
-                                                shape="round"
                                                 icon={<PlusOutlined />}
                                                 htmlType="submit"
                                             >
-                                                {t("add_domain", { defaultValue: "Add Domain" })}
+                                                {t("add.domain", { defaultValue: "Add Domain" })}
                                             </Button>
                                         </Form.Item>
                                     </Col>
@@ -100,7 +99,7 @@ export default function Domain({ onClose, open }) {
                                                 <Avatar>Y</Avatar>
                                                 <div>
                                                     <Text strong>
-                                                        {t("your_email", { defaultValue: "Your Email" })}{" "}{` <youremail@${domainName || "domain"}.com>`}
+                                                        {t("your.email", { defaultValue: "Your Email" })}{" "}{` <youremail@${domainName || "domain"}.com>`}
                                                     </Text>
                                                     <br />
                                                     <Text type="secondary">

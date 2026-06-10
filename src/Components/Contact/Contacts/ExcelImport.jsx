@@ -27,7 +27,7 @@ function ExcelImport({ open, onClose }) {
     };
     return (
         <Modal
-            title={t("excel_import", { defaultValue: "Excel Import" })}
+            title={t("excel.import", { defaultValue: "Excel Import" })}
             open={open}
             onCancel={onClose}
             footer={null}
@@ -52,7 +52,7 @@ function ExcelImport({ open, onClose }) {
                             disabled
                             icon={<CheckCircleOutlined />}
                         >
-                            {t("save_contacts", { defaultValue: "Save Contacts" })}
+                            {t("save.contacts", { defaultValue: "Save Contacts" })}
                         </Button>
                     </Space>
                 </Flex>
@@ -68,7 +68,7 @@ function ExcelImport({ open, onClose }) {
                         </p>
 
                         <p className="ant-upload-text">
-                            {t("upload_popup_excel_file", { defaultValue: "Upload Popup Excel File" })}
+                            {t("upload.popup.excel.file", { defaultValue: "Upload Popup Excel File" })}
                         </p>
                     </Dragger>
                 </Card>

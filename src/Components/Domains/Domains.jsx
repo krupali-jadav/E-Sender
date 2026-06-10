@@ -108,7 +108,7 @@ function Domains() {
             icon={<PlusOutlined />}
             onClick={() => setAddDomainOpen(true)}
           >
-            {t("add_domain", { defaultValue: "Add Domain" })}
+            {t("add.domain", { defaultValue: "Add Domain" })}
           </Button>
           
           <AddDomain
@@ -129,14 +129,6 @@ function Domains() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No Data Found"
-                />
-              ),
-            }}
           />
         </Card>
       </Space>

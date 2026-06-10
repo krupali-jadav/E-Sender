@@ -55,8 +55,8 @@ function Orders() {
     };
 
     const OrderStatuses = [
-        // t("processing", { defaultValue: "Processing" }),
-        "Processing",
+        t("processing", { defaultValue: "Processing" }),
+        // "Processing",
         // t("pending", { defaultValue: "Pending" }),
         "Pending",
         // t("failed", { defaultValue: "Failed" }),
@@ -224,14 +224,7 @@ function Orders() {
                             dataSource={data}
                             pagination={false}
                             scroll={{ x: "max-content" }}
-                            locale={{
-                                emptyText: (
-                                    <Empty
-                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        description="No Data Found"
-                                    />
-                                ),
-                            }}
+                            
                         />
                     </Card>
 
@@ -260,17 +253,17 @@ function Orders() {
                                     onChange={(e) => setFilterType(e.target.value)}
                                 >
                                     <Radio value={"all-time"}>
-                                        {t("allTime", { defaultValue: "All Time" })}
+                                        {t("all.time", { defaultValue: "All Time" })}
                                     </Radio>
                                     <Radio value={"specific"}>
-                                        {t("specificTime", { defaultValue: "Specific Time" })}
+                                        {t("specific.time", { defaultValue: "Specific Time" })}
                                     </Radio>
                                 </Radio.Group>
                             </Form.Item>
 
                             {filterType == "specific" && (
                                 <Form.Item
-                                    label={t("filterbydate", { defaultValue: "Filter by Date" })}
+                                    label={t("filter.by.date", { defaultValue: "Filter by Date" })}
                                     name="date"
                                     rules={[
                                         {
@@ -300,7 +293,7 @@ function Orders() {
                             )}
 
                             <Form.Item
-                                label={t("filterbystatus", { defaultValue: "Filter by Status" })}
+                                label={t("filter.by.status", { defaultValue: "Filter by Status" })}
                             >
                                 <Select
                                     value={status}

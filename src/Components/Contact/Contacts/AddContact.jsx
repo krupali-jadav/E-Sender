@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space, Empty, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space,} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
@@ -76,7 +76,7 @@ function AddContact({ open, onClose }) {
                         </Form.Item>
 
                         <Form.Item
-                            label={t("custom_fields", { defaultValue: "Custom Fields" })}
+                            label={t("custom.fields", { defaultValue: "Custom Fields" })}
                             name="Custom Fields"
                             rules={[
                                 {
@@ -86,13 +86,13 @@ function AddContact({ open, onClose }) {
                             ]}
                         >
                             <Input
-                                placeholder={t("custom_fields", { defaultValue: "Enter Custom Fields", })} />
+                                placeholder={t("custom.fields", { defaultValue: "Enter Custom Fields", })} />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
                         <Form.Item
-                            label={t("phone_number", { defaultValue: "Phone Number" })}
+                            label={t("phone.number", { defaultValue: "Phone Number" })}
                             name="phone"
                             rules={[
                                 {
@@ -106,20 +106,14 @@ function AddContact({ open, onClose }) {
                                 country={"in"}
                                 value={phone}
                                 onChange={handlePhoneChange}
-                                placeholder={t("phone_number", { defaultValue: "Enter Phone Number", })}
+                                placeholder={t("phone.number", { defaultValue: "Enter Phone Number", })}
                             />
                         </Form.Item>
 
                         <Form.Item label={t("groups", { defaultValue: "Groups" })}>
                             <Select
-                                notFoundContent={
-                                    <Empty
-                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        description="No Groups Found"
-                                    />
-                                }
                                 showSearch
-                                placeholder={t("select_groups", { defaultValue: "Select Groups", })}
+                                placeholder={t("select.groups", { defaultValue: "Select Groups", })}
                                 options={groups.map((group) => ({
                                     label: group,
                                     value: group,
@@ -130,7 +124,7 @@ function AddContact({ open, onClose }) {
 
                                         <Space.Compact block>
                                             <Input
-                                                placeholder={t("group_name", { defaultValue: "Enter Group Name", })}
+                                                placeholder={t("group.name", { defaultValue: "Enter Group Name", })}
                                                 value={groupName}
                                                 onChange={(e) =>
                                                     setGroupName(e.target.value)
@@ -142,7 +136,7 @@ function AddContact({ open, onClose }) {
                                                 icon={<PlusOutlined />}
                                                 onClick={handleAddGroup}
                                             >
-                                                {t("add_group", { defaultValue: "Add Group" })}
+                                                {t("add.group", { defaultValue: "Add Group" })}
                                             </Button>
                                         </Space.Compact>
                                     </>

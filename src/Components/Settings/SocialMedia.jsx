@@ -1,9 +1,16 @@
 import { FacebookFilled, InstagramFilled, LinkedinFilled, TwitterSquareFilled, YoutubeFilled } from "@ant-design/icons"
-import { Button, Col, Form, Input, Row } from "antd"
+import { Button, Card, Col, Form, Input, Row } from "antd"
 import { t } from "i18next"
+import { useSelector } from "react-redux";
 
 function SocialMedia() {
+   const theme = useSelector((state) => state?.app?.theme);
   return (
+    <Card
+        style={{
+          borderRadius: 0,
+           borderColor: theme ? "transparent" : "#fff",
+        }} >
     <Form layout="vertical">
       <Row gutter={24}>
         <Col xs={24} sm={24} md={12} lg={12}>
@@ -19,7 +26,7 @@ function SocialMedia() {
           >
             <Input
               prefix={<LinkedinFilled />}
-              placeholder={t("linkdin_url", { defaultValue: `Enter LinkedIn URL`, })} />
+              placeholder={t("linkdin.url", { defaultValue: `Enter LinkedIn URL`, })} />
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12}>
@@ -101,6 +108,7 @@ function SocialMedia() {
         </Col>
       </Row>
     </Form>
+    </Card>
   )
 }
 

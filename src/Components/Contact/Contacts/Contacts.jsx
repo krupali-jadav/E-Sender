@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
@@ -153,7 +153,7 @@ function Contacts() {
             ),
         },
         {
-            title: t("created_at", { defaultValue: "Created At" }),
+            title: t("created.at", { defaultValue: "Created At" }),
             dataIndex: "createdAt",
             key: "createdAt",
         },
@@ -197,7 +197,7 @@ function Contacts() {
                             icon={<ImportOutlined />}
                             onClick={() => setManualImportOpen(true)}
                         >
-                            {t("manual_import", { defaultValue: "Manual Import" })}
+                            {t("manual.import", { defaultValue: "Manual Import" })}
                            
                         </Button>
 
@@ -211,7 +211,7 @@ function Contacts() {
                             icon={<ImportOutlined />}
                             onClick={() => setExcelOpen(true)}
                         >
-                            {t("excel_import", { defaultValue: "Excel Import" })}
+                            {t("excel.import", { defaultValue: "Excel Import" })}
                           
                         </Button>
 
@@ -225,7 +225,7 @@ function Contacts() {
                             icon={<PlusOutlined />}
                             onClick={() => setAddContactOpen(true)}
                         >
-                            {t("add_contact", { defaultValue: "Add Contact" })}
+                            {t("add.contact", { defaultValue: "Add Contact" })}
                         </Button>
 
                         <AddContact
@@ -253,14 +253,6 @@ function Contacts() {
                             dataSource={data}
                             pagination={false}
                             scroll={{ x: "max-content" }}
-                            locale={{
-                                emptyText: (
-                                    <Empty
-                                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                        description="No Data Found"
-                                    />
-                                ),
-                            }}
                         />
                     </Card>
 
@@ -284,7 +276,7 @@ function Contacts() {
                     >
                         <Form layout="vertical" form={filterForm}>
                             <Form.Item
-                                label={t("filter.by_groups", { defaultValue: "Filter by Groups" })}
+                                label={t("filter.by.groups", { defaultValue: "Filter by Groups" })}
                             >
                                 <Select
                                     value={status}
@@ -299,7 +291,7 @@ function Contacts() {
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label={t("filter.by_blocked", { defaultValue: "Filter by Blocked" })}
+                                label={t("filter.by.blocked", { defaultValue: "Filter by Blocked" })}
                             >
                                 <Select
                                     value={status}
@@ -313,7 +305,7 @@ function Contacts() {
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label={t("filter.by_unsubscribed", { defaultValue: "Filter by Unsubscribed" })}
+                                label={t("filter.by.unsubscribed", { defaultValue: "Filter by Unsubscribed" })}
                             >
                                 <Select
                                     value={status}

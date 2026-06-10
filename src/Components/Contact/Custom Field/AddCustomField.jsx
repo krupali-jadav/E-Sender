@@ -6,7 +6,7 @@ function AddCustomField({ open, onClose }) {
 
     return (
         <Modal
-            title={t("add_custom_field", { defaultValue: "Add Custom Field" })}
+            title={t("add.custom.field", { defaultValue: "Add Custom Field" })}
             open={open}
             onCancel={onClose}
             width={500}
@@ -33,7 +33,7 @@ function AddCustomField({ open, onClose }) {
                     ]}
                 >
                     <Input 
-                    placeholder={t("enter_name", { defaultValue: "Enter name" })} 
+                    placeholder={t("enter.name", { defaultValue: "Enter name" })} 
                     />
                 </Form.Item>
 
@@ -42,7 +42,7 @@ function AddCustomField({ open, onClose }) {
                     name="type"
                 >
                     <Select
-                        placeholder={t("select_type", { defaultValue: "Select Type" })}
+                        placeholder={t("select.type", { defaultValue: "Select Type" })}
                         options={[
                             {
                                 label: t("text", {
@@ -73,7 +73,7 @@ function AddCustomField({ open, onClose }) {
                 </Form.Item>
 
                  <Form.Item
-                    label={t("fallback_value", { defaultValue: "Fallback Value" })}
+                    label={t("fallback.value", { defaultValue: "Fallback Value" })}
                     name="fallbackValue"
                     rules={[
                         {
@@ -83,7 +83,7 @@ function AddCustomField({ open, onClose }) {
                     ]}
                 >
                     <Input 
-                    placeholder={t("enter_fallback_value", { defaultValue: "Enter Fallback Value" })}
+                    placeholder={t("enter.fallback.value", { defaultValue: "Enter Fallback Value" })}
                      />
                 </Form.Item>
             </Form>

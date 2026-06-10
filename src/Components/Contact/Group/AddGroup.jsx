@@ -6,7 +6,7 @@ function AddGroup({ open, onClose }) {
     return (
         <>
             <Modal
-                title={t("add_group", { defaultValue: "Add Group" })}
+                title={t("add.group", { defaultValue: "Add Group" })}
                 open={open}
                 onCancel={onClose}
                 width={500}
@@ -22,7 +22,7 @@ function AddGroup({ open, onClose }) {
             >
                 <Form layout="vertical" form={form}>
                     <Form.Item
-                        label={t("group_name", { defaultValue: "Group Name" })}
+                        label={t("group.name", { defaultValue: "Group Name" })}
                         name="name"
                         rules={[
                             {
@@ -32,7 +32,7 @@ function AddGroup({ open, onClose }) {
                         ]}
                     >
                         <Input
-                            placeholder={t("enter_group_name", { defaultValue: "Enter Group name" })}
+                            placeholder={t("enter.group.name", { defaultValue: "Enter Group name" })}
                         />
                     </Form.Item>
                 </Form>
