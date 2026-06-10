@@ -61,7 +61,7 @@ function Groups() {
       width: 250,
     },
     {
-      title: t("totalContacts", { defaultValue: "Total Contacts" }),
+      title: t("total.contacts", { defaultValue: "Total Contacts" }),
       dataIndex: "totalContacts",
       key: "totalContacts",
       width: 250,
@@ -79,7 +79,7 @@ function Groups() {
       width: 250,
     },
     {
-      title: t("created_at", { defaultValue: "Created At" }),
+      title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
       width: 250,
@@ -116,7 +116,7 @@ function Groups() {
             icon={<PlusOutlined />}
             onClick={() => setAddGroupOpen(true)}
           >
-            {t("add_group", { defaultValue: "Add Group" })}
+            {t("add.group", { defaultValue: "Add Group" })}
           </Button>
 
           <AddGroup
@@ -137,14 +137,6 @@ function Groups() {
             // dataSource={data}
             pagination={true}
             scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No Data Found"
-                />
-              ),
-            }}
           />
         </Card>
       </Space>

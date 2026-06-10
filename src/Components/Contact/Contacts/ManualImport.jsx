@@ -41,7 +41,7 @@ const ManualImport = ({ open, onClose }) => {
 
   return (
     <Modal
-      title={t("manual_import", { defaultValue: "Manual Import" })} 
+      title={t("manual.import", { defaultValue: "Manual Import" })} 
       open={open}
       onCancel={onClose}
       width={900}
@@ -51,7 +51,7 @@ const ManualImport = ({ open, onClose }) => {
           {t("cancel", { defaultValue: "Cancel" })}
         </Button>,
         <Button key="import" type="primary">
-          {t("excel_import", { defaultValue: "Excel Import" })}
+          {t("excel.import", { defaultValue: "Excel Import" })}
         </Button>,
       ]}
     >
@@ -66,7 +66,7 @@ const ManualImport = ({ open, onClose }) => {
             value={selectedGroups}
             onChange={(value) => setSelectedGroups(value)}
             showSearch
-            placeholder={t("select_groups", { defaultValue: "Select Groups" })}
+            placeholder={t("select.groups", { defaultValue: "Select Groups" })}
             options={groups.map((group) => ({
               label: group,
               value: group,
@@ -77,7 +77,7 @@ const ManualImport = ({ open, onClose }) => {
 
                 <Space.Compact block>
                   <Input
-                    placeholder={t("group_name", { defaultValue: "Enter Group Name",})}
+                    placeholder={t("group.name", { defaultValue: "Enter Group Name",})}
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                   />
@@ -87,7 +87,7 @@ const ManualImport = ({ open, onClose }) => {
                     icon={<PlusOutlined />}
                     onClick={handleAddGroup}
                   >
-                    {t("add_group", { defaultValue: "Add Group" })}
+                    {t("add.group", { defaultValue: "Add Group" })}
                   </Button>
                 </Space.Compact>
               </>

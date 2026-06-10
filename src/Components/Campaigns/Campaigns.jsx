@@ -75,7 +75,7 @@ function Campaigns() {
       key: "unsubscribed",
     },
     {
-      title: t("created_at", { defaultValue: "Created At" }),
+      title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
     },
@@ -109,7 +109,7 @@ function Campaigns() {
             icon={<PlusOutlined />}
             onClick={() => navigate("/campaigns/create-campaign")}
           >
-            {t("add_campaigns", { defaultValue: "Add Campaigns" })}
+            {t("add.campaigns", { defaultValue: "Add Campaigns" })}
           </Button>
         </Space>
       }
@@ -126,14 +126,7 @@ function Campaigns() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No Data Found"
-                />
-              ),
-            }}
+            
           />
         </Card>
       </Space>

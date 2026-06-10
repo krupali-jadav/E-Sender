@@ -17,7 +17,7 @@ function AddSupport({ open, onClose }) {
     };
     return (
         <Modal
-            title={t("add_custom_field", { defaultValue: "Add Custom Field" })}
+            title={t("add.custom.field", { defaultValue: "Add Custom Field" })}
             open={open}
             onCancel={onClose}
             width={500}
@@ -44,13 +44,13 @@ function AddSupport({ open, onClose }) {
                     ]}
                 >
                     <Input
-                        placeholder={t("enter_name", { defaultValue: "Enter name" })}
+                        placeholder={t("enter.name", { defaultValue: "Enter name" })}
                     />
                 </Form.Item>
 
                 <Form.Item
                     name="phone"
-                    label={t("phone_number", { defaultValue: "Phone Number" })}
+                    label={t("phone.number", { defaultValue: "Phone Number" })}
                     initialValue={phone}
                     rules={[
                         {
@@ -64,7 +64,7 @@ function AddSupport({ open, onClose }) {
                         country={"in"}
                         value={phone}
                         onChange={handlePhoneChange}
-                        placeholder={t("phone_number", { defaultValue: "Enter Phone Number" })}
+                        placeholder={t("phone.number", { defaultValue: "Enter Phone Number" })}
 
                     />
                 </Form.Item>
@@ -80,7 +80,7 @@ function AddSupport({ open, onClose }) {
                     ]}
                 >
                     <Input
-                        placeholder={t("enter_department", { defaultValue: "Enter Department" })}
+                        placeholder={t("enter.department", { defaultValue: "Enter Department" })}
                     />
                 </Form.Item>
             </Form>

@@ -9,12 +9,12 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                label: t("sort_by._name", { defaultValue: "Sort by Name", }),
+                label: t("sort.by.name", { defaultValue: "Sort by Name", }),
                 value: "name",
             },
             {
                 key: 2,
-                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
+                label: t("sort.by.createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ];
@@ -22,17 +22,17 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                label: t("sort_by_type", { defaultValue: "Sort by type", }),
+                label: t("sort.by.type", { defaultValue: "Sort by type", }),
                 value: "type",
             },
             {
                 key: 2,
-                label: t("sort_by_status", { defaultValue: "Sort by Status", }),
+                label: t("sort.by.status", { defaultValue: "Sort by Status", }),
                 value: "status",
             },
             {
                 key: 3,
-                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
+                label: t("sort.by.createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ]
@@ -40,12 +40,12 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                label: t("sort_by._name", { defaultValue: "Sort by Name", }),
+                label: t("sort.by.name", { defaultValue: "Sort by Name", }),
                 value: "name",
             },
             {
                 key: 2,
-                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
+                label: t("sort.by.createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ];
@@ -53,17 +53,17 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
         sortByItems = [
             {
                 key: 1,
-                label: t("sort_by_type", { defaultValue: "Sort by type", }),
+                label: t("sort.by.type", { defaultValue: "Sort by type", }),
                 value: "type",
             },
             {
                 key: 2,
-                label: t("sort_by_status", { defaultValue: "Sort by Status", }),
+                label: t("sort.by.status", { defaultValue: "Sort by Status", }),
                 value: "status",
             },
             {
                 key: 3,
-                label: t("sort_by_createat", { defaultValue: "Sort by Created At", }),
+                label: t("sort.by.createat", { defaultValue: "Sort by Created At", }),
                 value: "create-at",
             },
         ]
@@ -101,7 +101,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
                             // onChange={(value) => setSortBy(value)}
                             options={sortByItems}
                             style={{ minWidth: "22%" }}
-                            placeholder={t("sort_by_createdAt", { defaultValue: "Sort By Create At", })}
+                            placeholder={t("sort.by.createat", { defaultValue: "Sort By Create At", })}
                         />
 
                         <Button

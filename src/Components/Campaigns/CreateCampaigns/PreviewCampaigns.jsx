@@ -30,22 +30,22 @@ const CampaignStep = () => {
               <Col xs={24} md={12}>
                 <Card>
                   <Space direction="vertical" size="large">
-                    <Text strong>{t("campaign_name", { defaultValue: "Campaign Name" })}</Text>
-                    <Text strong>{t("selected_template", { defaultValue: "Selected Template" })}</Text>
-                    <Text strong>{t("total_contacts", { defaultValue: "Total Contacts" })}: 0</Text>
+                    <Text strong>{t("campaign.name", { defaultValue: "Campaign Name" })}</Text>
+                    <Text strong>{t("selected.template", { defaultValue: "Selected Template" })}</Text>
+                    <Text strong>{t("total.contacts", { defaultValue: "Total Contacts" })}: 0</Text>
                   </Space>
                 </Card>
               </Col>
               <Col xs={24} md={12}>
-                <Card title={t("send_test_email", { defaultValue: "Send Test Email Message" })}>
+                <Card title={t("send.test.email", { defaultValue: "Send Test Email Message" })}>
                   <Text>{t("email", { defaultValue: "Email" })}</Text>
 
                   <Row gutter={[16, 16]} align="middle" justify="space-between" style={{ marginTop: 10 }}>
                     <Col xs={24} sm={24} md={26} lg={24} xl={8} xxl={18} >
-                      <Input placeholder={t("enter_email", { defaultValue: "Enter Email" })} />
+                      <Input placeholder={t("enter.email", { defaultValue: "Enter Email" })} />
                     </Col>
                     <Col>
-                      <Button type="primary">{t("send_email", { defaultValue: "Send Email" })}</Button>
+                      <Button type="primary">{t("send.email", { defaultValue: "Send Email" })}</Button>
                     </Col>
                   </Row>
                   <div style={{ height: 40 }} />
@@ -72,10 +72,11 @@ const CampaignStep = () => {
                 <Card title="Schedule Your Campaign">
                   <Radio.Group value={scheduleType}
                     onChange={(e) => setScheduleType(e.target.value)}>
+            
                     <Space direction="vertical">
-                      <Radio value="now">Send It Now</Radio>
+                      <Radio value="now">{t("send.it.now", { defaultValue: "Send It Now" })}</Radio>
                       <Radio value="schedule">
-                        Schedule It For A Specific Time
+                        {t("schedule.it.for.a.specific.time", { defaultValue: "Schedule It For A Specific Time" })}
                       </Radio>
                     </Space>
                   </Radio.Group>
@@ -90,9 +91,9 @@ const CampaignStep = () => {
             </Row>
 
           </Card>
-          <Flex justify="end" gap="small" style={{ marginTop: 24 }}>
+          <Flex justify="end" gap="small" style={{ marginTop: 8 }}>
             <Button>{t("previous", { defaultValue: "Previous" })}</Button>
-            <Button type="primary">{t("send_now", { defaultValue: "Send Now" })}</Button>
+            <Button type="primary">{t("send.now", { defaultValue: "Send Now" })}</Button>
           </Flex>
         </Col>
       </Row>

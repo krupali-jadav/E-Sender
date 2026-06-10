@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, Tabs } from "antd";
 import { PageContainer } from "@ant-design/pro-components";
 
@@ -57,15 +57,18 @@ const Settings = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer >
+      <>
         <Tabs
           type="card"
           activeKey={activeTab}
           items={tabItems}
           onChange={(key) => setActiveTab(key)}
+          style={{ height: 38 }}
         />
 
         {renderContent()}
+      </>
     </PageContainer>
   );
 };

@@ -25,7 +25,7 @@ function Templates() {
         <Col>
           <Space>
             <Button danger icon={<DeleteOutlined />}>
-              {t("delete_all", { defaultValue: "Delete All" })}
+              {t("delete.all", { defaultValue: "Delete All" })}
             </Button>
 
             <Button
@@ -33,7 +33,7 @@ function Templates() {
               icon={<PlusCircleOutlined />}
               onClick={() => navigate("/templates/create-template")}
             >
-              {t("create_template", { defaultValue: "Create Template" })}
+              {t("create.template", { defaultValue: "Create Template" })}
             </Button>
           </Space>
         </Col>

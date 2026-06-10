@@ -144,7 +144,7 @@ function Login() {
                                 <Form layout="vertical" onFinish={onSendOtp}>
                                     <Form.Item
                                         name="phone"
-                                        label={t("phone_number", { defaultValue: "Phone Number" })}
+                                        label={t("phone.number", { defaultValue: "Phone Number" })}
                                         initialValue={phone}
                                     >
                                         <PhoneInput
@@ -152,7 +152,7 @@ function Login() {
                                             country={"in"}
                                             value={phone}
                                             onChange={handlePhoneChange}
-                                            placeholder={t("phone_number", { defaultValue: "Enter Phone Number" })}
+                                            placeholder={t("phone.number", { defaultValue: "Enter Phone Number" })}
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") {
                                                     e.preventDefault();
@@ -171,11 +171,11 @@ function Login() {
                                                         setCheckTerms(e.target.checked)
                                                     }
                                                 >
-                                                   {t("keep_signed_in", { defaultValue: "Keep me signed in" })}
+                                                   {t("keep.signed.in", { defaultValue: "Keep me signed in" })}
                                                 </Checkbox>
 
                                                 <Tooltip 
-                                                title={t("keep_signed_in_tooltip", { defaultValue: "This will keep you signed in until you manually sign out" })}   >
+                                                title={t("keep.signed.in.tooltip", { defaultValue: "This will keep you signed in until you manually sign out" })}   >
                                                     <ExclamationCircleOutlined />
                                                 </Tooltip>
                                             </Space>
@@ -183,19 +183,19 @@ function Login() {
                                             <Divider />
 
                                             <Text type="secondary">
-                                                {t("terms_agreement", { defaultValue: "By continuing, you agree to our" })} {" "}
+                                                {t("terms.agreement", { defaultValue: "By continuing, you agree to our" })} {" "}
                                                 <Link
                                                     to="/privacy-policy"
                                                     target="_blank"
                                                 >
-                                                  {t("privacy_policy", { defaultValue: "Privacy Policy" })}
+                                                  {t("privacy.policy", { defaultValue: "Privacy Policy" })}
                                                 </Link>{" "}
                                                 &{" "}
                                                 <Link
                                                     to="/terms-and-conditions"
                                                     target="_blank"
                                                 >
-                                                    {t("terms_and_conditions", { defaultValue: "Terms and Conditions" })}
+                                                    {t("terms.and.conditions", { defaultValue: "Terms and Conditions" })}
                                                 </Link>
                                             </Text>
                                         </Space>
@@ -209,7 +209,7 @@ function Login() {
                                             disabled={!canSendOtp}
                                             block
                                         >
-                                          {t("send_otp", { defaultValue: "Send OTP" })}
+                                          {t("send.otp", { defaultValue: "Send OTP" })}
                                         </Button>
                                     </Form.Item>
                                 </Form>
@@ -232,7 +232,7 @@ function Login() {
                                 <Form layout="vertical" onFinish={onOtpVerify}>
                                     <Space direction="vertical" size="small">
                                         <Text type="secondary">
-                                            {t("verification_code_sent", { defaultValue: "We've sent a verification code to" })} {" "}
+                                            {t("verification.code.sent", { defaultValue: "We've sent a verification code to" })} {" "}
                                             <b>{phone}</b>
 
                                             <Button
@@ -242,7 +242,7 @@ function Login() {
                                             />
                                         </Text>
 
-                                        <Form.Item label={t("enter_otp", { defaultValue: "Enter OTP" })} name="otp">
+                                        <Form.Item label={t("enter.otp", { defaultValue: "Enter OTP" })} name="otp">
                                             <Input.OTP
                                                 ref={otpRef}
                                                 length={6}
@@ -273,7 +273,7 @@ function Login() {
                                         </Form.Item>
 
                                         <Space>
-                                            <Text>{t(" didnt_get_otp", { defaultValue: "Didn't get the OTP?" })}</Text>
+                                            <Text>{t(" didnt.get.otp", { defaultValue: "Didn't get the OTP?" })}</Text>
                                             {resend ? (
                                                 <Button
                                                     type="link"

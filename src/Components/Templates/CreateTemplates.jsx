@@ -12,7 +12,7 @@ function CreateTemplates() {
                         <Row gutter={16} align="bottom">
                             <Col flex="1">
                                 <Form.Item
-                                    label={t("template_name", { defaultValue: "Template Name" })}
+                                    label={t("template.name", { defaultValue: "Template Name" })}
                                     name="templateName"
                                     rules={[
                                         {
@@ -22,7 +22,7 @@ function CreateTemplates() {
                                     ]}
                                 >
                                     <Input
-                                        placeholder={t("enter_template_name", { defaultValue: "Enter template name" })}
+                                        placeholder={t("enter.template.name", { defaultValue: "Enter template name" })}
                                     />
                                 </Form.Item>
                             </Col>
@@ -38,7 +38,7 @@ function CreateTemplates() {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder={t("enter_subject", { defaultValue: "Enter Subject" })} />
+                                    <Input placeholder={t("enter.subject", { defaultValue: "Enter Subject" })} />
                                 </Form.Item>
                             </Col>
 
@@ -58,7 +58,7 @@ function CreateTemplates() {
                 <Card style={{ minHeight: 600 }}>
                     <Row>
                         <Col span={24}>
-                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Data" />
+                           
                         </Col>
                     </Row>
                 </Card>

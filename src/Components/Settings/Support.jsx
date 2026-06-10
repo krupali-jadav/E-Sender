@@ -1,12 +1,14 @@
 import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Empty, Flex, Table } from "antd";
+import { Button, Card, Empty, Flex, Table } from "antd";
 import { t } from "i18next";
 import AddSupport from "./AddSupport";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function Support() {
 
-   const [AddSupportOpen, setAddSupportOpen] = useState(false);
+  const [AddSupportOpen, setAddSupportOpen] = useState(false);
+   const theme = useSelector((state) => state?.app?.theme);
   const columns = [
     {
       title: t("name", { defaultValue: "Name" }),
@@ -43,12 +45,16 @@ function Support() {
 
   ];
   return (
-    <>
+    <Card
+      style={{
+        borderRadius: 0,
+        borderColor: theme ? "transparent" : "#fff",
+      }} >
       <Flex justify="end">
         <Button
           type="primary"
           icon={<PlusOutlined />}
-        onClick={() => setAddSupportOpen(true)}
+          onClick={() => setAddSupportOpen(true)}
         >
           {t("add", { defaultValue: "Add" })}
         </Button>
@@ -59,19 +65,11 @@ function Support() {
       </Flex>
 
       <Table
-      scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description="No Data"
-            />
-          ),
-        }}
+        scroll={{ x: "max-content" }}
         columns={columns}
         dataSource={[]}
       />
-    </>
+    </Card>
   )
 }
 

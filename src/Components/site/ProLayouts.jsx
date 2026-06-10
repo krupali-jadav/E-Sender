@@ -9,7 +9,7 @@ import i18next, { t } from "i18next";
 import lang from "../../util/lang/lang";
 import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineCampaign } from "react-icons/md";
+import { MdOutlineCampaign, MdWebhook } from "react-icons/md";
 // import { t } from "i18next";
 
 const { Title, Text } = Typography;
@@ -107,6 +107,11 @@ const ProLayouts = ({ children }) => {
         icon: <ShoppingCartOutlined />,
       },
       {
+        path: "/webhooks",
+        name: "WebHooks",
+        icon: <MdWebhook />,
+      },
+      {
         path: "/settings",
         name: "Settings",
         icon: <IoSettingsOutline />,
@@ -168,7 +173,7 @@ const ProLayouts = ({ children }) => {
                     icon: <UserOutlined />,
                     label: (
                       <span onClick={() => { navigate("/edit-profile") }}>
-                        {t("edit_profile", { defaultValue: "Edit Profile" })}
+                        {t("edit.profile", { defaultValue: "Edit Profile" })}
                       </span>
                     ),
                   },

@@ -405,10 +405,8 @@ const Invoice = ({ isEdit = false }) => {
                   ? formatDate(order.createdAt)
                   : "N/A"}
               </Text>
-              <Text copyable={{
-                text: order?._id || "N/A",
-                tooltips: ["Copy", "Copied"],
-              }} type="secondary">
+              <Text copyable
+              type="secondary">
                 {t("orderid", {
                   defaultValue: "Order ID",
                 })}
@@ -605,7 +603,7 @@ const Invoice = ({ isEdit = false }) => {
 
             <Row >
               <Col span={12}>
-                <Text strong>{t("grand_total", { defaultValue: "Grand Total" })}</Text>
+                <Text strong>{t("grand.total", { defaultValue: "Grand Total" })}</Text>
               </Col>
 
               <Col span={12} style={{ textAlign: "right" }}>
@@ -628,10 +626,7 @@ const Invoice = ({ isEdit = false }) => {
                 defaultValue: "Payment Info",
               })}
             </Title>
-            <Text copyable={{
-              text:order?.paymentId?._id || "N/A",
-              tooltips: ["Copy", "Copied"],
-            }}>
+            <Text copyable>
               {t("paymentid", {
                 defaultValue: "Payment ID",
               })}{" "}

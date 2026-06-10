@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   Col,
-  Empty,
   Flex,
   Input,
   Row,
@@ -30,7 +29,7 @@ function TemplateCampaigns() {
       key: "name",
     },
     {
-      title: t("created_at", { defaultValue: "Created At" }),
+      title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
     },
@@ -64,7 +63,7 @@ function TemplateCampaigns() {
                   <Button
                     type="primary"
                     icon={<PlusOutlined />}
-                    onClick={() => navigate('/templates')}
+                    onClick={() => navigate('/templates/create-template')}
                   >
                     {t("add", { defaultValue: "Add" })}
                   </Button>
@@ -79,16 +78,6 @@ function TemplateCampaigns() {
               columns={columns}
               pagination={false}
               scroll={{ x: 700 }}
-              locale={{
-                emptyText: (
-                  <Empty
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    description={t("no_data", {
-                      defaultValue: "No Data",
-                    })}
-                  />
-                ),
-              }}
             />
           </Card>
 
