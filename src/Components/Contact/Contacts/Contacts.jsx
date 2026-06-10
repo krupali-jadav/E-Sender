@@ -48,6 +48,7 @@ function Contacts() {
             email: "test@gmail.com",
             groups: "Group 1",
             unsubscribed: "No",
+            spam: "No",
             blocked: false,
             createdAt: "2024-01-01",
             test: "Test 1",
@@ -140,6 +141,17 @@ function Contacts() {
                 )),
         },
         {
+            title: t("spam", { defaultValue: "Spam" }),
+            dataIndex: "spam",
+            key: "spam",
+            render: (_, record) => (
+                record.spam ? (
+                    <Tag>{record.spam}  </Tag>
+                ) : (
+                    "-"
+                )),
+        },
+        {
             title: t("blocked", { defaultValue: "Blocked" }),
             dataIndex: "blocked",
             key: "blocked",
@@ -198,7 +210,6 @@ function Contacts() {
                             onClick={() => setManualImportOpen(true)}
                         >
                             {t("manual_import", { defaultValue: "Manual Import" })}
-                           
                         </Button>
 
                         <ManualImport
@@ -212,7 +223,7 @@ function Contacts() {
                             onClick={() => setExcelOpen(true)}
                         >
                             {t("excel_import", { defaultValue: "Excel Import" })}
-                          
+
                         </Button>
 
                         <ExcelImport
@@ -246,9 +257,9 @@ function Contacts() {
                         exporting={exporting}
                     />
 
-                    <Card bodyStyle={{padding:0}}>
+                    <Card bodyStyle={{ padding: 0 }}>
                         <Table
-                        style={{padding:0}}
+                            style={{ padding: 0 }}
                             columns={columns}
                             dataSource={data}
                             pagination={false}

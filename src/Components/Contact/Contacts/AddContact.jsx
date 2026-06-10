@@ -4,8 +4,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
 
-
-
 function AddContact({ open, onClose }) {
     const [groups, setGroups] = useState([]);
     const [groupName, setGroupName] = useState("");
@@ -23,7 +21,6 @@ function AddContact({ open, onClose }) {
 
     const handleAddGroup = () => {
         if (!groupName.trim()) return;
-
         setGroups([...groups, groupName]);
         setGroupName("");
     };

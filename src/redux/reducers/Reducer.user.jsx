@@ -14,7 +14,6 @@ const userSlice = createSlice({
             state.token = action.payload.token;
             
         },
-
         removeUserDetails: (state) => {
             state.profile = null;
             state.token = null;

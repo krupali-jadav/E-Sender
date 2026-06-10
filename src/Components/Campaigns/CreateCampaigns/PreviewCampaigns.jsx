@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Col,
+  DatePicker,
   Flex,
   Input,
   Pagination,
@@ -9,13 +10,17 @@ import {
   Row,
   Select,
   Space,
+  TimePicker,
   Typography,
 } from "antd";
 import { t } from "i18next";
+import { useState } from "react";
 
 const { Text } = Typography;
 
 const CampaignStep = () => {
+
+  const [scheduleType, setScheduleType] = useState("now");
   return (
     <>
       <Row gutter={[24, 24]}>
@@ -65,7 +70,8 @@ const CampaignStep = () => {
               </Col>
               <Col xs={24} md={12}>
                 <Card title="Schedule Your Campaign">
-                  <Radio.Group defaultValue="now">
+                  <Radio.Group value={scheduleType}
+                    onChange={(e) => setScheduleType(e.target.value)}>
                     <Space direction="vertical">
                       <Radio value="now">Send It Now</Radio>
                       <Radio value="schedule">
@@ -73,6 +79,12 @@ const CampaignStep = () => {
                       </Radio>
                     </Space>
                   </Radio.Group>
+                  {scheduleType === "schedule" && (
+                    <Space style={{ marginTop: 16 }}>
+                      <DatePicker placeholder="Select Date" />
+                      <TimePicker placeholder="Select Time" format="HH:mm" />
+                    </Space>
+                  )}
                 </Card>
               </Col>
             </Row>

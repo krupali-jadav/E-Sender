@@ -28,7 +28,6 @@ import { setUserDetails } from "../redux/reducers/Reducer.user";
 import { getMediaPath } from "../util/getMediaPath";
 import axiosInstance from "../util/axiosInstance";
 import { t } from "i18next";
-
 const { Text } = Typography;
 const { Content } = Layout;
 
