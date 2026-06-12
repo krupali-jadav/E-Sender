@@ -9,7 +9,7 @@ import i18next, { t } from "i18next";
 import lang from "../../util/lang/lang";
 import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineCampaign, MdWebhook } from "react-icons/md";
+import { MdOutlineCampaign, MdOutlinePermMedia, MdWebhook } from "react-icons/md";
 // import { t } from "i18next";
 
 const { Title, Text } = Typography;
@@ -110,6 +110,11 @@ const ProLayouts = ({ children }) => {
         path: "/webhooks",
         name: "WebHooks",
         icon: <MdWebhook />,
+      },
+      {
+        path: "/media",
+        name: "Media",
+        icon: <MdOutlinePermMedia />,
       },
       {
         path: "/settings",

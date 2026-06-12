@@ -22,7 +22,9 @@ import Settings from "./Components/Settings/Settings";
 import { ConfigProvider, theme as antdTheme } from "antd";
 import CreateTemplates from "./Components/Templates/CreateTemplates";
 import CreateCampaigns from "./Components/Campaigns/CreateCampaigns/CreateCampaigns";
-import WebHooks from "./Components/Webhook/WebHooks";
+import WebHook from "./Components/WebHook/WebHook";
+import Media from "./Components/Media/Media";
+import WebHookDetails from "./Components/WebHook/WebHookDetails";
 
 const ProtectedRoute = ({
   component: Component,
@@ -74,8 +76,10 @@ function App() {
     { path: "/campaigns/create-campaign", component: CreateCampaigns },
     { path: "/domains", component: Domains },
     { path: "/logs", component: Logs },
-    { path: "/webhooks", component: WebHooks },
+    { path: "/webhooks", component: WebHook },
+    { path: "/webhook-details", component: WebHookDetails },
     { path: "/settings", component: Settings },
+    { path: "/media", component: Media },
     { path: "/documentation", component: Documentation },
     {
       path: "/privacy-policy",
