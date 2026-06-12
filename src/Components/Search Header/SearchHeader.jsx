@@ -71,14 +71,17 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
     if (page === "media") {
         return (
             <Card>
-                <Input.Search
-                    style={{ width: 500 }}
-                    placeholder={t("search...", {
-                        defaultValue: "Search...",
-                    })}
-                    enterButton={<SearchOutlined />}
-                    allowClear
-                />
+                <Row>
+                    <Col xs={24} sm={24} md={16} lg={8}>
+                        <Input.Search
+                            placeholder={t("search...", {
+                                defaultValue: "Search...",
+                            })}
+                            enterButton={<SearchOutlined />}
+                            allowClear
+                        />
+                    </Col>
+                </Row>
             </Card>
         );
     }

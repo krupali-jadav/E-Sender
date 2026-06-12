@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
+import PhonePreview from "./PhonePreview";
 
 const { Text } = Typography;
 
@@ -41,8 +42,8 @@ function TemplateCampaigns() {
 
   return (
     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} lg={16}>
+      <Row gutter={[16, 16]} >
+        <Col xs={24} lg={17}>
           <Card>
             <Row gutter={[16, 16]} align="middle">
               <Col xs={24} md={8}>
@@ -93,8 +94,8 @@ function TemplateCampaigns() {
         </Col>
 
         {/* Right Side */}
-        <Col xs={24} lg={8}>
-
+        <Col xs={24} lg={7}>
+          <PhonePreview />
         </Col>
       </Row>
     </Space>

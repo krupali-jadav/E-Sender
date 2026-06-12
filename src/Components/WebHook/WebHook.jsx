@@ -79,6 +79,7 @@ function WebHooks() {
         }>
             <Card bodyStyle={{ padding: 0 }}>
                 <Table
+                    scroll={{ x: "max-content" }}
                     columns={columns}
                     dataSource={data}
                     pagination={false}
