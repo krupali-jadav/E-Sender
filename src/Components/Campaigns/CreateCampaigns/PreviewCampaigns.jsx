@@ -15,6 +15,7 @@ import {
 } from "antd";
 import { t } from "i18next";
 import { useState } from "react";
+import PhonePreview from "./PhonePreview";
 
 const { Text } = Typography;
 
@@ -23,8 +24,8 @@ const CampaignStep = () => {
   const [scheduleType, setScheduleType] = useState("now");
   return (
     <>
-      <Row gutter={[24, 24]}>
-        <Col xs={24} lg={16}>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={18}>
           <Card>
             <Row gutter={[16, 16]}>
               <Col xs={24} md={12}>
@@ -97,11 +98,13 @@ const CampaignStep = () => {
             <Button type="primary">{t("send.now", { defaultValue: "Send Now" })}</Button>
           </Flex>
         </Col>
-      </Row>
+      
 
       {/* Phone Preview Space */}
-      <Col xs={24} lg={8}>
+      <Col xs={24} lg={6}>
+      <PhonePreview />
       </Col>
+      </Row>
     </>
 
   );

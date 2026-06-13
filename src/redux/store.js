@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/Reducer.user';
 import appReducer from './reducers/reducer.app';
+import domainReducer from './reducers/reducer.Domain';
 import {
     persistStore,
     persistReducer,
@@ -27,6 +28,8 @@ export const store = configureStore({
     reducer: {
         user: persistedReducer,
         app: persistedAppReducer,
+        domain: domainReducer,
+
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

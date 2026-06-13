@@ -1,16 +1,21 @@
-import { Avatar, Button, Card, Col, Flex, Image, Row, Space, Typography } from 'antd'
+import { Avatar, Button, Card, Col, Divider, Flex, Image, Row, Space, Typography } from 'antd'
 import { FaWifi } from 'react-icons/fa'
 import { GiNetworkBars } from 'react-icons/gi'
 import { RiBattery2ChargeFill } from 'react-icons/ri'
 import Island from "../../../assets/Island.png"
-import { ArrowRightOutlined, DownOutlined, LockOutlined, UpOutlined } from '@ant-design/icons'
+import Google from "../../../assets/Google.png"
+import { DownOutlined, LockOutlined, MoreOutlined, UpOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-const { Text } = Typography;
+const { Text, Title } = Typography;
 import { LuReply } from "react-icons/lu";
 import { LuForward } from "react-icons/lu";
+import { useSelector } from 'react-redux'
+import { t } from 'i18next'
 
-function PhonePreview() {
+function PhonePreview(  ) {
   const [open, setOpen] = useState(false);
+  const theme = useSelector((state) => state?.app?.theme);
+  const domainName = useSelector((state) => state.domain.selectedDomain );
   return (
     <Flex xs={24} lg={8} >
       <Col
@@ -21,7 +26,7 @@ function PhonePreview() {
           border: "1.5px solid #222",
           borderRadius: 40,
           padding: 6,
-          background: "#f8f8f8",
+          background: theme ? "#333333" : "#ffff",
           position: "relative",
           boxSizing: "border-box",
         }}
@@ -33,7 +38,7 @@ function PhonePreview() {
             border: "1px solid #222",
             borderRadius: 34,
             paddingInline: 0,
-            background: "#fff",
+            background: theme ? "#333333" : "#ffff",
             overflow: "hidden",
             position: "relative",
           }}
@@ -60,26 +65,49 @@ function PhonePreview() {
           <Col style={{ height: "calc(100% - 55px)", display: "flex", flexDirection: "column", }}>
             <Card style={{ borderRadius: 16, }} bodyStyle={{ padding: 10 }}>
               {/* Header */}
-              <Space align="center" style={{ width: "100%", }}>
-                <Avatar size={35}>G</Avatar>
-
+              <Space align="start" style={{ width: "100%" }}>
+                <Avatar size={32}>G</Avatar>
                 <div style={{ flex: 1 }}>
-                  <div>
-                    <Row>
-                      <Col style={{ gap: 5 }}>
-                        <Text strong>Google</Text>
-                      </Col>
+                  <Row>
+                    <Text strong>https://{domainName}</Text>
+                  </Row>
+
+                  <Flex
+                    align="center"
+                    style={{ marginTop: 2, gap: 50 }}
+                  >
+                    <Row
+                      onClick={() => setOpen(!open)}
+                      style={{
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 5,
+                      }}
+                    >
+                      <Text type="secondary">to me</Text>
+
+                      {open ? (
+                        <UpOutlined style={{ fontSize: 10 }} />
+                      ) : (
+                        <DownOutlined style={{ fontSize: 10 }} />
+                      )}
                     </Row>
-                    <Row>
-                      <Col onClick={() => setOpen(!open)} style={{ cursor: "pointer" }}>
-                        <Text type="secondary">to me</Text>
-                        <span
-                          style={{ cursor: "pointer", fontSize: 10, }}>
-                          {open ? <UpOutlined /> : <DownOutlined />}
-                        </span>
-                      </Col>
-                    </Row>
-                  </div>
+
+                    <Flex align="center" gap={10}>
+                      <Button
+                        type="link"
+                        size="small"
+                        style={{ padding: 0 }}
+                      >
+                        {t("unsubscribe", {
+                          defaultValue: "Unsubscribe",
+                        })}
+                      </Button>
+
+                      <MoreOutlined />
+                    </Flex>
+                  </Flex>
                 </div>
               </Space>
 
@@ -89,6 +117,7 @@ function PhonePreview() {
                   style={{
                     marginTop: 16,
                     background: "#f7f7f7",
+                    backgroundColor: theme ? "#4d4d4d" : "#f7f7f7",
                     borderRadius: 12,
                     width: 250,
 
@@ -139,13 +168,24 @@ function PhonePreview() {
                   </div>
                 </Card>
               )}
+              <Card style={{ marginTop: 16, }} bodyStyle={{ padding: 15, }}>
+                <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
+                  <Image src={Google} height={30} width={30} />
+                  <Title level={5} >Keep Track  of your Google Account data</Title>
+                  <Text></Text>
+                </Col>
+                <Divider />
+                <Col style={{ textAlign: "center", height: 30, }}>
+                  <Text>https://example.com</Text>
+                </Col>
+              </Card>
             </Card>
             <Flex
               justify="center"
               gap={12}
               style={{
                 position: "absolute",
-                background: "#e6e6e6",
+                background: theme ? "black" : "#e6e6e6",
                 height: 50,
                 bottom: 0,
                 alignItems: 'center',

@@ -1,14 +1,20 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Empty, Form, Input, Row, Space } from "antd";
+import { Button, Card, Col, Form, Input, Row, Space } from "antd";
 import { t } from "i18next";
+import { useLocation } from "react-router-dom";
 
 function CreateTemplates() {
+    const location = useLocation();
+    const template = location.state?.template;
     return (
         <PageContainer title="Create Template">
             <Space direction="vertical" size="large" style={{ width: "100%" }}>
                 <Card styles={{ body: { padding: "8px 12px", marginBottom: 0 } }}
                 >
-                    <Form layout="vertical">
+                    <Form layout="vertical" initialValues={{
+                        templateName: template?.name || "",
+                        subject: template?.subject || "",
+                    }}>
                         <Row gutter={16} align="bottom">
                             <Col flex="1">
                                 <Form.Item
@@ -56,11 +62,11 @@ function CreateTemplates() {
                     </Form>
                 </Card>
                 <Card style={{ minHeight: 600 }}>
-                    <Row>
-                        <Col span={24}>
-                           
-                        </Col>
-                    </Row>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: template?.body || "",
+                        }}
+                    />
                 </Card>
             </Space>
         </PageContainer>

@@ -13,9 +13,145 @@ function Templates() {
   const templates = [
     {
       id: 1,
-      name: "Test",
+      name: "Verify Email Template",
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800",
       active: true,
+      subject: "Verify Your Email Address",
+      body: `
+<div style="max-width:600px;margin:auto;background:#fff;font-family:Arial;">
+  <div style="padding:20px;text-align:center;">
+    <h1 style="color:#0d47a1;">Your Site</h1>
+  </div>
+
+  <div style="background:#0d47a1;color:white;padding:40px;text-align:center;">
+    <h2>Verify Your E-mail Address</h2>
+  </div>
+
+  <div style="padding:40px;text-align:center;">
+    <p>Hi {{FirstName}},</p>
+
+    <p>
+      You're almost ready to get started.
+      Please click the button below to verify your email.
+    </p>
+
+    <a
+      href="{{VerifyUrl}}"
+      style="
+        background:#ff6f00;
+        color:white;
+        padding:12px 24px;
+        text-decoration:none;
+        border-radius:4px;
+        display:inline-block;
+      "
+    >
+      VERIFY YOUR EMAIL
+    </a>
+
+    <p style="margin-top:30px;">
+      Thanks,<br/>
+      The Company Team
+    </p>
+  </div>
+
+  <div style="background:#f4f4f4;padding:20px;text-align:center;">
+    <h3>Get in touch</h3>
+    <p>+11 111 333 4444</p>
+    <p>info@yourcompany.com</p>
+  </div>
+</div>
+`,
     },
+    {
+      id: 2,
+      name: "Test Template",
+      image:
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
+      active: true,
+      subject: "Welcome to test template 🚀",
+      body: `
+<div style="max-width:600px;margin:auto;background:#ffffff;font-family:Arial,sans-serif;border:1px solid #e5e7eb;">
+
+  <img
+    src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200"
+    alt="Welcome"
+    style="width:100%;height:220px;object-fit:cover;"
+  />
+
+  <div style="padding:40px;text-align:center;">
+    <h1 style="color:#1677ff;margin-bottom:10px;">
+      Welcome, {{FirstName}} 👋
+    </h1>
+
+    <p style="font-size:16px;color:#555;">
+      We're excited to have you join the
+      <strong> {{CompanyName}}</strong> community.
+    </p>
+  </div>
+
+  <div style="padding:0 30px 30px;">
+    <div style="background:#f5f7fa;padding:20px;border-radius:10px;margin-bottom:15px;">
+      <h3 style="margin:0 0 10px 0;">🎯 Complete Your Profile</h3>
+      <p style="margin:0;color:#666;">
+        Add your information and personalize your experience.
+      </p>
+    </div>
+
+    <div style="background:#f5f7fa;padding:20px;border-radius:10px;margin-bottom:15px;">
+      <h3 style="margin:0 0 10px 0;">🚀 Explore Features</h3>
+      <p style="margin:0;color:#666;">
+        Discover all the tools available in your account.
+      </p>
+    </div>
+
+    <div style="background:#f5f7fa;padding:20px;border-radius:10px;">
+      <h3 style="margin:0 0 10px 0;">👥 Invite Your Team</h3>
+      <p style="margin:0;color:#666;">
+        Collaborate with teammates and boost productivity.
+      </p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding-bottom:40px;">
+    <a
+      href="{{LoginUrl}}"
+      style="
+        background:#1677ff;
+        color:#fff;
+        padding:14px 30px;
+        border-radius:8px;
+        text-decoration:none;
+        font-weight:bold;
+        display:inline-block;
+      "
+    >
+      GET STARTED
+    </a>
+  </div>
+
+  <div style="background:#001529;color:white;padding:30px;text-align:center;">
+    <h3 style="margin-top:0;color:white;">
+      Need Help?
+    </h3>
+
+    <p>
+      📧 support@yourcompany.com
+    </p>
+
+    <p>
+      📞 +91 98765 43210
+    </p>
+
+    <p style="margin-top:20px;font-size:12px;color:#ccc;">
+      © {{CompanyName}}. All rights reserved.
+    </p>
+  </div>
+
+</div>
+`,
+    }
   ];
   const [hovered, setHovered] = useState(false);
   return (
@@ -51,11 +187,22 @@ function Templates() {
               <Card
                 title={t("template", { defaultValue: item.name })}
                 extra={<Switch defaultChecked={item.active} />}
+                hoverable
+                onClick={() =>
+                  navigate("/templates/create-template", {
+                    state: {
+                      template: item,
+                    },
+                  })
+                }
               >
-                <Card style={{ height: 380 }}>
-
+                <Card style={{ height: 380, overflow: "auto" }}>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: item.body,
+                    }}
+                  />
                 </Card>
-
 
                 <Row gutter={12} style={{ marginTop: 16 }}>
                   <Col span={12}>
@@ -63,7 +210,6 @@ function Templates() {
                       type="primary"
                       icon={<EditOutlined />}
                       block
-                    // shape="round"
                     >
                       {t("edit", { defaultValue: "Edit" })}
                     </Button>
@@ -74,8 +220,6 @@ function Templates() {
                       danger
                       icon={<DeleteOutlined />}
                       block
-                    // shape="round"
-
                     >
                       {t("delete", { defaultValue: "Delete" })}
                     </Button>
