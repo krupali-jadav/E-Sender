@@ -54,7 +54,9 @@ function CreateTemplates() {
                                         type="primary"
                                         htmlType="submit"
                                     >
-                                        {t("create", { defaultValue: "Create" })}
+                                        {template
+                                            ? t("edit", { defaultValue: "Edit" })
+                                            : t("create", { defaultValue: "Create" })}
                                     </Button>
                                 </Form.Item>
                             </Col>
@@ -67,8 +69,10 @@ function CreateTemplates() {
                             __html: template?.body || "",
                         }}
                     />
+                    
                 </Card>
             </Space>
+
         </PageContainer>
     );
 }
