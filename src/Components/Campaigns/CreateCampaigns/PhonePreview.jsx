@@ -12,10 +12,10 @@ import { LuForward } from "react-icons/lu";
 import { useSelector } from 'react-redux'
 import { t } from 'i18next'
 
-function PhonePreview(  ) {
+function PhonePreview() {
   const [open, setOpen] = useState(false);
   const theme = useSelector((state) => state?.app?.theme);
-  const domainName = useSelector((state) => state.domain.selectedDomain );
+  const domainName = useSelector((state) => state.domain.selectedDomain);
   return (
     <Flex xs={24} lg={8} >
       <Col
@@ -115,12 +115,13 @@ function PhonePreview(  ) {
                 <Card
                   size="small"
                   style={{
-                    marginTop: 16,
-                    background: "#f7f7f7",
+                    position: "absolute",
+                    top: 70,
+                    left: 10,
+                    zIndex: 1000,
+                    width: 250,
                     backgroundColor: theme ? "#4d4d4d" : "#f7f7f7",
                     borderRadius: 12,
-                    width: 250,
-
                   }}
                 >
                   <div style={{ marginBottom: 5 }}>

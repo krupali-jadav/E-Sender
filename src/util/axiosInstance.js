@@ -8,9 +8,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const state = store.getState();
-        console.log( "State",state);
-        const token = state.user?.details?.token;
-        console.log("token", token); 
+        const token = state.user?.token;
+        console.log("Token Used", token);
 
         if (import.meta.env.VITE_MODE === "production") {
             config.baseURL = "/api/";
@@ -36,7 +35,6 @@ axiosInstance.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
