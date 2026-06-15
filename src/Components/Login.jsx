@@ -1,4 +1,4 @@
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import '../../src/index.css';
 import {
     Tooltip,
@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../redux/reducers/Reducer.user";
 import { getMediaPath } from "../util/getMediaPath";
 import axiosInstance from "../util/axiosInstance";
+import { store } from "../redux/store";
 import { t } from "i18next";
 const { Text } = Typography;
 const { Content } = Layout;
@@ -114,6 +115,7 @@ function Login() {
             } else {
                 message.error(data.message);
             }
+            console.log("api response", data);
         } catch (error) {
             message.error(error);
         } finally {
@@ -171,11 +173,11 @@ function Login() {
                                                         setCheckTerms(e.target.checked)
                                                     }
                                                 >
-                                                   {t("keep.signed.in", { defaultValue: "Keep me signed in" })}
+                                                    {t("keep.signed.in", { defaultValue: "Keep me signed in" })}
                                                 </Checkbox>
 
-                                                <Tooltip 
-                                                title={t("keep.signed.in.tooltip", { defaultValue: "This will keep you signed in until you manually sign out" })}   >
+                                                <Tooltip
+                                                    title={t("keep.signed.in.tooltip", { defaultValue: "This will keep you signed in until you manually sign out" })}   >
                                                     <ExclamationCircleOutlined />
                                                 </Tooltip>
                                             </Space>
@@ -188,7 +190,7 @@ function Login() {
                                                     to="/privacy-policy"
                                                     target="_blank"
                                                 >
-                                                  {t("privacy.policy", { defaultValue: "Privacy Policy" })}
+                                                    {t("privacy.policy", { defaultValue: "Privacy Policy" })}
                                                 </Link>{" "}
                                                 &{" "}
                                                 <Link
@@ -209,7 +211,7 @@ function Login() {
                                             disabled={!canSendOtp}
                                             block
                                         >
-                                          {t("send.otp", { defaultValue: "Send OTP" })}
+                                            {t("send.otp", { defaultValue: "Send OTP" })}
                                         </Button>
                                     </Form.Item>
                                 </Form>

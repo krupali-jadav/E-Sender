@@ -4,18 +4,17 @@ import { WindowsOutlined, MobileOutlined, LogoutOutlined, InfoCircleOutlined, } 
 
 import { t } from "i18next";
 import { sessionAll, sessionLogout } from "./SessionAll";
-// import { formatDate } from "../../util/common.utils";
+import { formatDate } from "../../util/commom.utils";
 const { Title, Text } = Typography;
 
 const Sessions = () => {
     const [sessionData, setSessionData] = useState([]);
     const [loadingButton, setButtonLoading] = useState({});
     const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        sessionDevices();
-    }, []);
+
 
     const sessionDevices = async () => {
+         console.log("Calling session API...");
         setLoading(true);
         try {
             const data = await sessionAll({ status: "all" });
@@ -29,7 +28,9 @@ const Sessions = () => {
             setLoading(false);
         }
     };
-
+    useEffect(() => {
+        sessionDevices();
+    }, []);
     const handleSessionLogout = (id) => {
         Modal.confirm({
             title: t("confirm.logout"),
@@ -93,10 +94,13 @@ const Sessions = () => {
                         <Row justify="space-between" align="middle">
                             <Col>
                                 <Text strong>
-                                    {item?.info?.os?.name || "Unknown OS"}
+                                    {item?.info?.os || "Unknown OS"}
                                 </Text>
+
+                                <br />
+
                                 <Text type="secondary">
-                                    {item?.info?.client?.name || "Unknown Browser"}
+                                    {item?.info?.browser || "Unknown Browser"}
                                 </Text>
                                 <br />
                                 <Text type="secondary">
@@ -144,8 +148,11 @@ const Sessions = () => {
                 >
                     <Col xs={24} md={12}>
                         {renderSessions(
-                            sessionData?.filter((item) => item?.info?.os?.name?.toLowerCase() === "windows"),
-                            <WindowsOutlined />,
+                            sessionData?.filter(
+                                (item) =>
+                                    item?.info?.os?.toLowerCase() === "windows"
+                            ),
+                            < WindowsOutlined />,
                             "#52C41A",
                             t("desktop.sessions")
                         )}

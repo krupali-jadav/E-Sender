@@ -3,7 +3,7 @@ import axiosInstance from "../../util/axiosInstance";
 
 export const sessionAll = async (payload) => {
     try {
-        const response = await axiosInstance.post("auth/session/all", payload);
+        const response = await axiosInstance.post("/api/auth/session/all", payload);
         if (response.data?.status) {
             return response.data;
         } else {
@@ -16,7 +16,7 @@ export const sessionAll = async (payload) => {
 
 export const sessionLogout = async (payload) => {
     try {
-        const response = await axiosInstance.post("auth/session/logout", payload);
+        const response = await axiosInstance.post("/api/auth/session/logout", payload);
         if (response.data?.status) {
             return response.data;
         } else {

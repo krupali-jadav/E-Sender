@@ -1,9 +1,14 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Col, Form, Input, Row, Space } from "antd";
+// import Package from "esender-email-editor";
 import { t } from "i18next";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function CreateTemplates() {
+
+    const [showEditor] = useState(true);
+
     const location = useLocation();
     const template = location.state?.template;
     return (
@@ -67,6 +72,13 @@ function CreateTemplates() {
                             __html: template?.body || "",
                         }}
                     />
+
+                    {/* <Package
+                        // ref={ref}
+                        apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
+                    // onLicenseError={(err: LicenseError) => console.error(err)}
+                    // showUndoRedo
+                    /> */}
                 </Card>
             </Space>
         </PageContainer>
