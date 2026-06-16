@@ -1,15 +1,42 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, Row } from 'antd'
+import { Button, Card, Col, Form, Input, message, Row } from 'antd'
 import PhoneInput from 'antd-phone-input'
 import Dragger from 'antd/es/upload/Dragger';
 import { t } from 'i18next';
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
+import { saveBillingDetails } from './SettingApi';
 
 function BillingDetails() {
 
     const [phone, setPhone] = useState("");
     const theme = useSelector((state) => state?.app?.theme);
+    const [form] = Form.useForm();
+
+    const handleSubmit = async (values) => {
+        console.log("Form Values:", values);
+        try {
+            const payload = {
+                businessName: values.name,
+                gst: values.gst_number,
+                email: values.email,
+                phone: phone,
+                address: values.address,
+                logo: values.media,
+            };
+
+            const data = await saveBillingDetails(payload);
+
+            if (data?.status) {
+                message.success(
+                    data?.message || "Billing details saved successfully"
+                );
+            }
+        } catch (error) {
+            console.log(error);
+            message.error("Failed to save billing details");
+        }
+    };
 
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {
@@ -27,7 +54,9 @@ function BillingDetails() {
                 borderRadius: 0,
                 borderColor: theme ? "transparent" : "#fff",
             }} >
-            <Form layout="vertical">
+            <Form form={form}
+                layout="vertical"
+                onFinish={handleSubmit}>
                 <Row gutter={[24, 16]}>
                     <Col xs={24} sm={24} md={12} lg={12}>
                         <Form.Item

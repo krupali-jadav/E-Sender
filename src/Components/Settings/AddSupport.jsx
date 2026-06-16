@@ -1,11 +1,63 @@
-import { Button, Form, Input, Modal } from 'antd'
+import { Button, Form, Input, message, Modal } from 'antd'
 import PhoneInput from 'antd-phone-input';
 import { t } from 'i18next'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { addSupport, updateSupport } from './SettingApi';
 
-function AddSupport({ open, onClose }) {
+function AddSupport({ open, onClose, onSuccess, editData }) {
     const [phone, setPhone] = useState("");
     const [form] = Form.useForm();
+
+    const handleSubmit = async (values) => {
+        try {
+            const payload = {
+                name: values.name,
+                phone,
+                department: values.department,
+            };
+
+            let data;
+
+            if (editData?._id) {
+                data = await updateSupport({
+                    support_id: editData._id,
+                    ...payload,
+                });
+            } else {
+                data = await addSupport(payload);
+            }
+
+            if (data?.status) {
+                message.success(
+                    editData
+                        ? "Support updated successfully"
+                        : "Support added successfully"
+                );
+
+                onSuccess?.();
+                form.resetFields();
+                setPhone("");
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (open && editData) {
+            form.setFieldsValue({
+                name: editData.name,
+                department: editData.department,
+            });
+
+            setPhone(editData.phone || "");
+        } else {
+            form.resetFields();
+            setPhone("");
+        }
+    }, [open, editData]);
+
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {
             const fullPhoneNumber = `+${value?.countryCode ?? ""}${value?.areaCode ?? ""
@@ -17,7 +69,13 @@ function AddSupport({ open, onClose }) {
     };
     return (
         <Modal
-            title={t("add.custom.field", { defaultValue: "Add Custom Field" })}
+            title={editData
+                ? t("edit.support", {
+                    defaultValue: "Edit Support",
+                })
+                : t("add.support", {
+                    defaultValue: "Add Support",
+                })}
             open={open}
             onCancel={onClose}
             width={500}
@@ -26,13 +84,17 @@ function AddSupport({ open, onClose }) {
                 <Button key="cancel" onClick={onClose}>
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary" onClick={() => form.submit()}>
-                    {t("add", { defaultValue: "Add" })}
-                </Button>,
+                <Button
+                    key="add"
+                    type="primary"
+                    onClick={() => form.submit()}
+                >
+                    {editData ? "Edit" : "Add"}
+                </Button>
             ]}
         >
 
-            <Form layout="vertical" form={form}>
+            <Form layout="vertical" form={form} onFinish={handleSubmit}>
                 <Form.Item
                     label={t("name", { defaultValue: "Name" })}
                     name="name"

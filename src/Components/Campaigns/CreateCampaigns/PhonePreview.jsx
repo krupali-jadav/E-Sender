@@ -169,16 +169,16 @@ function PhonePreview() {
                   </div>
                 </Card>
               )}
-              <Card style={{ marginTop: 16, position: "relative", }} bodyStyle={{ padding: 15, }}>
-                <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
-                  <Image src={Google} height={30} width={30} />
-                  <Title level={5} >Keep Track  of your Google Account data</Title>
-                  <Text></Text>
-                </Col>
-                <Divider />
-                <Col style={{ textAlign: "center", height: 30, }}>
-                  <Text>https://example.com</Text>
-                </Col>
+              <Card style={{ marginTop: 16, }} bodyStyle={{ padding: 15, }}>
+                  <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
+                    <Image src={Google} height={30} width={30} />
+                    <Title level={5} >Keep Track  of your Google Account data</Title>
+                    <Text></Text>
+                  </Col>
+                  <Divider />
+                  <Col style={{ textAlign: "center", height: 30, }}>
+                    <Text>https://example.com</Text>
+                  </Col>
               </Card>
             </Card>
             <Flex

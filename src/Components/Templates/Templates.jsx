@@ -70,7 +70,7 @@ function Templates() {
       image:
         "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
       active: true,
-      subject: "Welcome to test template 🚀",
+      subject: "Welcome to test template",
       body: `
 <div style="max-width:600px;margin:auto;background:#ffffff;font-family:Arial,sans-serif;border:1px solid #e5e7eb;">
 
@@ -188,15 +188,14 @@ function Templates() {
                 title={t("template", { defaultValue: item.name })}
                 extra={<Switch defaultChecked={item.active} />}
                 hoverable
-                onClick={() =>
+              >
+                <Card style={{ height: 380, overflow: "auto" }} onClick={() =>
                   navigate("/templates/create-template", {
                     state: {
                       template: item,
                     },
                   })
-                }
-              >
-                <Card style={{ height: 380, overflow: "auto" }}>
+                }>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: item.body,
@@ -210,6 +209,13 @@ function Templates() {
                       type="primary"
                       icon={<EditOutlined />}
                       block
+                      onClick={() =>
+                        navigate("/templates/create-template", {
+                          state: {
+                            template: item,
+                          },
+                        })
+                      }
                     >
                       {t("edit", { defaultValue: "Edit" })}
                     </Button>
