@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Dropdown, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
@@ -10,6 +10,7 @@ import AddContact from '../Contacts/AddContact'
 import { getCurrentTime } from '../../../util/commom.utils'
 import { exportToExcel } from 'react-json-to-excel'
 import axiosInstance from '../../../util/axiosInstance'
+import { changeContactBlockStatus, deleteContact, getAllContacts } from './ContactsApi'
 
 function Contacts() {
     const [search, setSearch] = useState("");
@@ -26,6 +27,9 @@ function Contacts() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [filterForm] = Form.useForm();
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [editContact, setEditContact] = useState(null);
     const resetFilterParameters = () => {
         setStatus("all");
         setPage(1);
@@ -39,31 +43,82 @@ function Contacts() {
         filterForm.resetFields();
     };
 
-    const [data, setData] = useState([
-        {
-            key: "1",
-            sn: "1",
-            name: "John Doe",
-            phonenumber: "+1234567890",
-            email: "test@gmail.com",
-            groups: "Group 1",
-            unsubscribed: "No",
-            spam: "No",
-            blocked: false,
-            createdAt: "2024-01-01",
-            test: "Test 1",
-            country: "USA",
-        },
-    ]);
-    const handleBlockedChange = (checked, record) => {
-        setData((prev) =>
-            prev.map((item) =>
-                item.key === record.key
-                    ? { ...item, blocked: checked }
-                    : item
-            )
-        );
-    }
+    const fetchContacts = async () => {
+        setLoading(true);
+
+        try {
+            const response = await getAllContacts({
+                page: 0,
+                limit: 10,
+                search: "",
+                sort_by: "created-at",
+                filter_by: {
+                    date_type: "all",
+                    date: {
+                        start_date: null,
+                        end_date: null,
+                    },
+                },
+            });
+
+            if (response?.status) {
+                setData(response.contacts || []);
+                setTotal(response.total || 0);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchContacts();
+    }, []);
+
+    const handleEdit = (record) => {
+        setEditContact(record);
+        setAddContactOpen(true);
+    };
+
+    const handleDelete = (record) => {
+        Modal.confirm({
+            title: "Delete Contact",
+            content: `Are you sure you want to delete ${record.name}?`,
+            okText: "Delete",
+            okType: "danger",
+            cancelText: "Cancel",
+
+            onOk: async () => {
+                try {
+                    const data = await deleteContact({
+                        contact_id: record._id,
+                    });
+
+                    if (data?.status) {
+                        message.success(data?.message || "Conact deleted successfully");
+                        fetchContacts();
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+        });
+    };
+
+    const handleBlockStatus = async (record) => {
+        try {
+            const data = await changeContactBlockStatus({
+                contact_id: record._id,
+                blocked: !record.blocked,
+            });
+            if (data?.status) {
+                message.success(data?.message || "Contact block status updated");
+                fetchContacts();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const onExport = async () => {
         try {
@@ -102,6 +157,7 @@ function Contacts() {
             title: t("sn", { defaultValue: "SN" }),
             dataIndex: "sn",
             key: "sn",
+            render: (_, __, index) => index + 1,
         },
         {
             title: t("name", { defaultValue: "Name" }),
@@ -123,15 +179,22 @@ function Contacts() {
             dataIndex: "groups",
             key: "groups",
             render: (_, record) => (
-                record.groups ? (
-                    <Tag>{record.groups}</Tag>
+                record.groups?.length ? (
+                    <Space wrap>
+                        {record.groups.map((group) => (
+                            <Tag key={group._id}>
+                                {group.name}
+                            </Tag>
+                        ))}
+                    </Space>
                 ) : (
                     "-"
-                )),
+                )
+            ),
         },
         {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
-            dataIndex: "unsubscribed",
+            dataIndex: "unsubscribe",
             key: "unsubscribed",
             render: (_, record) => (
                 record.unsubscribed ? (
@@ -152,14 +215,15 @@ function Contacts() {
                 )),
         },
         {
-            title: t("blocked", { defaultValue: "Blocked" }),
+            title: "Blocked",
             dataIndex: "blocked",
             key: "blocked",
-            render: (_, record) => (
+            render: (blocked, record) => (
                 <Switch
-                    checked={record.blocked}
+                    size="large"
+                    checked={blocked}
                     onChange={(checked) =>
-                        handleBlockedChange(checked, record)
+                        handleBlockStatus(record, checked)
                     }
                 />
             ),
@@ -169,30 +233,58 @@ function Contacts() {
             dataIndex: "createdAt",
             key: "createdAt",
         },
+        // {
+        //     title: t("test", { defaultValue: "Test" }),
+        //     dataIndex: "test",
+        //     key: "test",
+        // },
+        // {
+        //     title: t("country", { defaultValue: "Country" }),
+        //     dataIndex: "country",
+        //     key: "country",
+        // },
         {
-            title: t("test", { defaultValue: "Test" }),
-            dataIndex: "test",
-            key: "test",
-        },
-        {
-            title: t("country", { defaultValue: "Country" }),
-            dataIndex: "country",
-            key: "country",
-        },
-        {
-            title: t("actions", { defaultValue: "Actions" }),
+            title: t("actions", {
+                defaultValue: "Actions",
+            }),
+            dataIndex: "actions",
+            fixed: "right",
             key: "actions",
-            render: () => (
-                <MoreOutlined />
-                // <Space>
-
-                //     <Button size="small" type="primary">
-                //         Edit
-                //     </Button>
-                //     <Button size="small" danger>
-                //         Delete
-                //     </Button>
-                // </Space>
+            width: 70,
+            render: (_, record) => (
+                <Dropdown
+                    menu={{
+                        items: [
+                            {
+                                key: "1",
+                                label: t("edit", {
+                                    defaultValue: "Edit",
+                                }),
+                                onClick: () => handleEdit(record),
+                            },
+                            {
+                                key: "2",
+                                label: t("delete", {
+                                    defaultValue: "Delete",
+                                }),
+                                danger: true,
+                                onClick: () => handleDelete(record),
+                            },
+                        ],
+                    }}
+                    trigger={["click"]}
+                    placement="bottomRight"
+                >
+                    <MoreOutlined
+                        style={{
+                            fontSize: "15px",
+                            cursor: "pointer",
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                </Dropdown>
             ),
         },
     ];
@@ -240,7 +332,12 @@ function Contacts() {
 
                         <AddContact
                             open={AddContactOpen}
-                            onClose={() => setAddContactOpen(false)}
+                            onClose={() => {
+                                setAddContactOpen(false);
+                                setEditContact(null);
+                            }}
+                            editData={editContact}
+                            fetchContacts={fetchContacts}
                         />
                     </Flex>
                 }
@@ -259,8 +356,10 @@ function Contacts() {
                     <Card bodyStyle={{ padding: 0 }}>
                         <Table
                             style={{ padding: 0 }}
+                            rowKey="_id"
                             columns={columns}
                             dataSource={data}
+                            loading={loading}
                             pagination={false}
                             scroll={{ x: "max-content" }}
                         />

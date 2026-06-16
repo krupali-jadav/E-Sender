@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space,} from "antd";
+import { useEffect, useState } from "react";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, message, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
+import { addContact, saveContact } from "./ContactsApi";
+import { addGroup, getAllGroups } from "../Group/GroupApi";
 
-function AddContact({ open, onClose }) {
-    const [groups, setGroups] = useState([]);
+function AddContact({ open, onClose, editData, fetchContacts, }) {
     const [groupName, setGroupName] = useState("");
     const [phone, setPhone] = useState("");
     const [form] = Form.useForm();
+    const [groupOptions, setGroupOptions] = useState([]);
 
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {
@@ -19,15 +21,124 @@ function AddContact({ open, onClose }) {
         }
     };
 
-    const handleAddGroup = () => {
-        if (!groupName.trim()) return;
-        setGroups([...groups, groupName]);
-        setGroupName("");
+    const handleAddGroup = async () => {
+        if (!groupName.trim()) {
+            message.error("Please enter group name");
+            return;
+        }
+
+        try {
+            const data = await addGroup({
+                name: groupName,
+            });
+
+            if (data?.status) {
+                message.success(data?.message || "Group added successfully");
+                setGroupName("");
+                await fetchGroups();
+
+                // Auto select new group
+                if (data?.group?._id) {
+                    const selectedGroups =
+                        form.getFieldValue("groups") || [];
+
+                    form.setFieldsValue({
+                        groups: [
+                            ...selectedGroups,
+                            data.group._id,
+                        ],
+                    });
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
+
+    const handleSubmit = async (values) => {
+        try {
+            const payload = {
+                name: values.name,
+                email: values.email,
+                // fields: [
+                //     {
+                //         fieldId: values.fieldId,
+                //         value: values.customField,
+                //     },
+                // ],
+                groups: values.groups || [],
+            };
+
+            const data = editData
+                ? await saveContact({
+                    contact_id: editData._id,
+                    ...payload,
+                })
+                : await addContact(payload);
+
+            if (data?.status) {
+                message.success(
+                    editData
+                        ? message.success(data?.message || "Conact updated successfully")
+                        : message.success(data?.message || "Conact added successfully")
+                );
+
+                form.resetFields();
+                setPhone("");
+                onClose();
+
+                fetchContacts();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (editData) {
+            form.setFieldsValue({
+                name: editData.name,
+                email: editData.email,
+                groups: editData.groups?.map(
+                    (group) => group._id
+                ),
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [editData, form]);
+
+    const fetchGroups = async () => {
+        try {
+            const data = await getAllGroups({
+                page: 0,
+                limit: 100,
+                search: "",
+                sort_by: "created-at",
+                filter_by: {
+                    date_type: "all",
+                    date: {
+                        start_date: null,
+                        end_date: null,
+                    },
+                },
+            });
+            if (data?.status) {
+                setGroupOptions(data.groups || []);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        if (open) {
+            fetchGroups();
+        }
+    }, [open]);
 
     return (
         <Modal
-            title="Add Contact"
+            title={editData ? "Edit Contact" : "Add Contact"}
             open={open}
             onCancel={onClose}
             width={800}
@@ -36,12 +147,12 @@ function AddContact({ open, onClose }) {
                 <Button key="cancel" onClick={onClose}>
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary" onClick={() => form.submit()}>
-                    {t("add", { defaultValue: "Add" })}
-                </Button>,
+                <Button key="add" type="primary" onClick={() => form.submit()} >
+                    {editData ? "Save Changes" : "Add"}
+                </Button>
             ]}
         >
-            <Form layout="vertical"  form={form}>
+            <Form layout="vertical" form={form} onFinish={handleSubmit}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -107,21 +218,32 @@ function AddContact({ open, onClose }) {
                             />
                         </Form.Item>
 
-                        <Form.Item label={t("groups", { defaultValue: "Groups" })}>
+                        <Form.Item
+                            name="groups"
+                            label={t("groups", { defaultValue: "Groups" })}
+                        >
                             <Select
+                                mode="multiple"
                                 showSearch
-                                placeholder={t("select.groups", { defaultValue: "Select Groups", })}
-                                options={groups.map((group) => ({
-                                    label: group,
-                                    value: group,
+                                placeholder={t("select.groups", {
+                                    defaultValue: "Select Groups",
+                                })}
+                                options={groupOptions.map((group) => ({
+                                    label: group.name,
+                                    value: group._id,
                                 }))}
                                 popupRender={(menu) => (
                                     <>
                                         {menu}
 
-                                        <Space.Compact block>
+                                        <Space.Compact
+                                            block
+                                            style={{
+                                                padding: 8,
+                                            }}
+                                        >
                                             <Input
-                                                placeholder={t("group.name", { defaultValue: "Enter Group Name", })}
+                                                placeholder="Enter Group Name"
                                                 value={groupName}
                                                 onChange={(e) =>
                                                     setGroupName(e.target.value)
@@ -133,7 +255,7 @@ function AddContact({ open, onClose }) {
                                                 icon={<PlusOutlined />}
                                                 onClick={handleAddGroup}
                                             >
-                                                {t("add.group", { defaultValue: "Add Group" })}
+                                                Add Group
                                             </Button>
                                         </Space.Compact>
                                     </>
