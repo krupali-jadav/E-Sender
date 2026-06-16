@@ -79,8 +79,8 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
             if (data?.status) {
                 message.success(
                     editData
-                        ? message.success(data?.message || "Conact updated successfully")
-                        : message.success(data?.message || "Conact added successfully")
+                        ? data?.message || "Conact updated successfully"
+                        : data?.message || "Conact added successfully"
                 );
 
                 form.resetFields();

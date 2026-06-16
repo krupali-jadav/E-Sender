@@ -32,12 +32,8 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
             if (data?.status) {
                 message.success(
                     editData
-                        ? t("field.updated.successfully", {
-                            defaultValue: "Custom Field updated successfully",
-                        })
-                        : t("field.added.successfully", {
-                            defaultValue: "Custom Field added successfully",
-                        })
+                        ? data?.message || "Custom-field updated successfully"
+                        : data?.message || "Custom-field added successfully"
                 );
 
                 onSuccess?.();
