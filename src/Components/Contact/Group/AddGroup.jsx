@@ -24,8 +24,8 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
             if (data?.status) {
                 message.success(
                     editData
-                        ? message.success(data?.message || "Conact updated successfully")
-                        : message.success(data?.message || "Conact added successfully")
+                        ? data?.message || "Group updated successfully"
+                        : data?.message || "Group added successfully"
                 );
 
                 await fetchGroups(); // Refresh list
