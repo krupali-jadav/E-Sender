@@ -1,22 +1,26 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Empty, Flex, Form, message, Modal, Select, Space, Table } from 'antd'
+import { Button, Card, Dropdown, Flex, Form, message, Modal, Select, Space, Table, Typography } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import AddCustomeField from './AddCustomField';
+import { useEffect, useState } from 'react';
+import AddCustomField from '../../Contact/Custom Field/AddCustomField';
 import axiosInstance from '../../../util/axiosInstance';
-import { getCurrentTime } from '../../../util/commom.utils';
+import { formatDate, getCurrentTime } from '../../../util/commom.utils';
 import { exportToExcel } from 'react-json-to-excel';
 import { t } from 'i18next';
+import { deleteCustomField, getAllCustomFields } from './CustomeFieldApi';
+const { Text } = Typography;
 
 function CustomFields() {
-
+  const [fields, setFields] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedField, setSelectedField] = useState(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [filterType, setFilterType] = useState("all-time");
   const [status, setStatus] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [CustomFieldOpen, setCustomFieldOpen] = useState(false)
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("created-at");
@@ -27,13 +31,17 @@ function CustomFields() {
     setStatus("all");
     setPage(1);
     setSearch("");
-    setIsApplyFilter(false);
+    // setIsApplyFilter(false);
     setFilterType("all-time");
     setStartDate(null);
     setEndDate(null);
     setStatus("all");
     setShowFilterModal(false);
     filterForm.resetFields();
+  };
+  const openEditModal = (record) => {
+    setSelectedField(record);
+    setEditModalOpen(true);
   };
 
   const OrderStatuses = [
@@ -43,6 +51,56 @@ function CustomFields() {
     t("date", { defaultValue: "Date" }),
   ];
 
+  const getAllFields = async () => {
+    try {
+      setLoading(true);
+
+      const data = await getAllCustomFields({});
+
+      if (data?.status) {
+        setFields(data?.fields || []);
+        setTotal(data?.total || 0);
+      }
+    } catch (error) {
+      console.log(error)
+      message.error("Failed to fetch custom fields");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllFields();
+  }, []);
+
+  const handleDelete = (record) => {
+    Modal.confirm({
+      title: "Delete Custom Field",
+      content: `Are you sure you want to delete "${record.name}"?`,
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        try {
+          const data = await deleteCustomField({
+            field_id: record._id,
+          });
+
+          if (data?.status) {
+            message.success(
+              data?.message || "Custom Field deleted successfully"
+            );
+
+            getAllFields();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
   const onExport = async () => {
     try {
       setExporting(true);
@@ -77,40 +135,103 @@ function CustomFields() {
   const columns = [
     {
       title: t("sn", { defaultValue: "SN" }),
-      dataIndex: "sn",
       key: "sn",
+      render: (_, __, index) => index + 1,
+      width: 100,
     },
     {
       title: t("name", { defaultValue: "Name" }),
       dataIndex: "name",
       key: "name",
+      width: 400,
+      render: (_, record) => {
+        return <Text>{record?.name ? record?.name : "N/A"}</Text>;
+      },
     },
     {
       title: t("type", { defaultValue: "Type" }),
       dataIndex: "type",
       key: "type",
+      width: 400,
+      render: (type) => {
+        switch (type) {
+          case 1:
+            return "Text";
+          case 2:
+            return "Number";
+          case 3:
+            return "Boolean";
+          case 4:
+            return "Date";
+          default:
+            return "-";
+        }
+      },
     },
     {
       title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (date) => formatDate(date),
     },
     {
-      title: t("actions", { defaultValue: "Actions" }),
+      title: t("fallback.value", { defaultValue: "Fallback Value" }),
+      dataIndex: "fallbackValue",
+      key: "fallbackValue",
+      render: (value) => value || "N/A",
+    },
+    {
+      title: t("actions", {
+        defaultValue: "Actions",
+      }),
+      dataIndex: "actions",
+      fixed: "right",
       key: "actions",
-      render: () => (
-        <MoreOutlined />
-        // <Space>
-        //   <Button size="small" type="primary">
-        //     Edit
-        //   </Button>
-        //   <Button size="small" danger>
-        //     Delete
-        //   </Button>
-        // </Space>
+      width: 70,
+      render: (_, record) => (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "1",
+                label: t("edit", {
+                  defaultValue: "Edit",
+                }),
+                onClick: () => openEditModal(record),
+              },
+              {
+                key: "2",
+                label: (
+                  <Space
+                    onClick={() => {
+                      handleDelete(record);
+                    }}
+                  >
+                    <Text>
+                      {t("delete", {
+                        defaultValue: "Delete",
+                      })}
+                    </Text>
+                  </Space>
+                ),
+              },
+            ],
+          }}
+          trigger={["click"]}
+          placement="bottomRight"
+        >
+          <MoreOutlined
+            style={{
+              fontSize: "15px",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </Dropdown>
       ),
     },
-
   ];
 
   return (
@@ -122,13 +243,22 @@ function CustomFields() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setCustomFieldOpen(true)}>
+            onClick={() => {
+              setSelectedField(null);
+              setEditModalOpen(true);
+            }}>
             {t("add.custom.field", { defaultValue: "Add Custom Field" })}
           </Button>
 
-          <AddCustomeField
-            open={CustomFieldOpen}
-            onClose={() => setCustomFieldOpen(false)} />
+          <AddCustomField
+            open={editModalOpen}
+            onClose={() => {
+              setEditModalOpen(false);
+              setSelectedField(null);
+            }}
+            editData={selectedField}
+            onSuccess={getAllFields}
+          />
 
         </Flex>
       }
@@ -143,8 +273,10 @@ function CustomFields() {
 
         <Card bodyStyle={{ padding: 0 }}>
           <Table
+            rowKey="_id"
             columns={columns}
-            // dataSource={data}
+            dataSource={fields}
+            loading={loading}
             pagination={false}
             scroll={{ x: "max-content" }}
           />

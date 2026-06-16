@@ -1,27 +1,98 @@
-import { Button, Form, Input, Modal, Select } from "antd"
+import { Button, Form, Input, message, Modal, Select } from "antd"
 import { t } from "i18next"
+import { addCustomField, updateCustomField } from "./CustomeFieldApi";
+import { useEffect } from "react";
 
-function AddCustomField({ open, onClose }) {
+function AddCustomField({ open, onClose, onSuccess, editData }) {
     const [form] = Form.useForm();
+    const handleSubmit = async (values) => {
+        try {
+            const typeMap = {
+                text: 1,
+                number: 2,
+                boolean: 3,
+                date: 4,
+            };
 
+            let data;
+
+            if (editData?._id) {
+                data = await updateCustomField({
+                    field_id: editData._id,
+                    name: values.name,
+                    type: typeMap[values.type],
+                });
+            } else {
+                data = await addCustomField({
+                    name: values.name,
+                    type: typeMap[values.type],
+                });
+            }
+
+            if (data?.status) {
+                message.success(
+                    editData
+                        ? t("field.updated.successfully", {
+                            defaultValue: "Custom Field updated successfully",
+                        })
+                        : t("field.added.successfully", {
+                            defaultValue: "Custom Field added successfully",
+                        })
+                );
+
+                onSuccess?.();
+                form.resetFields();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        if (open && editData) {
+            form.setFieldsValue({
+                name: editData.name,
+                type:
+                    editData.type === 1
+                        ? "text"
+                        : editData.type === 2
+                            ? "number"
+                            : editData.type === 3
+                                ? "boolean"
+                                : "date",
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [open, editData, form]);
     return (
         <Modal
-            title={t("add.custom.field", { defaultValue: "Add Custom Field" })}
+            title={
+                editData
+                    ? t("edit.custom.field", {
+                        defaultValue: "Edit Custom Field",
+                    })
+                    : t("add.custom.field", {
+                        defaultValue: "Add Custom Field",
+                    })
+            }
             open={open}
             onCancel={onClose}
             width={500}
             centered
             footer={[
                 <Button key="cancel" onClick={onClose}>
-                {t("cancel", { defaultValue: "Cancel" })}
+                    {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary" onClick={()=>form.submit()}>
-                    {t("add", { defaultValue: "Add" })}
+                <Button key="add" type="primary" onClick={() => form.submit()}>
+                    {editData
+                        ? t("edit", { defaultValue: "Edit" })
+                        : t("add", { defaultValue: "Add" })}
                 </Button>,
             ]}
         >
 
-            <Form layout="vertical" form={form}>
+            <Form layout="vertical" form={form} onFinish={handleSubmit}>
                 <Form.Item
                     label={t("name", { defaultValue: "Name" })}
                     name="name"
@@ -32,8 +103,8 @@ function AddCustomField({ open, onClose }) {
                         },
                     ]}
                 >
-                    <Input 
-                    placeholder={t("enter.name", { defaultValue: "Enter name" })} 
+                    <Input
+                        placeholder={t("enter.name", { defaultValue: "Enter name" })}
                     />
                 </Form.Item>
 
@@ -72,7 +143,7 @@ function AddCustomField({ open, onClose }) {
                     />
                 </Form.Item>
 
-                 <Form.Item
+                <Form.Item
                     label={t("fallback.value", { defaultValue: "Fallback Value" })}
                     name="fallbackValue"
                     rules={[
@@ -82,9 +153,9 @@ function AddCustomField({ open, onClose }) {
                         },
                     ]}
                 >
-                    <Input 
-                    placeholder={t("enter.fallback.value", { defaultValue: "Enter Fallback Value" })}
-                     />
+                    <Input
+                        placeholder={t("enter.fallback.value", { defaultValue: "Enter Fallback Value" })}
+                    />
                 </Form.Item>
             </Form>
 

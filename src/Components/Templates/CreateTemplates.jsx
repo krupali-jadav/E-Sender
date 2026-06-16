@@ -1,13 +1,39 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Form, Input, Row, Space } from "antd";
+import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
 // import Package from "esender-email-editor";
 import { t } from "i18next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import axiosInstance from "../../util/axiosInstance";
 
 function CreateTemplates() {
 
     const [showEditor] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [htmlContent, setHtmlContent] = useState("");
+    const [jsonContent, setJsonContent] = useState({});
+
+    const handleSubmit = async (values) => {
+        try {
+            setLoading(true);
+
+            const payload = {
+                projectId: values.projectId,
+                HTML: htmlContent,          
+                JSON: jsonContent,         
+            };
+
+            const response = await axiosInstance.post("/api/templates", payload);
+
+            console.log(response.data);
+            message.success("Template created successfully");
+        } catch (error) {
+            console.error(error);
+            message.error("Failed to create template");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const location = useLocation();
     const template = location.state?.template;
@@ -19,7 +45,8 @@ function CreateTemplates() {
                     <Form layout="vertical" initialValues={{
                         templateName: template?.name || "",
                         subject: template?.subject || "",
-                    }}>
+                    }}
+                        onFinish={handleSubmit}>
                         <Row gutter={16} align="bottom">
                             <Col flex="1">
                                 <Form.Item

@@ -1,13 +1,43 @@
 import { Button, Card, Input, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { generateApiKey } from "./SettingApi";
 
 function ApiKey() {
-   const theme = useSelector((state) => state?.app?.theme);
-  const apiKey = "demoApi_Key";
+  const theme = useSelector((state) => state?.app?.theme);
+  const [visible, setVisible] = useState(false);
+  const [apiKey, setApiKey] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleCopy = async () => {
+    if (!apiKey) {
+      message.warning("No API Key available");
+      return;
+    }
+
     await navigator.clipboard.writeText(apiKey);
     message.success("API Key copied");
+  };
+
+  const handleGenerate = async () => {
+    try {
+      setLoading(true);
+
+      const data = await generateApiKey();
+
+      if (data?.status) {
+        setApiKey(data.apiKey);
+
+        message.success(
+          data?.message || "API key generated successfully"
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,8 +54,11 @@ function ApiKey() {
         <Input.Password
           value={apiKey}
           readOnly
-          visibilityToggle={false}
-          style={{ width: "calc(100% - 120px)" }}
+          visibilityToggle={{
+            visible,
+            onVisibleChange: setVisible,
+          }}
+          style={{ width: "calc(100% - 160px)" }}
         />
 
         <Button
@@ -33,11 +66,15 @@ function ApiKey() {
           onClick={handleCopy}
         />
 
-        <Button type="primary">
+        <Button
+          type="primary"
+          loading={loading}
+          onClick={handleGenerate}
+        >
           Generate
         </Button>
       </Input.Group>
     </Card>
   );
 }
-export default ApiKey
+export default ApiKey;

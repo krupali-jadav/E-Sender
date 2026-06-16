@@ -1,14 +1,68 @@
 import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Empty, Flex, Table } from "antd";
+import { Button, Card, Dropdown, Flex, message, Modal, Table } from "antd";
 import { t } from "i18next";
 import AddSupport from "./AddSupport";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { deleteSupport, getUserSetting } from "./SettingApi";
 
 function Support() {
+  const [supportList, setSupportList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedSupport, setSelectedSupport] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const theme = useSelector((state) => state?.app?.theme);
+  const getSupportList = async () => {
+    try {
+      setLoading(true);
+      const data = await getUserSetting();
 
-  const [AddSupportOpen, setAddSupportOpen] = useState(false);
-   const theme = useSelector((state) => state?.app?.theme);
+      if (data?.status) {
+        setSupportList(data?.setting?.support || []);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getSupportList();
+  }, []);
+
+  const openEditModal = (record) => {
+    setSelectedSupport(record);
+    setModalOpen(true);
+  };
+
+  const handleDelete = (record) => {
+    Modal.confirm({
+      title: "Delete Support",
+      content: `Are you sure you want to delete "${record.name}"?`,
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        try {
+          const data = await deleteSupport({
+            support_id: record._id,
+          });
+
+          if (data?.status) {
+            message.success(
+              data?.message || "Support deleted successfully"
+            );
+
+            getSupportList(); // table refresh
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
   const columns = [
     {
       title: t("name", { defaultValue: "Name" }),
@@ -17,8 +71,8 @@ function Support() {
     },
     {
       title: t("phone_number", { defaultValue: "Phone Number" }),
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
       title: t("department", { defaultValue: "Department" }),
@@ -28,20 +82,34 @@ function Support() {
     {
       title: t("actions", { defaultValue: "Actions" }),
       key: "actions",
-      render: () => (
-        <MoreOutlined />
-        // <Space>
-        //   <Button size="small" type="primary">
-        //     {/* {t("edit", { defaultValue: "Edit" })} */}
-        //     Edit
-        //   </Button>
-        //   <Button size="small" danger>
-        //     {/* {t("delete", { defaultValue: "Delete" })} */}
-        //     Delete
-        //   </Button>
-        // </Space>
+      width: 70,
+      render: (_, record) => (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: "1",
+                label: t("edit", { defaultValue: "Edit" }),
+                onClick: () => openEditModal(record),
+              },
+              {
+                key: "2",
+                label: t("delete", { defaultValue: "Delete" }),
+                onClick: () => handleDelete(record),
+              },
+            ],
+          }}
+          trigger={["click"]}
+        >
+          <MoreOutlined
+            style={{
+              cursor: "pointer",
+              fontSize: 15,
+            }}
+          />
+        </Dropdown>
       ),
-    },
+    }
 
   ];
   return (
@@ -54,20 +122,29 @@ function Support() {
         <Button
           type="primary"
           icon={<PlusOutlined />}
-          onClick={() => setAddSupportOpen(true)}
+          onClick={() => {
+            setSelectedSupport(null);
+            setModalOpen(true);
+          }}
         >
           {t("add", { defaultValue: "Add" })}
         </Button>
         <AddSupport
-          open={AddSupportOpen}
-          onClose={() => setAddSupportOpen(false)}
+          open={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+            setSelectedSupport(null);
+          }}
+          editData={selectedSupport}
+          onSuccess={getSupportList}
         />
       </Flex>
 
       <Table
+        loading={loading}
         scroll={{ x: "max-content" }}
         columns={columns}
-        dataSource={[]}
+        dataSource={supportList}
       />
     </Card>
   )
