@@ -55,7 +55,19 @@ function CustomFields() {
     try {
       setLoading(true);
 
-      const data = await getAllCustomFields({});
+      const data = await getAllCustomFields({
+        page: page - 1,
+        limit: 10,
+        search: search,
+        sort_by: sortBy,
+        filter_by: {
+          date_type: "all",
+          date: {
+            start_date: null,
+            end_date: null,
+          },
+        },
+      });
 
       if (data?.status) {
         setFields(data?.fields || []);
@@ -71,7 +83,7 @@ function CustomFields() {
 
   useEffect(() => {
     getAllFields();
-  }, []);
+  }, [search, page, sortBy]);
 
   const handleDelete = (record) => {
     Modal.confirm({
@@ -269,7 +281,14 @@ function CustomFields() {
         <SearchHeader
           onExport={onExport}
           exporting={exporting}
-          onFilterClick={() => setShowFilterModal(true)} page="custom-fields" />
+          onFilterClick={() => setShowFilterModal(true)} page="custom-fields"
+          onSearch={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          onReset={resetFilterParameters}
+          searchValue={search}
+        />
 
         <Card bodyStyle={{ padding: 0 }}>
           <Table

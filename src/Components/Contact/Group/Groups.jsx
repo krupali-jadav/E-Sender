@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Search Header/SearchHeader'
-import { Button, Card, Dropdown, Empty, message, Modal, Space, Table, Typography } from 'antd'
+import { Button, Card, Dropdown, Empty, Form, message, Modal, Space, Table, Typography } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { useEffect, useState } from 'react';
@@ -14,12 +14,32 @@ const { Title, Text } = Typography;
 function Groups() {
   const [AddGroupOpen, setAddGroupOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("created-at");
   const [total, setTotal] = useState(0);
   const [groups, setGroups] = useState([]);
+  const [status, setStatus] = useState("All");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [filterForm] = Form.useForm();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
+
+  const resetFilterParameters = () => {
+    setStatus("all");
+    setPage(1);
+    setSearch("");
+    setSortBy("created-at");
+    // setIsApplyFilter(false);
+    setFilterType("all-time");
+    setStartDate(null);
+    setEndDate(null);
+    setStatus("all");
+    setShowFilterModal(false);
+    filterForm.resetFields();
+  };
 
   const onExport = async () => {
     try {
@@ -57,10 +77,10 @@ function Groups() {
     setLoading(true);
     try {
       const data = await getAllGroups({
-        page: 0,
+        page: page - 1,
         limit: 10,
-        search: "",
-        sort_by: "created-at",
+        search: search,
+        sort_by: sortBy,
         filter_by: {
           date_type: "all",
           date: {
@@ -82,7 +102,7 @@ function Groups() {
 
   useEffect(() => {
     fetchGroups();
-  }, []);
+  }, [search, page, sortBy]);
 
   const openEditModal = (record) => {
     setEditingGroup(record);
@@ -230,7 +250,14 @@ function Groups() {
         <SearchHeader
           onExport={onExport}
           exporting={exporting}
-          page="groups" />
+          page="groups"
+          onSearch={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          onReset={resetFilterParameters}
+          searchValue={search}
+        />
 
         <Card bodyStyle={{ padding: 0 }}>
           <Table

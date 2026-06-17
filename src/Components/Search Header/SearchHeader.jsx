@@ -3,7 +3,7 @@ import { Flex, Input } from 'antd';
 import { Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
 
-function SearchHeader({ page, onFilterClick, onExport, exporting }) {
+function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onReset, searchValue }) {
     let sortByItems = [];
     if (page === "contacts") {
         sortByItems = [
@@ -79,6 +79,9 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
                             })}
                             enterButton={<SearchOutlined />}
                             allowClear
+                            value={searchValue}
+                            onSearch={(value) => onSearch?.(value)}
+                            onChange={(e) => onSearch?.(e.target.value)}
                         />
                     </Col>
                 </Row>
@@ -94,6 +97,9 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
                         placeholder={t("search...", { defaultValue: "Search...", })}
                         enterButton={<SearchOutlined />}
                         allowClear
+                        value={searchValue}
+                        onSearch={(value) => onSearch?.(value)}
+                        onChange={(e) => onSearch?.(e.target.value)}
                     />
                 </Col>
 
@@ -101,7 +107,7 @@ function SearchHeader({ page, onFilterClick, onExport, exporting }) {
 
                 <Col xs={24} sm={24} md={24} lg={24} xl={12} xxl={12}>
                     <Flex justify="end" gap={10} wrap>
-                        <Button style={{ minWidth: "18%" }}>
+                        <Button style={{ minWidth: "18%" }} onClick={onReset}>
                             <RedoOutlined />
                             {t("reset", { defaultValue: "Reset" })}
                         </Button>
