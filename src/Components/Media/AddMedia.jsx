@@ -1,10 +1,63 @@
 import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons'
-import { Button, Card, Flex, Modal, Space } from 'antd'
+import { Button, Card, Flex, message, Modal, Space } from 'antd'
 import Dragger from 'antd/es/upload/Dragger'
 import { t } from 'i18next'
-import React from 'react'
+import React, { useState } from 'react'
+import { addMedia, addMultipleMedia } from './MediaApi'
 
-function AddMedia({ open, onClose, onAdd }) {
+function AddMedia({ open, onClose, fetchMedia }) {
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const uploadProps = {
+        multiple: true,
+
+        beforeUpload: (file) => {
+            setSelectedFiles((prev) => [...prev, file]);
+            return false;
+        },
+
+        onRemove: (file) => {
+            setSelectedFiles((prev) =>
+                prev.filter((f) => f.uid !== file.uid)
+            );
+        },
+    };
+
+    const handleUpload = async () => {
+        if (!selectedFiles.length) {
+            message.error("Please select files");
+            return;
+        }
+        const firstFile = selectedFiles[0];
+
+        let mediaType = "other";
+
+        if (firstFile.type.startsWith("image/")) {
+            mediaType = "image";
+        } else if (firstFile.type.startsWith("video/")) {
+            mediaType = "video";
+        } else if (
+            firstFile.type.includes("pdf") ||
+            firstFile.type.includes("word")
+        ) {
+            mediaType = "document";
+        }
+
+        const data =
+            selectedFiles.length === 1
+                ? await addMedia(selectedFiles[0], mediaType)
+                : await addMultipleMedia(selectedFiles, mediaType);
+
+        if (data?.status) {
+            message.success(data?.message || "Media uploaded successfully");
+            onClose();
+
+            await fetchMedia();
+            setSelectedFiles([]);
+            onClose();
+        }
+    };
+
     return (
         <Modal
             title={t("add.media", { defaultValue: "Add Media" })}
@@ -19,7 +72,7 @@ function AddMedia({ open, onClose, onAdd }) {
                     size="small"
                 // style={{ background: "#fafafa" }}
                 >
-                    <Dragger
+                    <Dragger {...uploadProps}
                     // style={{ padding: "20px", background: "#fff" }}
                     // {...uploadProps}
                     >
@@ -38,13 +91,13 @@ function AddMedia({ open, onClose, onAdd }) {
                         {t("cancel", { defaultValue: "Cancel" })}
                     </Button>
 
-                    <Button type="primary" onClick={onAdd}>
+                    <Button type="primary" onClick={handleUpload}>
                         {t("upload", { defaultValue: "Upload" })}
                     </Button>
                 </Flex>
             </Space>
         </Modal >
     )
-}
 
+}
 export default AddMedia

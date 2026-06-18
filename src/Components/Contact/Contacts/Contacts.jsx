@@ -34,6 +34,7 @@ function Contacts() {
         setStatus("all");
         setPage(1);
         setSearch("");
+        setSortBy("created-at");
         setIsApplyFilter(false);
         setFilterType("all-time");
         setStartDate(null);
@@ -48,10 +49,10 @@ function Contacts() {
 
         try {
             const response = await getAllContacts({
-                page: 0,
+                page: page - 1,
                 limit: 10,
-                search: "",
-                sort_by: "created-at",
+                search: search,
+                sort_by: sortBy,
                 filter_by: {
                     date_type: "all",
                     date: {
@@ -73,7 +74,7 @@ function Contacts() {
     };
     useEffect(() => {
         fetchContacts();
-    }, []);
+    }, [search, page, sortBy]);
 
     const handleEdit = (record) => {
         setEditContact(record);
@@ -351,6 +352,12 @@ function Contacts() {
                         page="contacts"
                         onExport={onExport}
                         exporting={exporting}
+                        onSearch={(value) => {
+                            setSearch(value);
+                            setPage(1);
+                        }}
+                        onReset={resetFilterParameters}
+                        searchValue={search}
                     />
 
                     <Card bodyStyle={{ padding: 0 }}>
