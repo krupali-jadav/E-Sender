@@ -5,13 +5,14 @@ const initialState = {
   panel: {},
   lang: "en",
   currency: "INR",
+  selectedProject: null,
 };
 
 export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-     setTheme: (state, action) => {
+    setTheme: (state, action) => {
       state.theme = action.payload;
     },
     changeLanguage: (state, action) => {
@@ -26,6 +27,9 @@ export const appSlice = createSlice({
     changePageTitle: (state, action) => {
       state.pageTitle = action.payload;
     },
+    setSelectedProject: (state, action) => {
+      state.selectedProject = action.payload;
+    },
   },
 });
 
@@ -35,6 +39,7 @@ export const {
   changeCurrency,
   setPanel,
   changePageTitle,
+  setSelectedProject,
 
 } = appSlice.actions;
 

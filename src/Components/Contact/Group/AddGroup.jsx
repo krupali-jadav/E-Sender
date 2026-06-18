@@ -28,11 +28,11 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
                         : data?.message || "Group added successfully"
                 );
 
-                await fetchGroups(); // Refresh list
+                await fetchGroups(); 
 
                 form.resetFields();
 
-                onClose(); // Close modal
+                onClose();
             }
         } catch (error) {
             console.log(error);

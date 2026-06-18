@@ -8,121 +8,342 @@ import {
     Typography,
     Avatar,
     Skeleton,
-    Modal,
     Form,
     Flex,
+    Switch,
+    Table,
+    Steps,
+    Space,
 } from "antd";
-import { BulbOutlined, PlusOutlined, } from "@ant-design/icons";
+import {  PlusOutlined, } from "@ant-design/icons";
 import countryList from "../../util/countryList.json";
 import { useState } from "react";
 import { t } from "i18next";
+import { PageContainer } from "@ant-design/pro-components";
 
 const { Title, Text } = Typography;
 
-export default function Domain({ onClose, open }) {
+export default function AddDomain() {
     const [form] = Form.useForm();
     const [domainName, setDomainName] = useState("");
+    const [showDnsRecords, setShowDnsRecords] = useState(false);
+    const [current, setCurrent] = useState(0);
 
     const handleFinish = (values) => {
         setDomainName(values.domain);
+        setCurrent(1);
+        setShowDnsRecords(true);
     };
+    const dnsColumns = [
+        {
+            title: "Type",
+            dataIndex: "type",
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+        },
+        {
+            title: "Content",
+            dataIndex: "content",
+            ellipsis: true,
+        },
+        {
+            title: "TTL",
+            dataIndex: "ttl",
+        },
+        {
+            title: "Priority",
+            dataIndex: "priority",
+        },
+    ];
+    const verificationData = [
+        {
+            key: 1,
+            type: "TXT",
+            name: "resend._domainkey",
+            content: "p=MIGfMA...",
+            ttl: "Auto",
+            priority: "-",
+        },
+    ];
+
+    const sendingData = [
+        {
+            key: 1,
+            type: "MX",
+            name: "send",
+            content: "feedback-smtp.ap-south-1.amazonses.com",
+            ttl: "Auto",
+            priority: "10",
+        },
+        {
+            key: 2,
+            type: "TXT",
+            name: "send",
+            content: "v=spf1 include:amazonses.com ~all",
+            ttl: "Auto",
+            priority: "-",
+        },
+    ];
+
+    const dmarcData = [
+        {
+            key: 1,
+            type: "TXT",
+            name: "_dmarc",
+            content: "v=DMARC1; p=none;",
+            ttl: "Auto",
+            priority: "-",
+        },
+    ];
     return (
-        <Modal
-            open={open}
-            onCancel={onClose}
-            footer={null}
-            width="50%"
-            centered
-        >
-            <Form form={form}
-                layout="vertical"
-                onFinish={handleFinish}>
-                                <Row gutter={[32, 24]}>
-                                    <Col xs={24} lg={12}>
-                                        <Form.Item>
-                                            <Title level={3} style={{ marginBottom: 0 }}>
-                                                {t("add.domain", { defaultValue: "Add Domain" })}
-                                            </Title>
+        <PageContainer title={t("add.domain", { defaultValue: "Add Domain" })} >
+            {!showDnsRecords ? (
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleFinish}
+                    
+                >
+                    <Row gutter={[16, 16]} style={{ display: "flex", justifyContent: "center", }}>
+                    
+                        <Col xs={16} lg={10}>
+                            <Card>
+                                <Title level={3} style={{ marginBottom: 4 }}>
+                                    Add New Domain
+                                </Title>
 
-                                            <Text type="secondary">
-                                                {t("add.domain.description", { defaultValue: "Add your domain to start sending emails" })}
-                                            </Text>
-                                        </Form.Item>
+                                <Text type="secondary">
+                                    Configure your sender identity to start dispatching high-deliverability email campaigns.
+                                </Text>
 
-                                        <Form.Item
-                                            label={t("domain.name", { defaultValue: "Name" })}
-                                            name="domain"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message: t("please.enter.domain.name", { defaultValue: "Please enter domain name" }),
-                                                },
-                                            ]}
-                                        >
-                                            <Input size="large" placeholder="example.com" suffix={<BulbOutlined/>} /> 
-                                        </Form.Item>
+                                <div style={{ marginTop: 32 }}>
+                                    <Title level={5}>
+                                        Domain Configuration
+                                    </Title>
 
-                                        <Form.Item
-                                            label={t("country", { defaultValue: "Country" })}
-                                            name="country"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                    message: t("please.select.country", { defaultValue: "Please select country" }),
-                                                },
-                                            ]}
-                                        >
-                                            <Select
-                                                showSearch
-                                                placeholder={t("select.country", { defaultValue: "Select Country" })}
-                                                options={countryList.map((c) => ({
-                                                    value: c.countryCode,
-                                                    label: c.countryNameEn,
-                                                }))}
-                                            />
-                                        </Form.Item>
-
-                                        <Form.Item>
-                                            <Button
-                                                type="primary"
-                                                icon={<PlusOutlined />}
-                                                htmlType="submit"
+                                    <Row gutter={6} style={{ marginTop: 16, display: "flex", flexDirection: "column", }}>
+                                        <Col span={20}>
+                                            <Form.Item
+                                                label="Domain Name"
+                                                name="domain"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please enter domain name",
+                                                    },
+                                                ]}
                                             >
-                                                {t("add.domain", { defaultValue: "Add Domain" })}
-                                            </Button>
-                                        </Form.Item>
+                                                <Input
+                                                    placeholder="e.g. mail.company.com"
+                                                />
+                                            </Form.Item>
+                                        </Col>
+
+                                        <Col span={20}>
+                                            <Form.Item
+                                                label="Country"
+                                                name="country"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please select country",
+                                                    },
+                                                ]}
+                                            >
+                                                <Select
+                                                    placeholder="Select a country"
+                                                    options={countryList.map((c) => ({
+                                                        value: c.countryCode,
+                                                        label: c.countryNameEn,
+                                                    }))}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+
+                                    <Space>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            icon={<PlusOutlined />}
+                                        >
+                                            Add Domain
+                                        </Button>
+
+                                        <Button>
+                                            Cancel
+                                        </Button>
+                                    </Space>
+                                </div>
+                            </Card>
+
+                            {/* <Row gutter={16} style={{ marginTop: 16 }}>
+                                <Col span={12}>
+                                    <Card>
+                                        <Title level={5}>
+                                            DMARC Security
+                                        </Title>
+
+                                        <Text type="secondary">
+                                            Automated protection against domain spoofing and phishing attempts.
+                                        </Text>
+                                    </Card>
+                                </Col>
+
+                                <Col span={12}>
+                                    <Card>
+                                        <Title level={5}>
+                                            Fast Verification
+                                        </Title>
+
+                                        <Text type="secondary">
+                                            Our DNS propagation checker updates every 60 seconds.
+                                        </Text>
+                                    </Card>
+                                </Col>
+                            </Row> */}
+                        </Col>
+
+                        <Col xs={24} lg={8}>
+                            <Card>
+                                <Flex gap={10}>
+                                    <Avatar>Y</Avatar>
+                                    <div>
+                                        <Text strong>
+                                            {t("your.email", { defaultValue: "Your Email" })}{" "}{` <youremail@${domainName || "domain"}.com>`}
+                                        </Text>
+                                        <br />
+                                        <Text type="secondary">
+                                            to me
+                                        </Text>
+                                    </div>
+                                </Flex>
+
+                                <Skeleton
+                                    active
+                                    title={false}
+                                    paragraph={{ rows: 5 }}
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
+                </Form>
+            ) : (
+                <div style={{ marginTop: 32 }}>
+                    <Row gutter={32}>
+                        <Col xs={24} md={4}>
+                            <Steps
+                                direction="vertical"
+                                current={1}
+                                items={[
+                                    {
+                                        title: "Domain",
+                                    },
+                                    {
+                                        title: "DNS Records",
+                                    },
+                                ]}
+                            />
+                        </Col>
+
+                        <Col xs={24} md={20}>
+                            <Card style={{ marginBottom: 24 }}>
+                                <Row justify="space-between" align="middle">
+                                    <Col>
+                                        <Title level={5} style={{ marginBottom: 0 }}>
+                                            {domainName}
+                                        </Title>
+
+                                        <Text type="secondary">
+                                            Status: We're checking your records.
+                                        </Text>
                                     </Col>
 
-                                    <Col xs={24} lg={12} style={{ marginTop: 25}}>
-                                        <Card >
-                                            <Flex gap={10}>
-                                                <Avatar>Y</Avatar>
-                                                <div>
-                                                    <Text strong>
-                                                        {t("your.email", { defaultValue: "Your Email" })}{" "}{` <youremail@${domainName || "domain"}.com>`}
-                                                    </Text>
-                                                    <br />
-                                                    <Text type="secondary">
-                                                        to me
-                                                    </Text>
-                                                </div>
-                                            </Flex>
-
-                                            <Skeleton
-                                                active
-                                                title={false}
-                                                paragraph={{
-                                                    rows: 3,
-                                                }}
-                                                style={{
-                                                    marginTop: 24,
-                                                }}
-                                            />
-                                        </Card>
+                                    <Col>
+                                        <Button type="primary">
+                                            Pending Verification
+                                        </Button>
                                     </Col>
                                 </Row>
-                          
-            </Form>
-        </Modal>
+                            </Card>
+
+                            {/* DNS Records */}
+                            <Card>
+                                <Row justify="space-between" align="middle">
+                                    <Col>
+                                        <Title level={4}>
+                                            Fill in your DNS Records
+                                        </Title>
+
+                                        <Text type="secondary">
+                                            Copy these records into your DNS provider dashboard.
+                                        </Text>
+                                    </Col>
+
+                                    <Col>
+                                        <Space>
+                                            <Text>Enable Sending</Text>
+                                            <Switch />
+                                        </Space>
+                                    </Col>
+                                </Row>
+
+                                <div style={{ marginTop: 32 }}>
+                                    <Title level={5}>DKIM RECORD</Title>
+
+                                    <Table
+                                        columns={dnsColumns}
+                                        dataSource={verificationData}
+                                        pagination={false}
+                                    />
+                                </div>
+
+                                <div style={{ marginTop: 32 }}>
+                                    <Title level={5}>SPF RECORD</Title>
+
+                                    <Table
+                                        columns={dnsColumns}
+                                        dataSource={sendingData}
+                                        pagination={false}
+                                    />
+                                </div>
+
+                                <div style={{ marginTop: 32 }}>
+                                    <Title level={5}>DMARC RECORD</Title>
+
+                                    <Table
+                                        columns={dnsColumns}
+                                        dataSource={dmarcData}
+                                        pagination={false}
+                                    />
+                                </div>
+
+                                <Row
+                                    justify="space-between"
+                                    align="middle"
+                                    style={{ marginTop: 32 }}
+                                >
+                                    <Col>
+                                        <Text type="secondary">
+                                            Records will auto-verify as they propagate.
+                                        </Text>
+                                    </Col>
+
+                                    <Col>
+                                        <Button type="primary">
+                                            Verify Now
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                    </Row>
+                </div>
+            )}
+
+
+        </PageContainer>
     );
 }

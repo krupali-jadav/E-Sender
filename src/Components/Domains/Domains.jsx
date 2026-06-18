@@ -1,16 +1,16 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Components/Search Header/SearchHeader'
-import { Button, Card, Empty, message, Space, Table, Tag } from 'antd'
+import { Button, Card, message, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 import { exportToExcel } from 'react-json-to-excel';
 import { getCurrentTime } from '../../util/commom.utils';
 import axiosInstance from '../../util/axiosInstance';
 import { t } from 'i18next';
-import AddDomain from './AddDomain';
+import { useNavigate } from 'react-router-dom';
 
 function Domains() {
-  const [AddDomainOpen, setAddDomainOpen] = useState(false);
+  const navigate = useNavigate();
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("created-at");
@@ -106,14 +106,10 @@ function Domains() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setAddDomainOpen(true)}
+            onClick={() => navigate("/domains/add")}
           >
             {t("add.domain", { defaultValue: "Add Domain" })}
           </Button>
-          
-          <AddDomain
-            open={AddDomainOpen}
-            onClose={() => setAddDomainOpen(false)} />
         </Space>
       }
     >

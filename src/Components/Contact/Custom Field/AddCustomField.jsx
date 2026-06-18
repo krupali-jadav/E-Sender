@@ -1,12 +1,14 @@
 import { Button, Form, Input, message, Modal, Select } from "antd"
 import { t } from "i18next"
 import { addCustomField, updateCustomField } from "./CustomeFieldApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function AddCustomField({ open, onClose, onSuccess, editData }) {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
     const handleSubmit = async (values) => {
         try {
+            setLoading(true);
             const typeMap = {
                 text: 1,
                 number: 2,
@@ -21,11 +23,13 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                     field_id: editData._id,
                     name: values.name,
                     type: typeMap[values.type],
+                    fallbackValue: values.fallbackValue,
                 });
             } else {
                 data = await addCustomField({
                     name: values.name,
                     type: typeMap[values.type],
+                    fallbackValue: values.fallbackValue,
                 });
             }
 
@@ -42,12 +46,15 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
     useEffect(() => {
         if (open && editData) {
             form.setFieldsValue({
                 name: editData.name,
+                fallbackValue: editData.fallbackValue,
                 type:
                     editData.type === 1
                         ? "text"
@@ -77,10 +84,10 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
             width={500}
             centered
             footer={[
-                <Button key="cancel" onClick={onClose}>
+                <Button key="cancel" disabled={loading} onClick={onClose}>
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary" onClick={() => form.submit()}>
+                <Button key="add" type="primary" loading={loading} onClick={() => form.submit()}>
                     {editData
                         ? t("edit", { defaultValue: "Edit" })
                         : t("add", { defaultValue: "Add" })}
@@ -107,6 +114,12 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                 <Form.Item
                     label={t("type", { defaultValue: "Type" })}
                     name="type"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please select type",
+                        },
+                    ]}
                 >
                     <Select
                         placeholder={t("select.type", { defaultValue: "Select Type" })}

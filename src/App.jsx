@@ -16,6 +16,7 @@ import Invoice from "./Components/Orders/Invoice";
 import Templates from "./Components/Templates/Templates";
 import Campaigns from "./Components/Campaigns/Campaigns";
 import Domains from "./Components/Domains/Domains";
+import AddDomain from "./Components/Domains/AddDomain";
 import Documentation from "./Components/Documentation/Documentation";
 import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
@@ -75,6 +76,7 @@ function App() {
     { path: "/campaigns", component: Campaigns },
     { path: "/campaigns/create-campaign", component: CreateCampaigns },
     { path: "/domains", component: Domains },
+    { path: "/domains/add", component: AddDomain },
     { path: "/logs", component: Logs },
     { path: "/webhooks", component: WebHook },
     { path: "/webhook-details", component: WebHookDetails },
