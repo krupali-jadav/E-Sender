@@ -3,7 +3,7 @@ import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCi
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
-import SearchHeader from "../Search Header/SearchHeader";
+import SearchHeader from "../../Components/Search Header/SearchHeader";
 import { useEffect, useState } from "react";
 import CreateProjectModal from "./CreateProject";
 import { getTemplatesByProject } from "./TemplatesApi";
@@ -19,7 +19,6 @@ function Templates() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
-  // const [selectedProject, setSelectedProject] = useState(null);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const selectedProject = useSelector(
     (state) => state.app.selectedProject

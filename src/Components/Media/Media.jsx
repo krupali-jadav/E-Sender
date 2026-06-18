@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { PlusOutlined, FileImageOutlined, VideoCameraOutlined, FileTextOutlined, DeleteOutlined } from "@ant-design/icons";
+import  { useEffect, useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal } from "antd";
 import { t } from "i18next";
 
-import SearchHeader from "../Search Header/SearchHeader";
+import SearchHeader from "../../Components/Search Header/SearchHeader";
 import AddMedia from "./AddMedia";
 import { deleteMedia, getAllMedia } from "./MediaApi";
 

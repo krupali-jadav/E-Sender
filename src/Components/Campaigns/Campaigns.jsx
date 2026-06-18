@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../Components/Search Header/SearchHeader'
-import { Button, Card, Empty, message, Space, Table } from 'antd'
+import { Button, Card, message, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 import { exportToExcel } from 'react-json-to-excel';
