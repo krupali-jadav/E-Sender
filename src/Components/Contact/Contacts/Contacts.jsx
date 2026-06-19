@@ -124,7 +124,7 @@ function Contacts() {
     const onExport = async () => {
         try {
             setExporting(true);
-            const { data } = await axiosInstance.post(``, {
+            const { data } = await axiosInstance.post(`/api/user/contact/all`, {
                 page: 0,
                 limit: total,
                 search: search,
@@ -132,22 +132,26 @@ function Contacts() {
             });
 
             if (data?.status) {
-                const allOrders = data?.orders;
-                const exportData = allOrders?.map((ord) => ({
-                    orderId: ord?._id,
-                    name: ord?.name,
-                    type: ord?.type,
-                    amount: ord?.orderTotal,
-                    status: ord?.status,
-                    paymentMethod: ord?.paymentId?.gateway,
-                    createdAt: ord?.createdAt,
+                const contacts = data?.contacts || [];
+                const exportData = contacts.map((contact) => ({
+                    ContactId: contact._id,
+                    Name: contact.name,
+                    Email: contact.email,
+                    Blocked: contact.blocked,
+                    Unsubscribe: contact.unsubscribe,
+                    CreatedAt: contact.createdAt,
                 }));
-                exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+                exportToExcel(exportData, `all_Contacts_${getCurrentTime()}`);
             } else {
                 message.error(data?.message || "Failed to fetch contacts for export");
             }
         } catch (error) {
-            message.error("An error occurred while exporting Contacts", error);
+            console.error("Export Error:", error);
+            message.error(
+                error?.response?.data?.message ||
+                error?.message ||
+                "An error occurred while exporting Contacts"
+            );
         } finally {
             setExporting(false);
         }

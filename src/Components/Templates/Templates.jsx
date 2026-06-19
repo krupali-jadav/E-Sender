@@ -184,10 +184,9 @@ function Templates() {
           </Col>}
           onCancel={() => setProjectModalOpen(false)}
         >
-          {/* <Row justify="end" >
 
-          </Row> */}
           <List
+            style={{ overflow: "auto", height: 300 }}
             size="small"
             dataSource={projects}
             renderItem={(project) => {

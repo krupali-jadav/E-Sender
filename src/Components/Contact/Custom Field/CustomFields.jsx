@@ -116,7 +116,7 @@ function CustomFields() {
   const onExport = async () => {
     try {
       setExporting(true);
-      const { data } = await axiosInstance.post(``, {
+      const { data } = await axiosInstance.post(`/api/user/custom-field/all`, {
         page: 0,
         limit: total,
         search: search,
@@ -124,17 +124,16 @@ function CustomFields() {
       });
 
       if (data?.status) {
-        const allOrders = data?.orders;
-        const exportData = allOrders?.map((ord) => ({
-          orderId: ord?._id,
-          name: ord?.name,
-          type: ord?.type,
-          amount: ord?.orderTotal,
-          status: ord?.status,
-          paymentMethod: ord?.paymentId?.gateway,
-          createdAt: ord?.createdAt,
+        console.log("Export API Response:", data);
+        const customeFields = data?.fields  || [];
+        const exportData = customeFields?.map((fields) => ({
+          FieldId: fields?._id,
+          Name: fields?.name,
+          type: fields?.type,
+          TotalContact: fields?.totalContacts,
+          createdAt: fields?.createdAt,
         }));
-        exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+        exportToExcel(exportData, `all_Fields_${getCurrentTime()}`);
       } else {
         message.error(data?.message || "Failed to fetch Fields for export");
       }
