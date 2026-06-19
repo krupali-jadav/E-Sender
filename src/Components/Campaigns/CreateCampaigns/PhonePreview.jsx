@@ -63,7 +63,7 @@ function PhonePreview() {
             <Col><GiNetworkBars /> <FaWifi /> <RiBattery2ChargeFill /></Col>
           </Col>
           <Col style={{ height: "calc(100% - 55px)", display: "flex", flexDirection: "column", }}>
-            <Card style={{ borderRadius: 16, }} bodyStyle={{ padding: 10 }}>
+            <Card style={{ borderRadius: 16, }} styles={{ body: { padding: 10 } }}>
               {/* Header */}
               <Space align="start" style={{ width: "100%" }}>
                 <Avatar size={32}>G</Avatar>
@@ -169,16 +169,16 @@ function PhonePreview() {
                   </div>
                 </Card>
               )}
-              <Card style={{ marginTop: 16, }} bodyStyle={{ padding: 15, }}>
-                  <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
-                    <Image src={Google} height={30} width={30} />
-                    <Title level={5} >Keep Track  of your Google Account data</Title>
-                    <Text></Text>
-                  </Col>
-                  <Divider />
-                  <Col style={{ textAlign: "center", height: 30, }}>
-                    <Text>https://example.com</Text>
-                  </Col>
+              <Card style={{ marginTop: 16, }} styles={{ body: { padding: 15 } }}>
+                <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
+                  <Image src={Google} height={30} width={30} />
+                  <Title level={5} >Keep Track  of your Google Account data</Title>
+                  <Text></Text>
+                </Col>
+                <Divider />
+                <Col style={{ textAlign: "center", height: 30, }}>
+                  <Text>https://example.com</Text>
+                </Col>
               </Card>
             </Card>
             <Flex

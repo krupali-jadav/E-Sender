@@ -275,7 +275,7 @@ function CustomFields() {
       }
     >
 
-      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+      <Space orientation="vertical" size="large" style={{ width: "100%" }}>
 
         <SearchHeader
           onExport={onExport}
@@ -289,7 +289,7 @@ function CustomFields() {
           searchValue={search}
         />
 
-        <Card bodyStyle={{ padding: 0 }}>
+        <Card styles={{ body:{ padding:0 }}}>
           <Table
             rowKey="_id"
             columns={columns}

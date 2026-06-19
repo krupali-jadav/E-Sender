@@ -78,7 +78,7 @@ function TemplateCampaigns() {
   ]
 
   return (
-    <Space direction="vertical" style={{ width: "100%" }}>
+    <Space orientation="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]} >
         <Col xs={24} lg={18}>
           <Card>
@@ -112,7 +112,7 @@ function TemplateCampaigns() {
             </Row>
           </Card>
 
-          <Card bodyStyle={{ padding: 0 }} style={{ marginTop: 16 }}>
+          <Card styles={{ body: { padding: 0 } }} style={{ marginTop: 16 }}>
             <Table
               columns={columns}
               pagination={false}

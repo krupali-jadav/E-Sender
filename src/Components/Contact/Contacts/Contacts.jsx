@@ -347,7 +347,7 @@ function Contacts() {
                     </Flex>
                 }
             >
-                <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                <Space orientation="vertical" size="large" style={{ width: "100%" }}>
 
                     <SearchHeader
                         onExport={onExport}
@@ -364,7 +364,7 @@ function Contacts() {
                         searchValue={search}
                     />
 
-                    <Card bodyStyle={{ padding: 0 }}>
+                    <Card styles={{ body:{ padding:0 }}}>
                         <Table
                             style={{ padding: 0 }}
                             rowKey="_id"

@@ -63,7 +63,7 @@ const Sessions = () => {
     };
 
     const renderSessions = (sessions, icon, color, title) => (
-        <Card bordered>
+        <Card>
             <Row gutter={[16, 24]} align="middle" style={{ marginBottom: 16 }} justify="space-between"  >
                 <Col>
                     <Space align="center">

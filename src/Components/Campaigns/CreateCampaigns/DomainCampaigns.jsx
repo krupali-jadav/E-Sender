@@ -101,7 +101,7 @@ function DomainCampaigns() {
     },
   ]
   return (
-    <Space direction="vertical" style={{ width: "100%" }}>
+    <Space orientation="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={18}>
           <Card>
@@ -117,12 +117,12 @@ function DomainCampaigns() {
                 <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
               </Form.Item>
             </Form>
-            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
               <Row gutter={[16, 16]} align="middle" justify="space-between">
                 <Col>
                   <Text strong style={{ fontSize: 18 }}>Select Domain</Text>
                 </Col>
-                <Col xs={24} sm={24} md={26} lg={24} xl={8} xxl={12}>
+                <Col xs={24} sm={24} md={26} lg={24} xl={8} xxl={10}>
                   <Input.Search
                     placeholder={t("search...", { defaultValue: "Search...", })}
                     enterButton={<SearchOutlined />}
