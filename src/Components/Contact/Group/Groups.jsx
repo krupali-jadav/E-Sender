@@ -42,7 +42,7 @@ function Groups() {
   const onExport = async () => {
     try {
       setExporting(true);
-      const { data } = await axiosInstance.post(``, {
+      const { data } = await axiosInstance.post(`/api/user/group/all`, {
         page: 0,
         limit: total,
         search: search,
@@ -50,17 +50,16 @@ function Groups() {
       });
 
       if (data?.status) {
-        const allOrders = data?.orders;
-        const exportData = allOrders?.map((ord) => ({
-          orderId: ord?._id,
-          name: ord?.name,
-          type: ord?.type,
-          amount: ord?.orderTotal,
-          status: ord?.status,
-          paymentMethod: ord?.paymentId?.gateway,
-          createdAt: ord?.createdAt,
+        const groups = data?.groups;
+        const exportData = groups?.map((group) => ({
+          GroupId: group?._id,
+          Name: group?.name,
+          TotalContacts: group?.totalContacts,
+          Block: group?.blockedContacts,
+          Unsubscribed: group?.unsubscribeContacts,
+          createdAt: group?.createdAt,
         }));
-        exportToExcel(exportData, `all_Orders_${getCurrentTime()}`);
+        exportToExcel(exportData, `all_Groups_${getCurrentTime()}`);
       } else {
         message.error(data?.message || "Failed to fetch groups for export");
       }

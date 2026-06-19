@@ -109,92 +109,90 @@ function Templates() {
 
           {/* Template Cards */}
           <Row gutter={[16, 16]}>
-            {templates.map((item) =>(
-                <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
-                  <Card
-                    title={t("template", { defaultValue: item.name })}
-                    // title={item.templateName}
-                    extra={<Switch defaultChecked={item.active} />}
-                    hoverable
-                  >
-                    <Card style={{ height: 380, overflow: "auto" }} onClick={() =>
-                      navigate("/templates/create-template", {
-                        state: {
-                          template: item,
-                        },
-                      })
-                    }>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: item.HTML || "<p>No preview available</p>",
-                        }}
-                      />
-                    </Card>
-
-                    <Row gutter={12} style={{ marginTop: 16 }}>
-                      <Col span={12}>
-                        <Button
-                          type="primary"
-                          icon={<EditOutlined />}
-                          block
-                          onClick={() =>
-                            navigate("/templates/create-template", {
-                              state: {
-                                template: item,
-                              },
-                            })
-                          }
-                        >
-                          {t("edit", { defaultValue: "Edit" })}
-
-                        </Button>
-                      </Col>
-
-                      <Col span={12}>
-                        <Button
-                          danger
-                          icon={<DeleteOutlined />}
-                          block
-                        >
-                          {t("delete", { defaultValue: "Delete" })}
-                        </Button>
-                      </Col>
-
-                    </Row>
+            {templates.map((item) => (
+              <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
+                <Card
+                  title={t("template", { defaultValue: item.name })}
+                  // title={item.templateName}
+                  extra={<Switch defaultChecked={item.active} />}
+                  hoverable
+                >
+                  <Card style={{ height: 380, overflow: "auto" }} onClick={() =>
+                    navigate("/templates/create-template", {
+                      state: {
+                        template: item,
+                      },
+                    })
+                  }>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: item.HTML || "<p>No preview available</p>",
+                      }}
+                    />
                   </Card>
-                </Col>
-              )
+
+                  <Row gutter={12} style={{ marginTop: 16 }}>
+                    <Col span={12}>
+                      <Button
+                        type="primary"
+                        icon={<EditOutlined />}
+                        block
+                        onClick={() =>
+                          navigate("/templates/create-template", {
+                            state: {
+                              template: item,
+                            },
+                          })
+                        }
+                      >
+                        {t("edit", { defaultValue: "Edit" })}
+
+                      </Button>
+                    </Col>
+
+                    <Col span={12}>
+                      <Button
+                        danger
+                        icon={<DeleteOutlined />}
+                        block
+                      >
+                        {t("delete", { defaultValue: "Delete" })}
+                      </Button>
+                    </Col>
+
+                  </Row>
+                </Card>
+              </Col>
+            )
             )}
           </Row>
 
         </Space>
         <Modal
           open={projectModalOpen}
-          footer={null}
+          footer={
+            <Col>
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => setOpen(true)}
+
+              >
+                Create Project
+              </Button>
+            </Col>
+          }
           onCancel={() => setProjectModalOpen(false)}
           title={
             <Row justify="space-between" align="middle">
               <Col>
                 <span>Switch Project</span>
               </Col>
-
-              <Col>
-                <Button
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={() => setOpen(true)}
-                  style={{ marginRight: 20 }}
-                >
-                  Create Project
-                </Button>
-              </Col>
             </Row>
           }
         >
-          <Row justify="end" >
-
-          </Row>
           <List
+            style={{ overflow: "auto", height: 300 }}
             size="small"
             dataSource={projects}
             renderItem={(project) => {
