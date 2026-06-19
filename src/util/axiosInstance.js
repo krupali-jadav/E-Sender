@@ -9,7 +9,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
         const state = store.getState();
         const token = state.user?.token;
-        console.log("Token Used", token);
+        // console.log("Token Used", token);
 
         if (import.meta.env.VITE_MODE === "production") {
             config.baseURL = "/api/";

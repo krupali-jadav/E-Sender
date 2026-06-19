@@ -67,14 +67,11 @@ function AddMedia({ open, onClose, fetchMedia }) {
             width={600}
             centered
         >
-            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
                 <Card
                     size="small"
-                // style={{ background: "#fafafa" }}
                 >
                     <Dragger {...uploadProps}
-                    // style={{ padding: "20px", background: "#fff" }}
-                    // {...uploadProps}
                     >
                         <p className="ant-upload-drag-icon">
                             <UploadOutlined />

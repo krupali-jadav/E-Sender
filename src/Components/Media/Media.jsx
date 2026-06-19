@@ -133,7 +133,7 @@ function Media() {
                 </Flex>
             }
         >
-            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
                 <SearchHeader
                     page="media"
                     onSearch={(value) => {

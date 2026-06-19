@@ -208,7 +208,7 @@ function Orders() {
                 breadcrumb={false}
 
             >
-                <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                <Space orientation="vertical" size="large" style={{ width: "100%" }}>
 
 
                     <SearchHeader
@@ -218,13 +218,13 @@ function Orders() {
                         exporting={exporting}
                     />
 
-                    <Card bodyStyle={{padding:0}}>
+                    <Card styles={{ body: { padding: 0 } }}>
                         <Table
                             columns={columns}
                             dataSource={data}
                             pagination={false}
                             scroll={{ x: "max-content" }}
-                            
+
                         />
                     </Card>
 

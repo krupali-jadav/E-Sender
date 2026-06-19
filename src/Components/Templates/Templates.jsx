@@ -103,14 +103,15 @@ function Templates() {
             </Space>
           </Col>
         }>
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Space orientation="vertical" size="large" style={{ width: "100%" }}>
           {/* Header */}
           <SearchHeader />
 
           {/* Template Cards */}
           <Row gutter={[16, 16]}>
-            {templates.map((item) =>(
-                <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
+            {templates.map((item) => {
+              return (
+                <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
                   <Card
                     title={t("template", { defaultValue: item.name })}
                     // title={item.templateName}
@@ -164,36 +165,28 @@ function Templates() {
                   </Card>
                 </Col>
               )
+            }
             )}
           </Row>
 
         </Space>
         <Modal
+          title={t("Switch.project", { defaultValue: "Switch Project" })}
           open={projectModalOpen}
-          footer={null}
+          footer={<Col>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setOpen(true)}
+            >
+              Create Project
+            </Button>
+          </Col>}
           onCancel={() => setProjectModalOpen(false)}
-          title={
-            <Row justify="space-between" align="middle">
-              <Col>
-                <span>Switch Project</span>
-              </Col>
-
-              <Col>
-                <Button
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={() => setOpen(true)}
-                  style={{ marginRight: 20 }}
-                >
-                  Create Project
-                </Button>
-              </Col>
-            </Row>
-          }
         >
-          <Row justify="end" >
+          {/* <Row justify="end" >
 
-          </Row>
+          </Row> */}
           <List
             size="small"
             dataSource={projects}

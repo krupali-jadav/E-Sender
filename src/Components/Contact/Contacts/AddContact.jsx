@@ -95,6 +95,7 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
     };
 
     useEffect(() => {
+        if (!open) return;
         if (editData) {
             form.setFieldsValue({
                 name: editData.name,
@@ -106,7 +107,7 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
         } else {
             form.resetFields();
         }
-    }, [editData, form]);
+    }, [open, editData]);
 
     const fetchGroups = async () => {
         try {

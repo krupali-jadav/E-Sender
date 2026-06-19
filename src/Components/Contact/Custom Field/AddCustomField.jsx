@@ -51,6 +51,7 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
         }
     };
     useEffect(() => {
+        if(!open) return;
         if (open && editData) {
             form.setFieldsValue({
                 name: editData.name,

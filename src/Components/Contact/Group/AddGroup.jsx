@@ -40,6 +40,7 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
     };
 
     useEffect(() => {
+        if(!open) return;
         if (open && editData) {
             form.setFieldsValue({
                 name: editData.name,
@@ -47,7 +48,7 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
         } else {
             form.resetFields();
         }
-    }, [open, editData, form]);
+    }, [open, editData,form]);
 
     return (
         <>

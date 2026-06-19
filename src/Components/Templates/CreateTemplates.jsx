@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { createTemplate } from "./TemplatesApi";
 import { useSelector } from "react-redux";
-import Package from "esender-email-editor";
+// import Package from "esender-email-editor";
 
 function CreateTemplates() {
     const [form] = Form.useForm();
@@ -62,7 +62,7 @@ function CreateTemplates() {
                 <span> {">"} Templates</span>
             </Space>
             <PageContainer title="Create Template">
-                <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                <Space orientation="vertical" size="large" style={{ width: "100%" }}>
                     <Card styles={{ body: { padding: "8px 12px", marginBottom: 0 } }}
                     >
                         <Form
@@ -130,12 +130,12 @@ function CreateTemplates() {
                             }}
                         />
 
-                        <Package
+                        {/* <Package
                         // ref={ref}
                         apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
                     // onLicenseError={(err: LicenseError) => console.error(err)}
                     // showUndoRedo
-                    />
+                    /> */}
                     </Card>
                 </Space>
 
