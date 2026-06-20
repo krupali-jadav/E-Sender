@@ -183,7 +183,6 @@ function Templates() {
           </Col>}
           onCancel={() => setProjectModalOpen(false)}
         >
-
           <List
             style={{ overflow: "auto", height: 300 }}
             size="small"

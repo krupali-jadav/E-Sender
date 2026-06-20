@@ -40,7 +40,6 @@ function Media() {
                                     : "other",
                 search,
             });
-            console.log("Media Response:", data.media);
             if (data?.status) {
                 setMediaList(data.media || []);
             }
