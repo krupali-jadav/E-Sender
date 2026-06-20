@@ -54,9 +54,9 @@ function ContactCampaigns() {
   ];
 
   return (
-    <Space orientation="vertical" style={{ width: "100%" }}>
+    <Space direction="vertical" style={{ width: "100%" }}>
       <Card>
-        <Space orientation="vertical" size="middle" style={{ width: "100%" }}>
+        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           {/* Header */}
           <Row justify="space-between" gutter={[16, 16]}>
             <Col>

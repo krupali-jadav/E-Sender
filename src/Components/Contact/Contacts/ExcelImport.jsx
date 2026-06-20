@@ -34,7 +34,7 @@ function ExcelImport({ open, onClose }) {
             width={800}
             centered
         >
-            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+            <Space direction="vertical" size="large" style={{ width: "100%" }}>
                 <Flex justify="center" gap="small" align="center">
                     <Space size="middle" align="center">
                         <Button

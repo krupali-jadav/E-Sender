@@ -165,7 +165,7 @@ function Login() {
                                     </Form.Item>
 
                                     <Form.Item>
-                                        <Space orientation="vertical">
+                                        <Space direction="vertical">
                                             <Space>
                                                 <Checkbox
                                                     checked={checkTerms}
@@ -232,7 +232,7 @@ function Login() {
                                     height={100}
                                 />
                                 <Form layout="vertical" onFinish={onOtpVerify}>
-                                    <Space orientation="vertical" size="small">
+                                    <Space direction="vertical" size="small">
                                         <Text type="secondary">
                                             {t("verification.code.sent", { defaultValue: "We've sent a verification code to" })} {" "}
                                             <b>{phone}</b>

@@ -436,7 +436,7 @@ const Invoice = ({ isEdit = false }) => {
         <Divider />
 
         {/* TOP INFO */}
-        <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+        <Space direction="vertical" size="large" style={{ width: "100%" }}>
           <Row
             style={{
               border: "1px solid #ececec",

@@ -1,8 +1,8 @@
-import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 import { Button, Card, Flex, message, Modal, Space } from 'antd'
 import Dragger from 'antd/es/upload/Dragger'
 import { t } from 'i18next'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { addMedia, addMultipleMedia } from './MediaApi'
 
 function AddMedia({ open, onClose, fetchMedia }) {
@@ -54,25 +54,29 @@ function AddMedia({ open, onClose, fetchMedia }) {
 
             await fetchMedia();
             setSelectedFiles([]);
-            onClose();
+            handleClose();
         }
+    };
+
+    const handleClose = () => {
+        setSelectedFiles([]);
+        onClose();
     };
 
     return (
         <Modal
             title={t("add.media", { defaultValue: "Add Media" })}
             open={open}
-            onCancel={onClose}
+            onCancel={handleClose}
             footer={null}
             width={600}
             centered
         >
-            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+            <Space direction="vertical" size="large" style={{ width: "100%" }}>
                 <Card
                     size="small"
                 >
-                    <Dragger {...uploadProps}
-                    >
+                    <Dragger {...uploadProps} fileList={selectedFiles}>
                         <p className="ant-upload-drag-icon">
                             <UploadOutlined />
                         </p>
@@ -84,7 +88,7 @@ function AddMedia({ open, onClose, fetchMedia }) {
                 </Card>
 
                 <Flex justify="end" gap="small">
-                    <Button onClick={onClose}>
+                    <Button onClick={handleClose}>
                         {t("cancel", { defaultValue: "Cancel" })}
                     </Button>
 

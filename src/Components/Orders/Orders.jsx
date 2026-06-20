@@ -208,7 +208,7 @@ function Orders() {
                 breadcrumb={false}
 
             >
-                <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+                <Space direction="vertical" size="large" style={{ width: "100%" }}>
 
 
                     <SearchHeader

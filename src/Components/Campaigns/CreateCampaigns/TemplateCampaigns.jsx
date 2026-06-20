@@ -78,7 +78,7 @@ function TemplateCampaigns() {
   ]
 
   return (
-    <Space orientation="vertical" style={{ width: "100%" }}>
+    <Space direction="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]} >
         <Col xs={24} lg={18}>
           <Card>

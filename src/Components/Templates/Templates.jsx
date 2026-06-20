@@ -103,7 +103,7 @@ function Templates() {
             </Space>
           </Col>
         }>
-        <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+        <Space direction="vertical" size="large" style={{ width: "100%" }}>
           {/* Header */}
           <SearchHeader />
 
@@ -113,8 +113,7 @@ function Templates() {
               return (
                 <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
                   <Card
-                    title={t("template", { defaultValue: item.name })}
-                    // title={item.templateName}
+                    title={item.JSON?.templateName }
                     extra={<Switch defaultChecked={item.active} />}
                     hoverable
                   >

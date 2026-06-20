@@ -79,11 +79,11 @@ function WebHookDetails() {
     return (
 
         <PageContainer title={false}>
-            <Space orientation='vertical' size="large" style={{ width: "100%" }}>
+            <Space direction='vertical' size="large" style={{ width: "100%" }}>
                 <Card>
                     <Row justify="space-between" align="middle">
                         <Col>
-                            <Space orientation="vertical" size={0}>
+                            <Space direction="vertical" size={0}>
                                 <Typography.Text type="secondary">
                                     WebHook
                                 </Typography.Text>
@@ -106,7 +106,7 @@ function WebHookDetails() {
 
                     <Row gutter={[32, 24]} style={{ marginTop: 24 }}>
                         <Col flex={0.6}>
-                            <Space orientation='vertical' size={0} >
+                            <Space direction='vertical' size={0} >
                                 <Typography.Text type="secondary">
                                     Listening For
                                 </Typography.Text>
@@ -137,7 +137,7 @@ function WebHookDetails() {
                         </Col>
 
                         <Col flex={0.6}>
-                            <Space orientation="vertical" size={4}>
+                            <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
                                     Status
                                 </Typography.Text>
@@ -149,7 +149,7 @@ function WebHookDetails() {
                         </Col>
 
                         <Col flex={0.6}>
-                            <Space orientation="vertical" size={4}>
+                            <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
                                     Created At
                                 </Typography.Text>
@@ -161,7 +161,7 @@ function WebHookDetails() {
                         </Col>
 
                         <Col flex="auto"    >
-                            <Space orientation="vertical" size={4}>
+                            <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
                                     Signing Secret
                                 </Typography.Text>

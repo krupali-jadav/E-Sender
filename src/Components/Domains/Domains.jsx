@@ -113,7 +113,7 @@ function Domains() {
         </Space>
       }
     >
-      <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <SearchHeader
           onExport={onExport}
           exporting={exporting}

@@ -1,14 +1,17 @@
-import  { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal } from "antd";
+import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography } from "antd";
 import { t } from "i18next";
 
 import SearchHeader from "../../Components/Search Header/SearchHeader";
 import AddMedia from "./AddMedia";
 import { deleteMedia, getAllMedia } from "./MediaApi";
+import { useSelector } from "react-redux";
+
 
 function Media() {
+    const { Text } = Typography;
     const [activeTab, setActiveTab] = useState("all");
     const [addMediaOpen, setAddMediaOpen] = useState(false);
     const [mediaList, setMediaList] = useState([]);
@@ -16,6 +19,7 @@ function Media() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [hoveredId, setHoveredId] = useState(null);
+      const theme = useSelector((state) => state?.app?.theme);
 
     const fetchMedia = async () => {
         setLoading(true);
@@ -32,7 +36,7 @@ function Media() {
                             : activeTab === "videos"
                                 ? "video"
                                 : activeTab === "documents"
-                                    ? "document"
+                                    ? "application"
                                     : "other",
                 search,
             });
@@ -133,7 +137,7 @@ function Media() {
                 </Flex>
             }
         >
-            <Space orientation="vertical" size="large" style={{ width: "100%" }}>
+            <Space direction="vertical" size="large" style={{ width: "100%" }}>
                 <SearchHeader
                     page="media"
                     onSearch={(value) => {
@@ -154,14 +158,13 @@ function Media() {
             <Row gutter={[16, 16]}>
 
                 {mediaList.map((item) => (
-                    <Col xs={24} sm={12} md={8} lg={7} key={item._id}>
+                    <Col xs={24} sm={12} md={8} lg={4} key={item._id}>
                         <div
                             onMouseEnter={() => setHoveredId(item._id)}
                             onMouseLeave={() => setHoveredId(null)}
                             style={{
                                 position: "relative",
-                                width: 250,
-                                margin: "auto",
+                                width: 220,
                             }}
                         >
                             <Card
@@ -175,14 +178,58 @@ function Media() {
                                             alt={item.name}
                                             src={item.url}
                                             style={{
-                                                height: 250,
-                                                width: 250,
+                                                height: 220,
+                                                width: "100%",
                                                 objectFit: "contain",
                                             }}
                                         />
-                                    ) : null
+                                    ) : item.type?.startsWith("video/") ? (
+                                        <video
+                                            controls
+                                            style={{
+                                                height: 220,
+                                                width: "100%",
+                                                objectFit: "contain",
+                                            }}
+                                        >
+                                            <source src={item.url} type={item.type} />
+                                        </video>
+                                    ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                                        <div
+                                            style={{
+                                                height: 220,
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                objectFit: "contain",
+                                                gap: 10,
+                                            }}
+                                        >
+                                            {item.type === "application/pdf" ? (
+                                                <FilePdfOutlined style={{ fontSize: 50, color: "red" }} />
+                                            ) : (
+                                                <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
+                                            )}
+                                            <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
+                                        </div>
+                                    ) : (
+                                        <div
+                                            style={{
+                                                height: 220,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            {item.name}
+                                        </div>
+                                    )
                                 }
-                            />
+                            >
+
+                            </Card>
+
 
                             {hoveredId === item._id && (
                                 <Flex
@@ -199,14 +246,26 @@ function Media() {
                                 >
                                     <Button
                                         danger
-                                        type="primary"
+                                        shape="circle"
+                                        size="Medium"
                                         onClick={() => handleDeleteMedia(item)}
                                     >
-                                        Delete
+                                        <DeleteOutlined />
                                     </Button>
                                 </Flex>
                             )}
                         </div>
+                        <Text
+                            ellipsis={{ tooltip: item.name }}
+                            style={{
+                                fontSize: 13,
+                                width: 220,
+                                color: theme ? "#fff" : "#383838",
+                                textAlign: "center",
+                            }}
+                        >
+                            {item.name}
+                        </Text>
                     </Col>
                 ))}
             </Row>

@@ -30,7 +30,7 @@ const CampaignStep = () => {
             <Row gutter={[16, 16]}>
               <Col xs={24} md={12}>
                 <Card>
-                  <Space orientation="vertical" size="large">
+                  <Space direction="vertical" size="large">
                     <Text strong>{t("campaign.name", { defaultValue: "Campaign Name" })}</Text>
                     <Text strong>{t("selected.template", { defaultValue: "Selected Template" })}</Text>
                     <Text strong>{t("total.contacts", { defaultValue: "Total Contacts" })}: 0</Text>
@@ -74,7 +74,7 @@ const CampaignStep = () => {
                   <Radio.Group value={scheduleType}
                     onChange={(e) => setScheduleType(e.target.value)}>
             
-                    <Space orientation="vertical">
+                    <Space direction="vertical">
                       <Radio value="now">{t("send.it.now", { defaultValue: "Send It Now" })}</Radio>
                       <Radio value="schedule">
                         {t("schedule.it.for.a.specific.time", { defaultValue: "Schedule It For A Specific Time" })}

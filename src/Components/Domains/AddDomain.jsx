@@ -235,7 +235,7 @@ export default function AddDomain() {
                     <Row gutter={32}>
                         <Col xs={24} md={4}>
                             <Steps
-                                orientation="vertical"
+                                direction="vertical"
                                 current={1}
                                 items={[
                                     {
