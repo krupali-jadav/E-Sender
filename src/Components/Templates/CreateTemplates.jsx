@@ -2,41 +2,48 @@ import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
 // import Package from "esender-email-editor";
 import { t } from "i18next";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { createTemplate, updateTemplate } from "./TemplatesApi";
 import { useSelector } from "react-redux";
 import Package from "esender-email-editor";
 
 function CreateTemplates() {
-    // const navigate = useNavigate(); 
+    const navigate = useNavigate(); 
+    const editorRef = useRef(null);
     const location = useLocation();
     const template = location.state?.template;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [htmlContent, setHtmlContent] = useState("");
     const selectedProject = useSelector((state) => state.app.selectedProject);
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
 
+            const html = editorRef.current?.getHtml();
+            const json = editorRef.current?.getJson();
+
+            console.log("HTML:", html);
+            console.log("JSON:", json);
+
             const payload = {
-                HTML: htmlContent,
+                HTML: html,
                 JSON: {
                     templateName: values.templateName,
                     subject: values.subject,
+                    design: json,
                 },
             };
 
-            let data;
+            let response;
 
             if (template?._id) {
-                data = await updateTemplate(
+                response = await updateTemplate(
                     template._id,
                     payload
                 );
             } else {
-                data = await createTemplate({
+                response = await createTemplate({
                     projectId:
                         selectedProject?._id ||
                         selectedProject?.projectId,
@@ -44,14 +51,13 @@ function CreateTemplates() {
                 });
             }
 
-            if (data?.success) {
+            if (response?.success) {
                 message.success(
                     template
                         ? "Template updated successfully"
                         : "Template created successfully"
                 );
-
-                // navigate("/templates");
+                 navigate("/templates");
             }
         } catch (error) {
             console.log(error);
@@ -59,14 +65,27 @@ function CreateTemplates() {
             setLoading(false);
         }
     };
-
     useEffect(() => {
         if (template) {
             form.setFieldsValue({
                 templateName: template.JSON?.templateName,
                 subject: template.JSON?.subject,
             });
-            setHtmlContent(template.HTML || "");
+
+            if (template.JSON?.design && editorRef.current) {
+                setTimeout(() => {
+                    try {
+                        const design =
+                            typeof template.JSON.design === "string"
+                                ? JSON.parse(template.JSON.design)
+                                : template.JSON.design;
+
+                        editorRef.current.loadJson(design);
+                    } catch (error) {
+                        console.log("Error loading design:", error);
+                    }
+                }, 500);
+            }
         }
     }, [template, form]);
 
@@ -146,14 +165,14 @@ function CreateTemplates() {
                         </Form>
                     </Card>
                     <Card style={{ minHeight: 600 }}>
-                        
+
 
                         <Package
-                        // ref={ref}
-                        apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
-                    // onLicenseError={(err: LicenseError) => console.error(err)}
-                    // showUndoRedo
-                    />
+                            ref={editorRef}
+                            apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
+                        // onLicenseError={(err: LicenseError) => console.error(err)}
+                        // showUndoRedo
+                        />
                     </Card>
                 </Space>
 
