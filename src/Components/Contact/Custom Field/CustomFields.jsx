@@ -1,6 +1,6 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Dropdown, Flex, Form, message, Modal, Select, Space, Table, Typography } from 'antd'
+import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Row, Select, Space, Table, Typography } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import AddCustomField from '../../Contact/Custom Field/AddCustomField';
@@ -27,11 +27,13 @@ function CustomFields() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [filterForm] = Form.useForm();
+  const [isApplyFilter, setIsApplyFilter] = useState(false);
+  const [fieldType, setFieldType] = useState(-1);
   const resetFilterParameters = () => {
     setStatus("all");
     setPage(1);
     setSearch("");
-    // setIsApplyFilter(false);
+    setIsApplyFilter(false);
     setFilterType("all-time");
     setStartDate(null);
     setEndDate(null);
@@ -60,13 +62,22 @@ function CustomFields() {
         limit: 10,
         search: search,
         sort_by: sortBy,
-        filter_by: {
-          date_type: "all",
-          date: {
-            start_date: null,
-            end_date: null,
+        filter_by: isApplyFilter
+          ? {
+            date_type: "all",
+            date: {
+              start_date: startDate ? startDate.format("YYYY-MM-DD") : null,
+              end_date: endDate ? endDate.format("YYYY-MM-DD") : null,
+            },
+            type: fieldType,
+          } : {
+            date_type: "all",
+            date: {
+              start_date: null,
+              end_date: null,
+            },
+            type: -1,
           },
-        },
       });
 
       if (data?.status) {
@@ -83,7 +94,7 @@ function CustomFields() {
 
   useEffect(() => {
     getAllFields();
-  }, [search, page, sortBy]);
+  }, [search, page, sortBy, isApplyFilter, fieldType, startDate, endDate,]);
 
   const handleDelete = (record) => {
     Modal.confirm({
@@ -125,12 +136,13 @@ function CustomFields() {
 
       if (data?.status) {
         console.log("Export API Response:", data);
-        const customeFields = data?.fields  || [];
+        const customeFields = data?.fields || [];
         const exportData = customeFields?.map((fields) => ({
           FieldId: fields?._id,
           Name: fields?.name,
           type: fields?.type,
           TotalContact: fields?.totalContacts,
+          FallbackValue: fields?.fallbackValue,
           createdAt: fields?.createdAt,
         }));
         exportToExcel(exportData, `all_Fields_${getCurrentTime()}`);
@@ -212,19 +224,11 @@ function CustomFields() {
               },
               {
                 key: "2",
-                label: (
-                  <Space
-                    onClick={() => {
-                      handleDelete(record);
-                    }}
-                  >
-                    <Text>
-                      {t("delete", {
-                        defaultValue: "Delete",
-                      })}
-                    </Text>
-                  </Space>
-                ),
+                label: t("delete", {
+                  defaultValue: "Delete",
+                }),
+                danger: true,
+                onClick: () => handleDelete(record),
               },
             ],
           }}
@@ -287,9 +291,14 @@ function CustomFields() {
           }}
           onReset={resetFilterParameters}
           searchValue={search}
+          sortBy={sortBy}
+          onSortChange={(value) => {
+            setSortBy(value);
+            setPage(1);
+          }}
         />
 
-        <Card styles={{ body:{ padding:0 }}}>
+        <Card styles={{ body: { padding: 0 } }}>
           <Table
             rowKey="_id"
             columns={columns}
@@ -308,34 +317,51 @@ function CustomFields() {
           okText={t("apply", { defaultValue: "Apply" })}
           cancelText={t("cancel", { defaultValue: "Cancel" })}
           onOk={() => {
-            filterForm.validateFields().then(() => {
-              setShowFilterModal(false);
-              setPage(1);
-              setIsApplyFilter(true);
-              if (isApplyFilter) {
-                getAllOrders();
-              }
-            });
+            setPage(1);
+            setIsApplyFilter(true);
+            setShowFilterModal(false);
           }}
         >
           <Form layout="vertical" form={filterForm}>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Start Date"
+                >
+                  <DatePicker
+                    style={{ width: "100%" }}
+                    format="YYYY-MM-DD"
+                    value={startDate}
+                    onChange={(date) => setStartDate(date)}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  label="End Date"
+                >
+                  <DatePicker
+                    style={{ width: "100%" }}
+                    format="YYYY-MM-DD"
+                    value={endDate}
+                    onChange={(date) => setEndDate(date)}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item
-              label={t("filterbystatus", { defaultValue: "Filter by Status" })}
+              label={t("filterbytype", { defaultValue: "Filter by Type" })}
             >
               <Select
-                value={status}
-              // onChange={(value) => {
-              //     setStatus(value);
-              // }}
+                value={fieldType}
+                onChange={(value) => setFieldType(value)}
               >
-                <Option value="all">
-                  {t("all", { defaultValue: "All" })}
-                </Option>
-                {OrderStatuses?.map((status) => (
-                  <Option key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                  </Option>
-                ))}
+                <Select.Option value={-1}>All</Select.Option>
+                <Select.Option value={1}>Text</Select.Option>
+                <Select.Option value={2}>Number</Select.Option>
+                <Select.Option value={3}>Boolean</Select.Option>
+                <Select.Option value={4}>Date</Select.Option>
               </Select>
             </Form.Item>
           </Form>

@@ -254,9 +254,14 @@ function Groups() {
           }}
           onReset={resetFilterParameters}
           searchValue={search}
+          sortBy={sortBy}
+          onSortChange={(value) => {
+            setSortBy(value);
+            setPage(1);
+          }}
         />
 
-        <Card styles={{ body:{ padding:0 }}}>
+        <Card styles={{ body: { padding: 0 } }}>
           <Table
             rowKey="_id"
             columns={columns}

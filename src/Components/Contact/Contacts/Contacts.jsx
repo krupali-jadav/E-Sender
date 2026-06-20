@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Dropdown, Flex, Form, message, Modal, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Row, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
@@ -11,6 +11,7 @@ import { getCurrentTime } from '../../../util/commom.utils'
 import { exportToExcel } from 'react-json-to-excel'
 import axiosInstance from '../../../util/axiosInstance'
 import { changeContactBlockStatus, deleteContact, getAllContacts } from './ContactsApi'
+import { getAllGroups } from '../Group/GroupApi'
 
 function Contacts() {
     const [search, setSearch] = useState("");
@@ -30,6 +31,12 @@ function Contacts() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [editContact, setEditContact] = useState(null);
+    const [isApplyFilter, setIsApplyFilter] = useState(false);
+    const [blocked, setBlocked] = useState("all");
+    const [unsubscribe, setUnsubscribe] = useState("all");
+    const [groupIds, setGroupIds] = useState([]);
+    const [groups, setGroups] = useState([]);
+    const { RangePicker } = DatePicker;
     const resetFilterParameters = () => {
         setStatus("all");
         setPage(1);
@@ -45,22 +52,29 @@ function Contacts() {
     };
 
     const fetchContacts = async () => {
-        setLoading(true);
-
-        try {
-            const response = await getAllContacts({
-                page: page - 1,
-                limit: 10,
-                search: search,
-                sort_by: sortBy,
-                filter_by: {
-                    date_type: "all",
+        const payload = {
+            page: page - 1,
+            limit: 10,
+            search: search,
+            sort_by: sortBy,
+            filter_by: isApplyFilter
+                ? {
+                    date_type: filterType,
                     date: {
-                        start_date: null,
-                        end_date: null,
+                        start_date: startDate ? startDate.format("YYYY-MM-DD") : null,
+                        end_date: endDate ? endDate.format("YYYY-MM-DD") : null,
                     },
-                },
-            });
+                    blocked: blocked !== "all" ? blocked : "all",
+                    unsubscribe: unsubscribe !== "all" ? unsubscribe : "all",
+                    type: "all",
+                    group_ids: groupIds,
+                }
+                : null,
+        };
+        try {
+            setLoading(true);
+
+            const response = await getAllContacts(payload);
 
             if (response?.status) {
                 setData(response.contacts || []);
@@ -74,7 +88,27 @@ function Contacts() {
     };
     useEffect(() => {
         fetchContacts();
-    }, [search, page, sortBy]);
+    }, [search, page, sortBy, isApplyFilter, blocked, unsubscribe, groupIds,]);
+
+    const fetchGroups = async () => {
+        try {
+            const response = await getAllGroups({
+                page: 0,
+                limit: 100,
+                search: "",
+            });
+
+            if (response?.status) {
+                console.log("Groups:", response);
+                setGroups(response.groups || []);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        fetchGroups();
+    }, []);
 
     const handleEdit = (record) => {
         setEditContact(record);
@@ -146,12 +180,7 @@ function Contacts() {
                 message.error(data?.message || "Failed to fetch contacts for export");
             }
         } catch (error) {
-            console.error("Export Error:", error);
-            message.error(
-                error?.response?.data?.message ||
-                error?.message ||
-                "An error occurred while exporting Contacts"
-            );
+            message.error("An error occurred while exporting Fields", error);
         } finally {
             setExporting(false);
         }
@@ -362,9 +391,14 @@ function Contacts() {
                         }}
                         onReset={resetFilterParameters}
                         searchValue={search}
+                        sortBy={sortBy}
+                        onSortChange={(value) => {
+                            setSortBy(value);
+                            setPage(1);
+                        }}
                     />
 
-                    <Card styles={{ body:{ padding:0 }}}>
+                    <Card styles={{ body: { padding: 0 } }}>
                         <Table
                             style={{ padding: 0 }}
                             rowKey="_id"
@@ -384,58 +418,75 @@ function Contacts() {
                         okText={t("apply", { defaultValue: "Apply" })}
                         cancelText={t("cancel", { defaultValue: "Cancel" })}
                         onOk={() => {
-                            filterForm.validateFields().then(() => {
-                                setShowFilterModal(false);
-                                setPage(1);
-                                setIsApplyFilter(true);
-                                if (isApplyFilter) {
-                                    getAllOrders();
-                                }
-                            });
+                            setPage(1);
+                            setIsApplyFilter(true);
+                            setShowFilterModal(false);
                         }}
                     >
                         <Form layout="vertical" form={filterForm}>
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item
+                                        label="Start Date"
+                                    >
+                                        <DatePicker
+                                            style={{ width: "100%" }}
+                                            format="YYYY-MM-DD"
+                                            value={startDate}
+                                            onChange={(date) => setStartDate(date)}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                <Col span={12}>
+                                    <Form.Item
+                                        label="End Date"
+                                    >
+                                        <DatePicker
+                                            style={{ width: "100%" }}
+                                            format="YYYY-MM-DD"
+                                            value={endDate}
+                                            onChange={(date) => setEndDate(date)}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
                             <Form.Item
                                 label={t("filter.by.groups", { defaultValue: "Filter by Groups" })}
                             >
                                 <Select
-                                    value={status}
-                                // onChange={(value) => {
-                                //     setStatus(value);
-                                // }}
-                                >
-                                    <Option value="all">
-                                        {t("all", { defaultValue: "All" })}
-                                    </Option>
-
-                                </Select>
+                                    mode="multiple"
+                                    value={groupIds}
+                                    onChange={(value) => setGroupIds(value)}
+                                    placeholder="Select Groups"
+                                    options={groups.map((group) => ({
+                                        label: group.name,
+                                        value: group._id,
+                                    }))}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label={t("filter.by.blocked", { defaultValue: "Filter by Blocked" })}
                             >
                                 <Select
-                                    value={status}
-                                // onChange={(value) => {
-                                //     setStatus(value);
-                                // }}
+                                    value={blocked}
+                                    onChange={(value) => setBlocked(value)}
                                 >
-                                    <Option value="all">
-                                        {t("all", { defaultValue: "All" })}
-                                    </Option>
+                                    <Select.Option value="all">All</Select.Option>
+                                    <Select.Option value="true">Blocked</Select.Option>
+                                    <Select.Option value="false">Unblocked</Select.Option>
                                 </Select>
                             </Form.Item>
                             <Form.Item
                                 label={t("filter.by.unsubscribed", { defaultValue: "Filter by Unsubscribed" })}
                             >
                                 <Select
-                                    value={status}
-                                // onChange={(value) => {
-                                //     setStatus(value);
-                                // }}
+                                    value={unsubscribe}
+                                    onChange={(value) => setUnsubscribe(value)}
                                 >
-                                    <Option value="all">
-                                        {t("all", { defaultValue: "All" })}
-                                    </Option>
+                                    <Select.Option value="all">All</Select.Option>
+                                    <Select.Option value="true">Subscribed</Select.Option>
+                                    <Select.Option value="false">Unsubscribed</Select.Option>
                                 </Select>
                             </Form.Item>
                         </Form>

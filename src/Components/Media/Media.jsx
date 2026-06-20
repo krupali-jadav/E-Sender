@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal } from "antd";
@@ -36,7 +36,6 @@ function Media() {
                                     : "other",
                 search,
             });
-            console.log("Media Response:", data.media);
             if (data?.status) {
                 setMediaList(data.media || []);
             }

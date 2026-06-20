@@ -3,7 +3,7 @@ import { Flex, Input } from 'antd';
 import { Button, Card, Col, Row, Select } from 'antd'
 import { t } from 'i18next'
 
-function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onReset, searchValue }) {
+function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onReset, searchValue, sortBy, onSortChange, }) {
     let sortByItems = [];
     if (page === "contacts") {
         sortByItems = [
@@ -53,13 +53,14 @@ function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onRe
         sortByItems = [
             {
                 key: 1,
-                label: t("sort.by.type", { defaultValue: "Sort by type", }),
-                value: "type",
+                label: t("sort.by.name", { defaultValue: "Sort by Name", }),
+                value: "name",
             },
             {
                 key: 2,
-                label: t("sort.by.status", { defaultValue: "Sort by Status", }),
-                value: "status",
+                label: t("sort.by.type", { defaultValue: "Sort by Type", }),
+                value: "type",
+
             },
             {
                 key: 3,
@@ -118,10 +119,10 @@ function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onRe
                         </Button>
 
                         <Select
-                            // value={sortBy}
+                            value={sortBy}
                             optionFilterProp="children"
                             menuItemSelectedIcon={<SortAscendingOutlined />}
-                            // onChange={(value) => setSortBy(value)}
+                            onChange={onSortChange}
                             options={sortByItems}
                             style={{ minWidth: "22%" }}
                             placeholder={t("sort.by.createat", { defaultValue: "Sort By Create At", })}
