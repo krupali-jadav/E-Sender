@@ -75,3 +75,18 @@ export const changeContactBlockStatus = async (payload) => {
         message.error("Failed to update block status");
     }
 };
+
+export const deleteMultipleContacts = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/api/user/contact/delete/multiple", payload);
+
+        if (response.data?.status) {
+            return response.data;
+        } else {
+            message.error(response.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        message.error("Failed to delete contacts");
+    }
+};

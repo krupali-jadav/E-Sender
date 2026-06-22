@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Row, Select, Space, Switch, Table, Tag } from 'antd'
+import { Avatar, Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Row, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import ExcelImport from '../Contacts/ExcelImport'
@@ -10,7 +10,7 @@ import AddContact from '../Contacts/AddContact'
 import { getCurrentTime } from '../../../util/commom.utils'
 import { exportToExcel } from 'react-json-to-excel'
 import axiosInstance from '../../../util/axiosInstance'
-import { changeContactBlockStatus, deleteContact, getAllContacts } from './ContactsApi'
+import { changeContactBlockStatus, deleteContact, deleteMultipleContacts, getAllContacts } from './ContactsApi'
 import { getAllGroups } from '../Group/GroupApi'
 
 function Contacts() {
@@ -50,6 +50,13 @@ function Contacts() {
         setShowFilterModal(false);
         filterForm.resetFields();
     };
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: (newSelectedRowKeys) => {
+            setSelectedRowKeys(newSelectedRowKeys);
+        },
+    };
 
     const fetchContacts = async () => {
         const payload = {
@@ -59,10 +66,10 @@ function Contacts() {
             sort_by: sortBy,
             filter_by: isApplyFilter
                 ? {
-                    date_type: filterType,
+                    date_type: startDate && endDate ? "specific" : "all",
                     date: {
-                        start_date: startDate ? startDate.format("YYYY-MM-DD") : null,
-                        end_date: endDate ? endDate.format("YYYY-MM-DD") : null,
+                        start_date: startDate ? startDate.startOf("day").toISOString() : null,
+                        end_date: endDate ? endDate.endOf("day").toISOString() : null,
                     },
                     blocked: blocked !== "all" ? blocked : "all",
                     unsubscribe: unsubscribe !== "all" ? unsubscribe : "all",
@@ -115,22 +122,37 @@ function Contacts() {
         setAddContactOpen(true);
     };
 
-    const handleDelete = (record) => {
+    const handleDeleteContacts = (ids, name = "") => {
         Modal.confirm({
-            title: "Delete Contact",
-            content: `Are you sure you want to delete ${record.name}?`,
+            title: ids.length > 1 ? "Delete Contacts" : "Delete Contact",
+            content:
+                ids.length > 1
+                    ? `Are you sure you want to delete ${ids.length} contacts?`
+                    : `Are you sure you want to delete "${name}"?`,
             okText: "Delete",
             okType: "danger",
             cancelText: "Cancel",
 
             onOk: async () => {
                 try {
-                    const data = await deleteContact({
-                        contact_id: record._id,
-                    });
+                    let data;
+
+                    if (ids.length === 1) {
+                        data = await deleteContact({
+                            contact_id: ids[0],
+                        });
+                    } else {
+                        data = await deleteMultipleContacts({
+                            contact_ids: ids,
+                        });
+                    }
 
                     if (data?.status) {
-                        message.success(data?.message || "Conact deleted successfully");
+                        message.success(
+                            data?.message || "Contact(s) deleted successfully"
+                        );
+
+                        setSelectedRowKeys([]);
                         fetchContacts();
                     }
                 } catch (error) {
@@ -212,19 +234,37 @@ function Contacts() {
             title: t("groups", { defaultValue: "Groups" }),
             dataIndex: "groups",
             key: "groups",
-            render: (_, record) => (
-                record.groups?.length ? (
+            render: (_, record) => {
+                if (!record.groups?.length) return "-";
+                return (
                     <Space wrap>
-                        {record.groups.map((group) => (
+                        {record.groups.slice(0, 2).map((group) => (
                             <Tag key={group._id}>
                                 {group.name}
                             </Tag>
                         ))}
+                        {record.groups.length > 2 && (
+                            <Popover
+                                placement="bottomLeft"
+                                trigger="hover"
+                                content={
+                                    <Space direction="vertical">
+                                        {record.groups.slice(2).map((group) => (
+                                            <Tag key={group._id}>
+                                                {group.name}
+                                            </Tag>
+                                        ))}
+                                    </Space>
+                                }
+                            >
+                                <Tag style={{ cursor: "pointer" }}>
+                                    +{record.groups.length - 2}
+                                </Tag>
+                            </Popover>
+                        )}
                     </Space>
-                ) : (
-                    "-"
-                )
-            ),
+                );
+            },
         },
         {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
@@ -267,16 +307,6 @@ function Contacts() {
             dataIndex: "createdAt",
             key: "createdAt",
         },
-        // {
-        //     title: t("test", { defaultValue: "Test" }),
-        //     dataIndex: "test",
-        //     key: "test",
-        // },
-        // {
-        //     title: t("country", { defaultValue: "Country" }),
-        //     dataIndex: "country",
-        //     key: "country",
-        // },
         {
             title: t("actions", {
                 defaultValue: "Actions",
@@ -302,7 +332,8 @@ function Contacts() {
                                     defaultValue: "Delete",
                                 }),
                                 danger: true,
-                                onClick: () => handleDelete(record),
+                                onClick: () =>
+                                    handleDeleteContacts([record._id], record.name),
                             },
                         ],
                     }}
@@ -373,6 +404,13 @@ function Contacts() {
                             editData={editContact}
                             fetchContacts={fetchContacts}
                         />
+                        <Button
+                            danger
+                            disabled={selectedRowKeys.length === 0}
+                            onClick={() => handleDeleteContacts(selectedRowKeys)}
+                        >
+                            Delete Selected
+                        </Button>
                     </Flex>
                 }
             >
@@ -407,6 +445,7 @@ function Contacts() {
                             loading={loading}
                             pagination={false}
                             scroll={{ x: "max-content" }}
+                            rowSelection={rowSelection}
                         />
                     </Card>
 
@@ -424,38 +463,36 @@ function Contacts() {
                         }}
                     >
                         <Form layout="vertical" form={filterForm}>
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item
-                                        label="Start Date"
-                                    >
-                                        <DatePicker
-                                            style={{ width: "100%" }}
-                                            format="YYYY-MM-DD"
-                                            value={startDate}
-                                            onChange={(date) => setStartDate(date)}
-                                        />
-                                    </Form.Item>
-                                </Col>
+                            <Form.Item
+                                label="Filter By Date"
+                            >
+                                <RangePicker
+                                    style={{ width: "100%" }}
+                                    value={
+                                        startDate && endDate
+                                            ? [startDate, endDate]
+                                            : null
+                                    }
+                                    format="YYYY-MM-DD"
+                                    onChange={(dates) => {
+                                        if (!dates) {
+                                            setStartDate(null);
+                                            setEndDate(null);
+                                        } else {
+                                            setStartDate(dates[0]);
+                                            setEndDate(dates[1]);
+                                        }
+                                    }}
 
-                                <Col span={12}>
-                                    <Form.Item
-                                        label="End Date"
-                                    >
-                                        <DatePicker
-                                            style={{ width: "100%" }}
-                                            format="YYYY-MM-DD"
-                                            value={endDate}
-                                            onChange={(date) => setEndDate(date)}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                                />
+                            </Form.Item>
                             <Form.Item
                                 label={t("filter.by.groups", { defaultValue: "Filter by Groups" })}
                             >
                                 <Select
                                     mode="multiple"
+                                    showSearch
+                                    optionFilterProp="label"
                                     value={groupIds}
                                     onChange={(value) => setGroupIds(value)}
                                     placeholder="Select Groups"

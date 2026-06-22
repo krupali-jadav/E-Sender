@@ -57,6 +57,21 @@ export const deleteGroup = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete group");                                                                
+        message.error("Failed to delete group");
     }
 }
+
+export const deleteMultipleGroups = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/api/user/group/delete/multiple", payload);
+
+        if (response.data?.status) {
+            return response.data;
+        } else {
+            message.error(response.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        message.error("Failed to delete groups");
+    }
+};

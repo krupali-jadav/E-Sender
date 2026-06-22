@@ -8,7 +8,7 @@ import axiosInstance from '../../../util/axiosInstance';
 import { formatDate, getCurrentTime } from '../../../util/commom.utils';
 import { exportToExcel } from 'react-json-to-excel';
 import { t } from 'i18next';
-import { deleteCustomField, getAllCustomFields } from './CustomeFieldApi';
+import { deleteCustomField, deleteMultipleFields, getAllCustomFields } from './CustomeFieldApi';
 const { Text } = Typography;
 
 function CustomFields() {
@@ -41,6 +41,14 @@ function CustomFields() {
     setShowFilterModal(false);
     filterForm.resetFields();
   };
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
+  };
+
   const openEditModal = (record) => {
     setSelectedField(record);
     setEditModalOpen(true);
@@ -96,26 +104,37 @@ function CustomFields() {
     getAllFields();
   }, [search, page, sortBy, isApplyFilter, fieldType, startDate, endDate,]);
 
-  const handleDelete = (record) => {
+  const handleDeleteFields = (ids, name = "") => {
     Modal.confirm({
-      title: "Delete Custom Field",
-      content: `Are you sure you want to delete "${record.name}"?`,
+      title: ids.length > 1 ? "Delete Fields" : "Delete Field",
+      content:
+        ids.length > 1
+          ? `Are you sure you want to delete ${ids.length} fields?`
+          : `Are you sure you want to delete "${name}"?`,
       okText: "Delete",
+      okType: "danger",
       cancelText: "Cancel",
-      okButtonProps: {
-        danger: true,
-      },
+
       onOk: async () => {
         try {
-          const data = await deleteCustomField({
-            field_id: record._id,
-          });
+          let data;
+
+          if (ids.length === 1) {
+            data = await deleteCustomField({
+              field_id: ids[0],
+            });
+          } else {
+            data = await deleteMultipleFields({
+              field_ids: ids,
+            });
+          }
 
           if (data?.status) {
             message.success(
-              data?.message || "Custom Field deleted successfully"
+              data?.message || "Field(s) deleted successfully"
             );
 
+            setSelectedRowKeys([]);
             getAllFields();
           }
         } catch (error) {
@@ -228,7 +247,8 @@ function CustomFields() {
                   defaultValue: "Delete",
                 }),
                 danger: true,
-                onClick: () => handleDelete(record),
+                onClick: () =>
+                  handleDeleteFields([record._id], record.name),
               },
             ],
           }}
@@ -274,7 +294,13 @@ function CustomFields() {
             editData={selectedField}
             onSuccess={getAllFields}
           />
-
+          <Button
+            danger
+            disabled={selectedRowKeys.length === 0}
+            onClick={() => handleDeleteFields(selectedRowKeys)}
+          >
+            Delete Selected
+          </Button>
         </Flex>
       }
     >
@@ -306,6 +332,7 @@ function CustomFields() {
             loading={loading}
             pagination={false}
             scroll={{ x: "max-content" }}
+            rowSelection={rowSelection}
           />
         </Card>
 

@@ -8,7 +8,7 @@ import { exportToExcel } from 'react-json-to-excel';
 import { getCurrentTime } from '../../../util/commom.utils';
 import axiosInstance from '../../../util/axiosInstance';
 import { t } from 'i18next';
-import { deleteGroup, getAllGroups } from './GroupApi';
+import { deleteGroup, deleteMultipleGroups, getAllGroups } from './GroupApi';
 
 function Groups() {
   const [AddGroupOpen, setAddGroupOpen] = useState(false);
@@ -37,6 +37,14 @@ function Groups() {
     setStatus("all");
     setShowFilterModal(false);
     filterForm.resetFields();
+  };
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
   };
 
   const onExport = async () => {
@@ -106,25 +114,37 @@ function Groups() {
     setAddGroupOpen(true);
   };
 
-  const handleDeleteGroup = (record) => {
+  const handleDeleteGroups = (ids, name = "") => {
     Modal.confirm({
-      title: "Delete Group",
-      content: `Are you sure you want to delete "${record.name}"?`,
+      title: ids.length > 1 ? "Delete Groups" : "Delete Group",
+      content:
+        ids.length > 1
+          ? `Are you sure you want to delete ${ids.length} groups?`
+          : `Are you sure you want to delete "${name}"?`,
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
 
       onOk: async () => {
         try {
-          const data = await deleteGroup({
-            group_id: record._id,
-          });
+          let data;
+
+          if (ids.length === 1) {
+            data = await deleteGroup({
+              group_id: ids[0],
+            });
+          } else {
+            data = await deleteMultipleGroups({
+              group_ids: ids,
+            });
+          }
 
           if (data?.status) {
             message.success(
-              data?.message || "Group deleted successfully"
+              data?.message || "Group(s) deleted successfully"
             );
 
+            setSelectedRowKeys([]);
             fetchGroups();
           }
         } catch (error) {
@@ -195,7 +215,8 @@ function Groups() {
                   defaultValue: "Delete",
                 }),
                 danger: true,
-                onClick: () => handleDeleteGroup(record),
+                onClick: () =>
+                  handleDeleteGroups([record._id], record.name),
               },
             ],
           }}
@@ -240,6 +261,14 @@ function Groups() {
             editData={editingGroup}
             fetchGroups={fetchGroups}
           />
+
+          <Button
+            danger
+            disabled={selectedRowKeys.length === 0}
+            onClick={() => handleDeleteGroups(selectedRowKeys)}
+          >
+            Delete Selected
+          </Button>
         </Space>
       }
     >
@@ -269,7 +298,7 @@ function Groups() {
             loading={loading}
             pagination={false}
             scroll={{ x: "max-content" }}
-
+            rowSelection={rowSelection}
           />
         </Card>
       </Space>

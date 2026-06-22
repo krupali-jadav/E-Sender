@@ -66,3 +66,18 @@ export const deleteCustomField = async (payload) => {
         console.log(error);
     }
 };
+
+export const deleteMultipleFields = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/api/user/custom-field/delete/multiple", payload);
+
+        if (response.data?.status) {
+            return response.data;
+        } else {
+            message.error(response.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        message.error("Failed to delete contacts");
+    }
+};
