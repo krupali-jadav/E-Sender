@@ -10,6 +10,7 @@ import { exportToExcel } from 'react-json-to-excel';
 import { t } from 'i18next';
 import { deleteCustomField, deleteMultipleFields, getAllCustomFields } from './CustomeFieldApi';
 const { Text } = Typography;
+const { RangePicker } = DatePicker;
 
 function CustomFields() {
   const [fields, setFields] = useState([]);
@@ -38,6 +39,7 @@ function CustomFields() {
     setStartDate(null);
     setEndDate(null);
     setStatus("all");
+    setSortBy(null);
     setShowFilterModal(false);
     filterForm.resetFields();
   };
@@ -72,10 +74,10 @@ function CustomFields() {
         sort_by: sortBy,
         filter_by: isApplyFilter
           ? {
-            date_type: "all",
+            date_type: startDate && endDate ? "specific" : "all",
             date: {
-              start_date: startDate ? startDate.format("YYYY-MM-DD") : null,
-              end_date: endDate ? endDate.format("YYYY-MM-DD") : null,
+              start_date: startDate ? startDate.startOf("day").toISOString() : null,
+              end_date: endDate ? endDate.endOf("day").toISOString() : null,
             },
             type: fieldType,
           } : {
@@ -87,7 +89,6 @@ function CustomFields() {
             type: -1,
           },
       });
-
       if (data?.status) {
         setFields(data?.fields || []);
         setTotal(data?.total || 0);
@@ -133,7 +134,6 @@ function CustomFields() {
             message.success(
               data?.message || "Field(s) deleted successfully"
             );
-
             setSelectedRowKeys([]);
             getAllFields();
           }
@@ -310,7 +310,8 @@ function CustomFields() {
         <SearchHeader
           onExport={onExport}
           exporting={exporting}
-          onFilterClick={() => setShowFilterModal(true)} page="custom-fields"
+          onFilterClick={() => setShowFilterModal(true)}
+          page="custom-fields"
           onSearch={(value) => {
             setSearch(value);
             setPage(1);
@@ -350,33 +351,25 @@ function CustomFields() {
           }}
         >
           <Form layout="vertical" form={filterForm}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item
-                  label="Start Date"
-                >
-                  <DatePicker
-                    style={{ width: "100%" }}
-                    format="YYYY-MM-DD"
-                    value={startDate}
-                    onChange={(date) => setStartDate(date)}
-                  />
-                </Form.Item>
-              </Col>
+            <Form.Item
+              label="Filter By Date"
+            >
+              <RangePicker
+                style={{ width: "100%" }}
+                value={startDate && endDate ? [startDate, endDate] : null}
+                format="YYYY-MM-DD"
+                onChange={(dates) => {
+                  if (!dates) {
+                    setStartDate(null);
+                    setEndDate(null);
+                  } else {
+                    setStartDate(dates[0]);
+                    setEndDate(dates[1]);
+                  }
+                }}
 
-              <Col span={12}>
-                <Form.Item
-                  label="End Date"
-                >
-                  <DatePicker
-                    style={{ width: "100%" }}
-                    format="YYYY-MM-DD"
-                    value={endDate}
-                    onChange={(date) => setEndDate(date)}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
+              />
+            </Form.Item>
             <Form.Item
               label={t("filterbytype", { defaultValue: "Filter by Type" })}
             >

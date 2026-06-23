@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../../Components/Search Header/SearchHeader'
-import { Button, Card, Dropdown, Form, message, Modal, Space, Table } from 'antd'
+import { Button, Card, DatePicker, Dropdown, Form, message, Modal, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { getCurrentTime } from '../../../util/commom.utils';
 import axiosInstance from '../../../util/axiosInstance';
 import { t } from 'i18next';
 import { deleteGroup, deleteMultipleGroups, getAllGroups } from './GroupApi';
+const { RangePicker } = DatePicker;
 
 function Groups() {
   const [AddGroupOpen, setAddGroupOpen] = useState(false);
@@ -24,19 +25,21 @@ function Groups() {
   const [filterForm] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
-
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [isApplyFilter, setIsApplyFilter] = useState(false);
   const resetFilterParameters = () => {
     setStatus("all");
     setPage(1);
     setSearch("");
     setSortBy("created-at");
-    // setIsApplyFilter(false);
+    setIsApplyFilter(false);
     setFilterType("all-time");
     setStartDate(null);
     setEndDate(null);
     setStatus("all");
     setShowFilterModal(false);
     filterForm.resetFields();
+    setSortBy(null);
   };
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -86,13 +89,15 @@ function Groups() {
         limit: 10,
         search: search,
         sort_by: sortBy,
-        filter_by: {
-          date_type: "all",
-          date: {
-            start_date: null,
-            end_date: null,
-          },
-        },
+        filter_by: isApplyFilter
+          ? {
+            date_type: startDate && endDate ? "specific" : "all",
+            date: {
+              start_date: startDate ? startDate.startOf("day").toISOString() : null,
+              end_date: endDate ? endDate.endOf("day").toISOString() : null,
+            },
+          }
+          : null,
       });
       if (data?.status) {
         setGroups(data.groups || []);
@@ -107,7 +112,7 @@ function Groups() {
 
   useEffect(() => {
     fetchGroups();
-  }, [search, page, sortBy]);
+  }, [search, page, sortBy, isApplyFilter, startDate, endDate]);
 
   const openEditModal = (record) => {
     setEditingGroup(record);
@@ -276,6 +281,7 @@ function Groups() {
         <SearchHeader
           onExport={onExport}
           exporting={exporting}
+          onFilterClick={() => setShowFilterModal(true)}
           page="groups"
           onSearch={(value) => {
             setSearch(value);
@@ -301,6 +307,42 @@ function Groups() {
             rowSelection={rowSelection}
           />
         </Card>
+
+        <Modal
+          title={t("filter.groups", { defaultValue: "Filter Groups" })}
+          open={showFilterModal}
+          centered
+          onCancel={() => setShowFilterModal(false)}
+          okText={t("apply", { defaultValue: "Apply" })}
+          cancelText={t("cancel", { defaultValue: "Cancel" })}
+          onOk={() => {
+            setPage(1);
+            setIsApplyFilter(true);
+            setShowFilterModal(false);
+          }}
+        >
+          <Form layout="vertical" form={filterForm}>
+            <Form.Item
+              label="Filter By Date"
+            >
+              <RangePicker
+                style={{ width: "100%" }}
+                value={startDate && endDate ? [startDate, endDate] : null}
+                format="YYYY-MM-DD"
+                onChange={(dates) => {
+                  if (!dates) {
+                    setStartDate(null);
+                    setEndDate(null);
+                  } else {
+                    setStartDate(dates[0]);
+                    setEndDate(dates[1]);
+                  }
+                }}
+
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
       </Space>
     </PageContainer>
   )

@@ -49,6 +49,7 @@ function Contacts() {
         setStatus("all");
         setShowFilterModal(false);
         filterForm.resetFields();
+        setSortBy(null);
     };
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const rowSelection = {
@@ -80,7 +81,6 @@ function Contacts() {
         };
         try {
             setLoading(true);
-
             const response = await getAllContacts(payload);
 
             if (response?.status) {

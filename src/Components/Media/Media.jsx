@@ -3,12 +3,10 @@ import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, PlusOutlined } from
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography } from "antd";
 import { t } from "i18next";
-
 import SearchHeader from "../../Components/Search Header/SearchHeader";
 import AddMedia from "./AddMedia";
 import { deleteMedia, getAllMedia } from "./MediaApi";
 import { useSelector } from "react-redux";
-
 
 function Media() {
     const { Text } = Typography;
@@ -19,7 +17,7 @@ function Media() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [hoveredId, setHoveredId] = useState(null);
-      const theme = useSelector((state) => state?.app?.theme);
+    const theme = useSelector((state) => state?.app?.theme);
 
     const fetchMedia = async () => {
         setLoading(true);
@@ -80,7 +78,6 @@ function Media() {
         });
     };
 
-
     const tabItems = [
         {
             key: "all",
@@ -123,9 +120,7 @@ function Media() {
                         icon={<PlusOutlined />}
                         onClick={() => setAddMediaOpen(true)}
                     >
-                        {t("create.webhook", {
-                            defaultValue: "Add Media",
-                        })}
+                        {t("create.webhook", { defaultValue: "Add Media", })}
                     </Button>
 
                     <AddMedia
@@ -151,7 +146,6 @@ function Media() {
                     items={tabItems}
                     onChange={(key) => setActiveTab(key)}
                 />
-
             </Space>
 
             <Row gutter={[16, 16]}>
@@ -163,7 +157,7 @@ function Media() {
                             onMouseLeave={() => setHoveredId(null)}
                             style={{
                                 position: "relative",
-                                width: 220,
+                                width: 240,
                             }}
                         >
                             <Card
@@ -226,9 +220,7 @@ function Media() {
                                     )
                                 }
                             >
-
                             </Card>
-
 
                             {hoveredId === item._id && (
                                 <Flex
