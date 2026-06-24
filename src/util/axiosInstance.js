@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
             if (error.response.status === 401) {
                 // Handle 401 error - token expired/unauthorized
                 // Optionally, clear local storage and redirect to login
-                localStorage.removeItem("persist:root   ");
+                localStorage.removeItem("persist:root");
                 window.location.href = "/";
             }
         }
