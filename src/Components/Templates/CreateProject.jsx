@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Modal,
     Form,
@@ -12,10 +12,11 @@ import {
     message,
 } from "antd";
 import { createProject, getProjects } from "./TemplatesApi";
+import { useParams } from "react-router-dom";
 
 const { Text } = Typography;
 
-const CreateProjectModal = ({ open, onCancel }) => {
+const CreateProjectModal = ({ open, onCancel, refreshProjects, }) => {
     const [form] = Form.useForm();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -46,7 +47,9 @@ const CreateProjectModal = ({ open, onCancel }) => {
             if (data?.success) {
                 message.success("Project created successfully");
                 form.resetFields();
-                fetchProjects();
+                await fetchProjects();
+                await refreshProjects();
+                onCancel();
             }
         } catch (error) {
             console.log(error);
@@ -92,7 +95,7 @@ const CreateProjectModal = ({ open, onCancel }) => {
                         htmlType="submit"
                         loading={loading}
                     >
-                        Save Project
+                        Create Project
                     </Button>
                 </Flex>
             </Form>

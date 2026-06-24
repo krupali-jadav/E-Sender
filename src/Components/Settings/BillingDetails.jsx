@@ -62,12 +62,6 @@ function BillingDetails() {
                         <Form.Item
                             label={t("bussiness.name", { defaultValue: "Business Name" })}
                             name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter business name",
-                                },
-                            ]}
                         >
                             <Input
                                 placeholder={t("bussiness.name", { defaultValue: "Enter Your Bussiness Name", })} />
@@ -78,12 +72,6 @@ function BillingDetails() {
                         <Form.Item
                             label={t("gst.number", { defaultValue: "GST Number" })}
                             name="gst_number"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter gst number",
-                                },
-                            ]}
                         >
                             <Input
                                 placeholder={t("gst.number", { defaultValue: "Enter Your GST Number", })} />
@@ -96,12 +84,6 @@ function BillingDetails() {
                         <Form.Item
                             label={t("email", { defaultValue: "Email" })}
                             name="email"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter email",
-                                },
-                            ]}
                         >
                             <Input
                                 placeholder={t("email", { defaultValue: "Enter Your Email", })} />
@@ -113,12 +95,6 @@ function BillingDetails() {
                             name="phone"
                             label={t("phone.number", { defaultValue: "Phone Number" })}
                             initialValue={phone}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter phone",
-                                },
-                            ]}
                         >
                             <PhoneInput
                                 enableSearch
@@ -143,12 +119,6 @@ function BillingDetails() {
                         <Form.Item
                             label={t("address", { defaultValue: "Address" })}
                             name="address"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter address",
-                                },
-                            ]}
                         >
                             <Input
                                 placeholder={t("address", { defaultValue: "Enter Your  Address", })} />
@@ -159,12 +129,6 @@ function BillingDetails() {
                         <Form.Item
                             label={t("media", { defaultValue: "Media" })}
                             name="media"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter media",
-                                },
-                            ]}
                         >
                             <Card size="small" >
                                 <Dragger style={{ padding: "20px" }}>

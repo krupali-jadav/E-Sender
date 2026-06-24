@@ -98,12 +98,6 @@ function AddSupport({ open, onClose, onSuccess, editData }) {
                 <Form.Item
                     label={t("name", { defaultValue: "Name" })}
                     name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please enter name",
-                        },
-                    ]}
                 >
                     <Input
                         placeholder={t("enter.name", { defaultValue: "Enter name" })}
@@ -114,12 +108,6 @@ function AddSupport({ open, onClose, onSuccess, editData }) {
                     name="phone"
                     label={t("phone.number", { defaultValue: "Phone Number" })}
                     initialValue={phone}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please enter phone number",
-                        },
-                    ]}
                 >
                     <PhoneInput
                         enableSearch
@@ -134,12 +122,6 @@ function AddSupport({ open, onClose, onSuccess, editData }) {
                 <Form.Item
                     label={t("department", { defaultValue: "Department" })}
                     name="department"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please enter department",
-                        },
-                    ]}
                 >
                     <Input
                         placeholder={t("enter.department", { defaultValue: "Enter Department" })}

@@ -4,10 +4,10 @@ import { PageContainer } from '@ant-design/pro-components'
 import { Avatar, Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Row, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
+import { formatDate, getCurrentTime } from '../../../util/commom.utils';
 import ExcelImport from '../Contacts/ExcelImport'
 import ManualImport from '../Contacts/ManualImport'
 import AddContact from '../Contacts/AddContact'
-import { getCurrentTime } from '../../../util/commom.utils'
 import { exportToExcel } from 'react-json-to-excel'
 import axiosInstance from '../../../util/axiosInstance'
 import { changeContactBlockStatus, deleteContact, deleteMultipleContacts, getAllContacts } from './ContactsApi'
@@ -17,7 +17,7 @@ function Contacts() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const [sortBy, setSortBy] = useState("created-at");
+    const [sortBy, setSortBy] = useState("Sort by Created At");
     const [exporting, setExporting] = useState(false);
     const [excelOpen, setExcelOpen] = useState(false);
     const [manualImportOpen, setManualImportOpen] = useState(false);
@@ -267,6 +267,51 @@ function Contacts() {
             },
         },
         {
+    title: t("custom.fields", {
+        defaultValue: "Custom Fields",
+    }),
+    dataIndex: "fields",
+    key: "fields",
+    render: (_, record) => {
+        if (!record.fields?.length) return "-";
+
+        return (
+            <Space wrap>
+                {record.fields.slice(0, 2).map((field) => (
+                    <Tag key={field.fieldId?._id || field.fieldId}>
+                        {field.value}
+                    </Tag>
+                ))}
+
+                {record.fields.length > 2 && (
+                    <Popover
+                        placement="bottomLeft"
+                        trigger="hover"
+                        content={
+                            <Space direction="vertical">
+                                {record.fields.slice(2).map((field) => (
+                                    <Tag
+                                        key={
+                                            field.fieldId?._id ||
+                                            field.fieldId
+                                        }
+                                    >
+                                        {field.value}
+                                    </Tag>
+                                ))}
+                            </Space>
+                        }
+                    >
+                        <Tag style={{ cursor: "pointer" }}>
+                            +{record.fields.length - 2}
+                        </Tag>
+                    </Popover>
+                )}
+            </Space>
+        );
+    },
+},
+        {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
             dataIndex: "unsubscribe",
             key: "unsubscribed",
@@ -306,6 +351,7 @@ function Contacts() {
             title: t("created.at", { defaultValue: "Created At" }),
             dataIndex: "createdAt",
             key: "createdAt",
+            render: (date) => formatDate(date),
         },
         {
             title: t("actions", {

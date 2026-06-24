@@ -3,9 +3,9 @@ import SearchHeader from '../../../Components/Search Header/SearchHeader'
 import { Button, Card, DatePicker, Dropdown, Form, message, Modal, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
+import { formatDate, getCurrentTime } from '../../../util/commom.utils'
 import { useEffect, useState } from 'react';
 import { exportToExcel } from 'react-json-to-excel';
-import { getCurrentTime } from '../../../util/commom.utils';
 import axiosInstance from '../../../util/axiosInstance';
 import { t } from 'i18next';
 import { deleteGroup, deleteMultipleGroups, getAllGroups } from './GroupApi';
@@ -16,7 +16,7 @@ function Groups() {
   const [exporting, setExporting] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("created-at");
+  const [sortBy, setSortBy] = useState("Sort by Created At");
   const [total, setTotal] = useState(0);
   const [groups, setGroups] = useState([]);
   const [status, setStatus] = useState("All");
@@ -193,7 +193,7 @@ function Groups() {
       title: t("created.at", { defaultValue: "Created At" }),
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date) => getCurrentTime(date), // or formatDate(date)
+      render: (date) => formatDate(date),
     },
     {
       title: t("actions", {

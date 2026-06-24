@@ -1,13 +1,15 @@
 import { Button, Form, Input, message, Modal } from 'antd'
 import { t } from 'i18next'
 import { addGroup, saveGroup } from './GroupApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function AddGroup({ open, onClose, editData, fetchGroups, }) {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (values) => {
         try {
+            setLoading(true);
             let data;
 
             if (editData) {
@@ -28,7 +30,7 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
                         : data?.message || "Group added successfully"
                 );
 
-                await fetchGroups(); 
+                await fetchGroups();
 
                 form.resetFields();
 
@@ -36,11 +38,13 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        if(!open) return;
+        if (!open) return;
         if (open && editData) {
             form.setFieldsValue({
                 name: editData.name,
@@ -48,7 +52,7 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
         } else {
             form.resetFields();
         }
-    }, [open, editData,form]);
+    }, [open, editData, form]);
 
     return (
         <>
@@ -70,6 +74,7 @@ function AddGroup({ open, onClose, editData, fetchGroups, }) {
                         key="add"
                         type="primary"
                         onClick={() => form.submit()}
+                        loading={loading}
                     >
                         {editData
                             ? t("save.changes", { defaultValue: "Save Changes", })

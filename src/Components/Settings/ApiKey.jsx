@@ -45,6 +45,7 @@ function ApiKey() {
       style={{
         borderRadius: 0,
         borderColor: theme ? "transparent" : "#fff",
+        width:"42%"
       }} >
       <div style={{ marginBottom: 8 }}>
         Your API Key

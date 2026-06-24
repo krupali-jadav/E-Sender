@@ -67,7 +67,7 @@ export const getTemplatesByProject = async (projectId) => {
         message.error("Failed to fetch templates");
     }
 };
-export const updateTemplate = async (templateId,payload) => {
+export const updateTemplate = async (templateId, payload) => {
     try {
         const response = await axiosInstance.put(
             `/api/templates/${templateId}`,
@@ -82,5 +82,18 @@ export const updateTemplate = async (templateId,payload) => {
     } catch (error) {
         console.log(error);
         message.error("Failed to update template");
+    }
+};
+    
+export const getTemplateById = async (templateId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/api/templates/${templateId}`
+        );
+
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
 };

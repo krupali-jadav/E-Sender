@@ -43,12 +43,6 @@ function SocialMedia() {
             <Form.Item
               label={t("linkedin", { defaultValue: "LinkedIn" })}
               name="linkedin"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter LinkedIn URL",
-                },
-              ]}
             >
               <Input
                 prefix={<LinkedinFilled />}
@@ -59,12 +53,6 @@ function SocialMedia() {
             <Form.Item
               label={t("facebook", { defaultValue: "Facebook" })}
               name="facebook"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Your Facebook",
-                },
-              ]}
             >
               <Input
                 prefix={<FacebookFilled />}
@@ -78,12 +66,6 @@ function SocialMedia() {
             <Form.Item
               label={t("twitter", { defaultValue: "Twitter" })}
               name="twitter"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Twitter",
-                },
-              ]}
             >
               <Input
                 prefix={<TwitterSquareFilled />}
@@ -94,12 +76,6 @@ function SocialMedia() {
             <Form.Item
               label={t("instagram", { defaultValue: "Instagram" })}
               name="instagram"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Your Instagram",
-                },
-              ]}
             >
               <Input
                 prefix={<InstagramFilled />}
@@ -112,12 +88,6 @@ function SocialMedia() {
             <Form.Item
               label={t("youtube", { defaultValue: "YouTube" })}
               name="youtube"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Your YouTube",
-                },
-              ]}
             >
               <Input
                 prefix={<YoutubeFilled />}

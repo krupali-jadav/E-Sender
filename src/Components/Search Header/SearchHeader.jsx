@@ -56,12 +56,12 @@ function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onRe
                 label: t("sort.by.name", { defaultValue: "Sort by Name", }),
                 value: "name",
             },
-            {
-                key: 2,
-                label: t("sort.by.type", { defaultValue: "Sort by Type", }),
-                value: "type",
+            // {
+            //     key: 2,
+            //     label: t("sort.by.type", { defaultValue: "Sort by Type", }),
+            //     value: "type",
 
-            },
+            // },
             {
                 key: 3,
                 label: t("sort.by.createat", { defaultValue: "Sort by Created At", }),
@@ -140,8 +140,6 @@ function SearchHeader({ page, onFilterClick, onExport, exporting, onSearch, onRe
                         </Button>
                     </Flex>
                 </Col>
-
-
             </Row>
         </Card>
     )

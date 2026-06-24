@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space, message, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
 import { addContact, saveContact } from "./ContactsApi";
 import { addGroup, getAllGroups } from "../Group/GroupApi";
+import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 
 function AddContact({ open, onClose, editData, fetchContacts, }) {
     const [groupName, setGroupName] = useState("");
     const [phone, setPhone] = useState("");
     const [form] = Form.useForm();
     const [groupOptions, setGroupOptions] = useState([]);
+    const [customFields, setCustomFields] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [selectedFields, setSelectedFields] = useState([]);
+
+    const handleFieldSelect = (fieldId) => {
+        setSelectedFields((prev) =>
+            prev.includes(fieldId)
+                ? prev.filter((id) => id !== fieldId)
+                : [...prev, fieldId]
+        );
+    };
 
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {
@@ -20,6 +32,27 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
             setPhone("");
         }
     };
+
+    const fetchCustomFields = async () => {
+        try {
+            const data = await getAllCustomFields({
+                page: 0,
+                limit: 10,
+            });
+
+            if (data?.status) {
+                setCustomFields(data.fields || []);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        if (open) {
+            fetchGroups();
+            fetchCustomFields();
+        }
+    }, [open]);
 
     const handleAddGroup = async () => {
         if (!groupName.trim()) {
@@ -57,18 +90,19 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
 
     const handleSubmit = async (values) => {
         try {
+            setLoading(true);
             const payload = {
                 name: values.name,
                 email: values.email,
-                // fields: [
-                //     {
-                //         fieldId: values.fieldId,
-                //         value: values.customField,
-                //     },
-                // ],
                 groups: values.groups || [],
+                fields: selectedFields.map((fieldId) => ({
+                    fieldId,
+                    value:
+                        customFields.find(
+                            (item) => item._id === fieldId
+                        )?.name || "",
+                })),
             };
-
             const data = editData
                 ? await saveContact({
                     contact_id: editData._id,
@@ -91,29 +125,43 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (!open) return;
+
         if (editData) {
             form.setFieldsValue({
                 name: editData.name,
                 email: editData.email,
-                groups: editData.groups?.map(
-                    (group) => group._id
-                ),
+                groups:
+                    editData.groups?.map(
+                        (group) => group._id
+                    ) || [],
             });
+
+            setSelectedFields(
+                editData.fields?.map(
+                    (field) =>
+                        field.fieldId?._id ||
+                        field.fieldId
+                ) || []
+            );
         } else {
             form.resetFields();
+            setSelectedFields([]);
+            setPhone("");
         }
-    }, [open, editData]);
+    }, [open, editData, form]);
 
     const fetchGroups = async () => {
         try {
             const data = await getAllGroups({
                 page: 0,
-                limit: 100,
+                limit: 10,
                 search: "",
                 sort_by: "created-at",
                 filter_by: {
@@ -148,7 +196,7 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                 <Button key="cancel" onClick={onClose}>
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
-                <Button key="add" type="primary" onClick={() => form.submit()} >
+                <Button key="add" type="primary" loading={loading} onClick={() => form.submit()} >
                     {editData ? "Save Changes" : "Add"}
                 </Button>
             ]}
@@ -184,19 +232,33 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                                 placeholder={t("email", { defaultValue: "Enter Email", })} />
                         </Form.Item>
 
-                        <Form.Item
-                            label={t("custom.fields", { defaultValue: "Custom Fields" })}
-                            name="Custom Fields"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter Custom Fields",
-                                },
-                            ]}
-                        >
-                            <Input
-                                placeholder={t("custom.fields", { defaultValue: "Enter Custom Fields", })} />
-                        </Form.Item>
+                        {customFields.length > 0 && (
+                            <>
+                                <div style={{ marginBottom: 12 }}>
+                                    <strong>Custom Fields:</strong>
+                                </div>
+
+                                <Space wrap>
+                                    {customFields.map((field) => (
+                                        <Tag
+                                            key={field._id}
+                                            color={
+                                                selectedFields.includes(field._id)
+                                                    ? "blue"
+                                                    : "default"
+                                            }
+                                            style={{
+                                                cursor: "pointer",
+                                                padding: "4px 8px",
+                                            }}
+                                            onClick={() => handleFieldSelect(field._id)}
+                                        >
+                                            {field.name}
+                                        </Tag>
+                                    ))}
+                                </Space>
+                            </>
+                        )}
                     </Col>
 
                     <Col span={12}>

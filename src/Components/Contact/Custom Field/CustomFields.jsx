@@ -24,7 +24,7 @@ function CustomFields() {
   const [endDate, setEndDate] = useState(null);
   const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("created-at");
+  const [sortBy, setSortBy] = useState("Sort by Created At");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [filterForm] = Form.useForm();
@@ -39,7 +39,7 @@ function CustomFields() {
     setStartDate(null);
     setEndDate(null);
     setStatus("all");
-    setSortBy(null);
+    // setSortBy(null);
     setShowFilterModal(false);
     filterForm.resetFields();
   };
@@ -211,16 +211,16 @@ function CustomFields() {
       },
     },
     {
-      title: t("created.at", { defaultValue: "Created At" }),
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (date) => formatDate(date),
-    },
-    {
       title: t("fallback.value", { defaultValue: "Fallback Value" }),
       dataIndex: "fallbackValue",
       key: "fallbackValue",
       render: (value) => value || "N/A",
+    },
+    {
+      title: t("created.at", { defaultValue: "Created At" }),
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => formatDate(date),
     },
     {
       title: t("actions", {

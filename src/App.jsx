@@ -69,6 +69,7 @@ function App() {
     { path: "/orders", component: Orders },
     { path: "/orders/:order_id", component: Invoice },
     { path: "/templates", component: Templates },
+    { path: "/templates/edit-template/:templateId", component: CreateTemplates },
     { path: "/templates/create-template", component: CreateTemplates },
     { path: "/contact/contacts", component: Contacts },
     { path: "/contact/groups", component: Groups },

@@ -1,5 +1,5 @@
-import { Row, Col, Card, Button, Switch, Space, Modal, List } from "antd";
-import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, } from "@ant-design/icons";
+import { Row, Col, Card, Button, Switch, Space, Modal, List, message } from "antd";
+import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, CopyOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -84,14 +84,10 @@ function Templates() {
         extra={
           <Col>
             <Space>
-              <Button danger icon={<DeleteOutlined />}>
-                {t("delete.all", { defaultValue: "Delete All" })}
-              </Button>
-
-
               <CreateProjectModal
                 open={open}
                 onCancel={() => setOpen(false)}
+                refreshProjects={getProjects}
               />
               <Button
                 type="primary"
@@ -113,17 +109,11 @@ function Templates() {
               return (
                 <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
                   <Card
-                    title={item.JSON?.templateName }
+                    title={item.JSON?.templateName}
                     extra={<Switch defaultChecked={item.active} />}
                     hoverable
                   >
-                    <Card style={{ height: 380, overflow: "auto" }} onClick={() =>
-                      navigate("/templates/create-template", {
-                        state: {
-                          template: item,
-                        },
-                      })
-                    }>
+                    <Card style={{ height: 380, overflow: "auto" }}>
                       <div
                         dangerouslySetInnerHTML={{
                           __html: item.HTML || "<p>No preview available</p>",
@@ -138,11 +128,7 @@ function Templates() {
                           icon={<EditOutlined />}
                           block
                           onClick={() =>
-                            navigate("/templates/create-template", {
-                              state: {
-                                template: item,
-                              },
-                            })
+                            navigate(`/templates/edit-template/${item._id}`)
                           }
                         >
                           {t("edit", { defaultValue: "Edit" })}
@@ -220,14 +206,35 @@ function Templates() {
                 >
                   <List.Item.Meta
                     title={project.name}
-                    description={project._id || project.projectId}
+                    description={
+                      <span>
+                        {project._id || project.projectId}
+
+                        <CopyOutlined
+                          style={{
+                            marginLeft: 8,
+                            cursor: "pointer",
+                            color: "#1677ff",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            navigator.clipboard.writeText(
+                              project._id || project.projectId
+                            );
+
+                            message.success("copied");
+                          }}
+                        />
+                      </span>
+                    }
                   />
                 </List.Item>
               );
             }}
           />
         </Modal>
-      </PageContainer>
+      </PageContainer >
     </>
   );
 }

@@ -1,21 +1,70 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
+import { Button, Card, Col, Form, Input, List, message, Modal, Row, Space } from "antd";
 // import Package from "esender-email-editor";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { createTemplate, updateTemplate } from "./TemplatesApi";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { createTemplate, getTemplateById, updateTemplate } from "./TemplatesApi";
 import { useSelector } from "react-redux";
 import Package from "esender-email-editor";
+import { CheckCircleFilled, CopyOutlined, PlusOutlined } from "@ant-design/icons";
+import axiosInstance from "../../util/axiosInstance";
+import CreateProjectModal from "./CreateProject";
 
 function CreateTemplates() {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const editorRef = useRef(null);
     const location = useLocation();
     const template = location.state?.template;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const selectedProject = useSelector((state) => state.app.selectedProject);
+    const [templateData, setTemplateData] = useState(null);
+    const { templateId } = useParams();
+    const [projects, setProjects] = useState([]);
+    const [projectModalOpen, setProjectModalOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const fetchTemplate = async () => {
+        try {
+            const data = await getTemplateById(templateId);
+
+            console.log("Template API Response", data);
+            if (data?.success) {
+                setTemplateData(data.json);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        console.log("Template ID:", templateId);
+        if (templateId) {
+            fetchTemplate();
+        }
+    }, [templateId]);
+
+    const getProjects = async () => {
+        try {
+            const response = await axiosInstance.get("/api/projects");
+
+            if (response.data?.success) {
+                const projectList = response.data.projects || [];
+
+                setProjects(projectList);
+
+                if (!selectedProject && projectList.length > 0) {
+                    dispatch(setSelectedProject(projectList[0]));
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getProjects();
+    }, []);
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
@@ -37,9 +86,9 @@ function CreateTemplates() {
 
             let response;
 
-            if (template?._id) {
+            if (templateId) {
                 response = await updateTemplate(
-                    template._id,
+                    templateId,
                     payload
                 );
             } else {
@@ -53,11 +102,11 @@ function CreateTemplates() {
 
             if (response?.success) {
                 message.success(
-                    template
+                    templateId
                         ? "Template updated successfully"
                         : "Template created successfully"
                 );
-                 navigate("/templates");
+                navigate("/templates");
             }
         } catch (error) {
             console.log(error);
@@ -65,29 +114,34 @@ function CreateTemplates() {
             setLoading(false);
         }
     };
+
     useEffect(() => {
-        if (template) {
-            form.setFieldsValue({
-                templateName: template.JSON?.templateName,
-                subject: template.JSON?.subject,
-            });
+        if (!templateData) return;
 
-            if (template.JSON?.design && editorRef.current) {
-                setTimeout(() => {
-                    try {
-                        const design =
-                            typeof template.JSON.design === "string"
-                                ? JSON.parse(template.JSON.design)
-                                : template.JSON.design;
+        form.setFieldsValue({
+            templateName: templateData.templateName,
+            subject: templateData.subject,
+        });
+    }, [templateData]);
+    useEffect(() => {
+        if (!templateData?.design) return;
 
-                        editorRef.current.loadJson(design);
-                    } catch (error) {
-                        console.log("Error loading design:", error);
-                    }
-                }, 500);
+        setTimeout(() => {
+            console.log(editorRef.current);
+            try {
+                const design =
+                    typeof templateData.design === "string"
+                        ? JSON.parse(templateData.design)
+                        : templateData.design;
+
+                console.log("Design", design);
+
+                editorRef.current?.loadJson(design);
+            } catch (err) {
+                console.log(err);
             }
-        }
-    }, [template, form]);
+        }, 1000);
+    }, [templateData]);
 
 
     return (
@@ -97,13 +151,20 @@ function CreateTemplates() {
                 <Button
                     type="link"
                     style={{ padding: 0, fontSize: 16 }}
+                    onClick={() => setProjectModalOpen(true)}
                 >
                     {selectedProject?.name || "Select Project"}
                 </Button>
                 <span> {">"} Templates</span>
             </Space>
-            <PageContainer title="Create Template">
-                <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <PageContainer title="Create Template" extra={
+                <CreateProjectModal
+                    open={open}
+                    onCancel={() => setOpen(false)}
+                    refreshProjects={getProjects}
+                />
+            }>
+                <Space direction="vertical" s ize="large" style={{ width: "100%" }}>
                     <Card styles={{ body: { padding: "8px 12px", marginBottom: 0 } }}
                     >
                         <Form
@@ -155,7 +216,7 @@ function CreateTemplates() {
                                             type="primary"
                                             htmlType="submit"
                                         >
-                                            {template
+                                            {templateId
                                                 ? t("edit", { defaultValue: "Edit" })
                                                 : t("create", { defaultValue: "Create" })}
                                         </Button>
@@ -175,7 +236,85 @@ function CreateTemplates() {
                         />
                     </Card>
                 </Space>
+                <Modal
+                    title={t("Switch.project", { defaultValue: "Switch Project" })}
+                    open={projectModalOpen}
+                    footer={<Col>
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setOpen(true)}
+                        >
+                            Create Project
+                        </Button>
+                    </Col>}
+                    onCancel={() => setProjectModalOpen(false)}
+                >
+                    <List
+                        style={{ overflow: "auto", height: 300 }}
+                        size="small"
+                        dataSource={projects}
+                        renderItem={(project) => {
+                            const isSelected =
+                                (selectedProject?._id || selectedProject?.projectId) ===
+                                (project._id || project.projectId);
 
+                            return (
+                                <List.Item
+                                    style={{
+                                        cursor: "pointer",
+                                        padding: "12px",
+                                        borderRadius: 6,
+                                    }}
+                                    onClick={() => {
+                                        dispatch(setSelectedProject(project));
+                                        getProjectTemplates(
+                                            project._id || project.projectId
+                                        );
+
+                                        setProjectModalOpen(false);
+                                    }}
+                                    extra={
+                                        isSelected && (
+                                            <CheckCircleFilled
+                                                style={{
+                                                    color: "#52c41a",
+                                                    fontSize: 18,
+                                                }}
+                                            />
+                                        )
+                                    }
+                                >
+                                    <List.Item.Meta
+                                        title={project.name}
+                                        description={
+                                            <span>
+                                                {project._id || project.projectId}
+
+                                                <CopyOutlined
+                                                    style={{
+                                                        marginLeft: 8,
+                                                        cursor: "pointer",
+                                                        color: "#1677ff",
+                                                    }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+
+                                                        navigator.clipboard.writeText(
+                                                            project._id || project.projectId
+                                                        );
+
+                                                        message.success("   copied");
+                                                    }}
+                                                />
+                                            </span>
+                                        }
+                                    />
+                                </List.Item>
+                            );
+                        }}
+                    />
+                </Modal>
             </PageContainer>
         </>
     );
