@@ -1,20 +1,31 @@
-import { Button, Form, Input, message, Modal, Select } from "antd"
+import { Button, DatePicker, Form, Input, message, Modal, Select } from "antd"
 import { t } from "i18next"
 import { addCustomField, updateCustomField } from "./CustomeFieldApi";
 import { useEffect, useState } from "react";
+import { formatDate } from "../../../util/commom.utils";
+import dayjs from "dayjs";
 
 function AddCustomField({ open, onClose, onSuccess, editData }) {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [selectedType, setSelectedType] = useState();
+
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
+
             const typeMap = {
-                text: 1,
-                number: 2,
-                boolean: 3,
-                date: 4,
+                text: 0,
+                number: 1,
+                boolean: 2,
+                date: 3,
             };
+
+            let fallbackValue = values.fallbackValue;
+
+            if (values.type === "date" && values.fallbackValue) {
+                fallbackValue = values.fallbackValue.toISOString();
+            }
 
             let data;
 
@@ -23,13 +34,13 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                     field_id: editData._id,
                     name: values.name,
                     type: typeMap[values.type],
-                    fallbackValue: values.fallbackValue,
+                    fallbackValue,
                 });
             } else {
                 data = await addCustomField({
                     name: values.name,
                     type: typeMap[values.type],
-                    fallbackValue: values.fallbackValue,
+                    fallbackValue,
                 });
             }
 
@@ -51,22 +62,34 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
         }
     };
     useEffect(() => {
-        if(!open) return;
-        if (open && editData) {
-            form.setFieldsValue({
-                name: editData.name,
-                fallbackValue: editData.fallbackValue,
-                type:
-                    editData.type === 1
-                        ? "text"
+        if (!open) return;
+
+        if (editData) {
+            const typeValue =
+                editData.type === 0
+                    ? "text"
+                    : editData.type === 1
+                        ? "number"
                         : editData.type === 2
-                            ? "number"
+                            ? "boolean"
                             : editData.type === 3
-                                ? "boolean"
-                                : "date",
+                                ? "date"
+                                : undefined;
+
+            setSelectedType(typeValue);
+
+            form.setFieldsValue({
+                name: editData.name || "",
+                type: typeValue,
+
+                fallbackValue:
+                    typeValue === "date" && editData.fallbackValue
+                        ? dayjs(editData.fallbackValue)
+                        : editData.fallbackValue,
             });
         } else {
             form.resetFields();
+            setSelectedType(undefined);
         }
     }, [open, editData, form]);
     return (
@@ -124,6 +147,7 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                 >
                     <Select
                         placeholder={t("select.type", { defaultValue: "Select Type" })}
+                        onChange={(value) => setSelectedType(value)}
                         options={[
                             {
                                 label: t("text", {
@@ -163,10 +187,26 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                         },
                     ]}
                 >
-                    <Input
-                        placeholder={t("enter.fallback.value", { defaultValue: "Enter Fallback Value" })}
-                    />
+                    {selectedType === "date" ? (
+                        <DatePicker
+                            style={{ width: "100%" }}
+                            format="YYYY-MM-DD"
+                            value={form.getFieldValue("fallbackValue")}
+                            onChange={(date) => {
+                                form.setFieldsValue({
+                                    fallbackValue: date,
+                                });
+                            }}
+                        />
+                    ) : (
+                        <Input
+                            placeholder={t("enter.fallback.value", {
+                                defaultValue: "Enter Fallback Value",
+                            })}
+                        />
+                    )}
                 </Form.Item>
+
             </Form>
 
         </Modal>

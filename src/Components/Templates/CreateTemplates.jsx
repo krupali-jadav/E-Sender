@@ -134,8 +134,6 @@ function CreateTemplates() {
                         ? JSON.parse(templateData.design)
                         : templateData.design;
 
-                console.log("Design", design);
-
                 editorRef.current?.loadJson(design);
             } catch (err) {
                 console.log(err);
@@ -226,7 +224,6 @@ function CreateTemplates() {
                         </Form>
                     </Card>
                     <Card style={{ minHeight: 600 }}>
-
 
                         <Package
                             ref={editorRef}

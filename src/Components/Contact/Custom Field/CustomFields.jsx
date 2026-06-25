@@ -194,16 +194,15 @@ function CustomFields() {
       title: t("type", { defaultValue: "Type" }),
       dataIndex: "type",
       key: "type",
-      width: 400,
       render: (type) => {
         switch (type) {
-          case 1:
+          case 0:
             return "Text";
-          case 2:
+          case 1:
             return "Number";
-          case 3:
+          case 2:
             return "Boolean";
-          case 4:
+          case 3:
             return "Date";
           default:
             return "-";
@@ -214,7 +213,15 @@ function CustomFields() {
       title: t("fallback.value", { defaultValue: "Fallback Value" }),
       dataIndex: "fallbackValue",
       key: "fallbackValue",
-      render: (value) => value || "N/A",
+      render: (value, record) => {
+        if (!value) return "N/A";
+
+        if (record.type === 3) {
+          return formatDate(value);
+        }
+
+        return value;
+      },
     },
     {
       title: t("created.at", { defaultValue: "Created At" }),
@@ -331,9 +338,17 @@ function CustomFields() {
             columns={columns}
             dataSource={fields}
             loading={loading}
-            pagination={false}
             scroll={{ x: "max-content" }}
             rowSelection={rowSelection}
+            pagination={{
+              current: page,
+              pageSize: 10,
+              total: total,
+              showSizeChanger: false,
+              onChange: (newPage) => {
+                setPage(newPage);
+              },
+            }}
           />
         </Card>
 

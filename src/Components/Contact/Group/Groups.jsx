@@ -302,7 +302,15 @@ function Groups() {
             columns={columns}
             dataSource={groups}
             loading={loading}
-            pagination={false}
+            pagination={{
+              current: page,
+              pageSize: 10,
+              total: total,
+              showSizeChanger: false,
+              onChange: (newPage) => {
+                setPage(newPage);
+              },
+            }}
             scroll={{ x: "max-content" }}
             rowSelection={rowSelection}
           />

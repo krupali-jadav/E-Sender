@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography } from "antd";
+import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography, Spin } from "antd";
 import { t } from "i18next";
 import SearchHeader from "../../Components/Search Header/SearchHeader";
 import AddMedia from "./AddMedia";
@@ -148,118 +148,123 @@ function Media() {
                 />
             </Space>
 
-            <Row gutter={[16, 16]}>
-
-                {mediaList.map((item) => (
-                    <Col xs={24} sm={12} md={8} lg={4} key={item._id}>
-                        <div
-                            onMouseEnter={() => setHoveredId(item._id)}
-                            onMouseLeave={() => setHoveredId(null)}
-                            style={{
-                                position: "relative",
-                                width: 240,
-                            }}
-                        >
-                            <Card
-                                hoverable
+            {loading ? (
+                <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
+                    <Spin size="middle" />
+                </div>
+            ) : (
+                <Row gutter={[16, 16]}>
+                    {mediaList.map((item) => (
+                        <Col xs={24} sm={12} md={8} lg={4} key={item._id}>
+                            <div
+                                onMouseEnter={() => setHoveredId(item._id)}
+                                onMouseLeave={() => setHoveredId(null)}
                                 style={{
-                                    placeItems: "center",
+                                    position: "relative",
+                                    width: 240,
                                 }}
-                                cover={
-                                    item.type?.startsWith("image/") ? (
-                                        <img
-                                            alt={item.name}
-                                            src={item.url}
-                                            style={{
-                                                height: 220,
-                                                width: "100%",
-                                                objectFit: "contain",
-                                            }}
-                                        />
-                                    ) : item.type?.startsWith("video/") ? (
-                                        <video
-                                            controls
-                                            style={{
-                                                height: 220,
-                                                width: "100%",
-                                                objectFit: "contain",
-                                            }}
-                                        >
-                                            <source src={item.url} type={item.type} />
-                                        </video>
-                                    ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                                        <div
-                                            style={{
-                                                height: 220,
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                objectFit: "contain",
-                                                gap: 10,
-                                            }}
-                                        >
-                                            {item.type === "application/pdf" ? (
-                                                <FilePdfOutlined style={{ fontSize: 50, color: "red" }} />
-                                            ) : (
-                                                <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
-                                            )}
-                                            <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
-                                        </div>
-                                    ) : (
-                                        <div
-                                            style={{
-                                                height: 220,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                            }}
-                                        >
-                                            {item.name}
-                                        </div>
-                                    )
-                                }
                             >
-                            </Card>
-
-                            {hoveredId === item._id && (
-                                <Flex
-                                    justify="center"
-                                    align="center"
+                                <Card
+                                    hoverable
                                     style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                        width: "100%",
-                                        height: "100%",
-                                        background: "rgba(0,0,0,0.4)",
+                                        placeItems: "center",
                                     }}
+                                    cover={
+                                        item.type?.startsWith("image/") ? (
+                                            <img
+                                                alt={item.name}
+                                                src={item.url}
+                                                style={{
+                                                    height: 220,
+                                                    width: "100%",
+                                                    objectFit: "contain",
+                                                }}
+                                            />
+                                        ) : item.type?.startsWith("video/") ? (
+                                            <video
+                                                controls
+                                                style={{
+                                                    height: 220,
+                                                    width: "100%",
+                                                    objectFit: "contain",
+                                                }}
+                                            >
+                                                <source src={item.url} type={item.type} />
+                                            </video>
+                                        ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                                            <div
+                                                style={{
+                                                    height: 220,
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    objectFit: "contain",
+                                                    gap: 10,
+                                                }}
+                                            >
+                                                {item.type === "application/pdf" ? (
+                                                    <FilePdfOutlined style={{ fontSize: 50, color: "red" }} />
+                                                ) : (
+                                                    <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
+                                                )}
+                                                <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    height: 220,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                {item.name}
+                                            </div>
+                                        )
+                                    }
                                 >
-                                    <Button
-                                        danger
-                                        shape="circle"
-                                        size="Medium"
-                                        onClick={() => handleDeleteMedia(item)}
+                                </Card>
+
+                                {hoveredId === item._id && (
+                                    <Flex
+                                        justify="center"
+                                        align="center"
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            width: "100%",
+                                            height: "100%",
+                                            background: "rgba(0,0,0,0.4)",
+                                        }}
                                     >
-                                        <DeleteOutlined />
-                                    </Button>
-                                </Flex>
-                            )}
-                        </div>
-                        <Text
-                            ellipsis={{ tooltip: item.name }}
-                            style={{
-                                fontSize: 13,
-                                width: 220,
-                                color: theme ? "#fff" : "#383838",
-                                textAlign: "center",
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-                    </Col>
-                ))}
-            </Row>
+                                        <Button
+                                            danger
+                                            shape="circle"
+                                            size="Medium"
+                                            onClick={() => handleDeleteMedia(item)}
+                                        >
+                                            <DeleteOutlined />
+                                        </Button>
+                                    </Flex>
+                                )}
+                            </div>
+                            <Text
+                                ellipsis={{ tooltip: item.name }}
+                                style={{
+                                    fontSize: 13,
+                                    width: 220,
+                                    color: theme ? "#fff" : "#383838",
+                                    textAlign: "center",
+                                }}
+                            >
+                                {item.name}
+                            </Text>
+                        </Col>
+                    ))}
+                </Row>
+            )}
         </PageContainer>
     );
 }

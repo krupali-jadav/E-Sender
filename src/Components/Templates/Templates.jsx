@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button, Switch, Space, Modal, List, message } from "antd";
+import { Row, Col, Card, Button, Switch, Space, Modal, List, message, Spin, Empty } from "antd";
 import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, CopyOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
@@ -104,55 +104,54 @@ function Templates() {
           <SearchHeader />
 
           {/* Template Cards */}
-          <Row gutter={[16, 16]}>
-            {templates.map((item) => {
-              return (
-                <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
-                  <Card
-                    title={item.JSON?.templateName}
-                    extra={<Switch defaultChecked={item.active} />}
-                    hoverable
-                  >
-                    <Card style={{ height: 380, overflow: "auto" }}>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: item.HTML || "<p>No preview available</p>",
-                        }}
-                      />
+          {loading ? (
+            <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
+              <Spin size="middle" />
+            </div>
+          ) : (
+            <Row gutter={[16, 16]}>
+              {templates.map((item) => {
+                return (
+                  <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
+                    <Card
+                      title={item.JSON?.templateName}
+                      extra={<Switch defaultChecked={item.active} />}
+                      hoverable
+                    >
+                      <Card style={{ height: 380, overflow: "auto" }}>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item.HTML || "<p>No preview available</p>",
+                          }}
+                        />
+                      </Card>
+
+                      <Row gutter={12} style={{ marginTop: 16 }}>
+                        <Col span={12}>
+                          <Button
+                            type="primary"
+                            icon={<EditOutlined />}
+                            block
+                            onClick={() =>
+                              navigate(`/templates/edit-template/${item._id}`)
+                            }
+                          >
+                            {t("edit", { defaultValue: "Edit" })}
+                          </Button>
+                        </Col>
+
+                        <Col span={12}>
+                          <Button danger icon={<DeleteOutlined />} block>
+                            {t("delete", { defaultValue: "Delete" })}
+                          </Button>
+                        </Col>
+                      </Row>
                     </Card>
-
-                    <Row gutter={12} style={{ marginTop: 16 }}>
-                      <Col span={12}>
-                        <Button
-                          type="primary"
-                          icon={<EditOutlined />}
-                          block
-                          onClick={() =>
-                            navigate(`/templates/edit-template/${item._id}`)
-                          }
-                        >
-                          {t("edit", { defaultValue: "Edit" })}
-
-                        </Button>
-                      </Col>
-
-                      <Col span={12}>
-                        <Button
-                          danger
-                          icon={<DeleteOutlined />}
-                          block
-                        >
-                          {t("delete", { defaultValue: "Delete" })}
-                        </Button>
-                      </Col>
-
-                    </Row>
-                  </Card>
-                </Col>
-              )
-            }
-            )}
-          </Row>
+                  </Col>
+                );
+              })}
+            </Row>
+          )}
 
         </Space>
         <Modal

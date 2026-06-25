@@ -1,5 +1,5 @@
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Dropdown, Select, Typography } from "antd";
+import { Avatar, Breadcrumb, Dropdown, Select, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +43,41 @@ const ProLayouts = ({ children }) => {
         },
       }),
     );
+  };
+
+  const BreadcrumbCustom = () => {
+    const pathSegments = location.pathname.split("/").filter(Boolean);
+
+    const items = pathSegments.map((segment, index) => {
+      let pathToNavigate = `/${pathSegments.slice(0, index + 1).join("/")}`;
+      const isLastSegment = index === pathSegments.length - 1;
+
+      if (segment === "order") {
+        pathToNavigate = pathToNavigate.replace(/\/order$/, "/orders");
+      }
+
+      return {
+        title: isLastSegment ? (
+          <span style={{ textTransform: "capitalize" }}>{segment}</span>
+        ) : (
+          <span
+            style={{ cursor: "pointer", textTransform: "capitalize" }}
+            onClick={() => {
+              navigate(pathToNavigate);
+            }}
+          >
+            {segment}
+          </span>
+        ),
+      };
+    });
+
+    const breadcrumbItems = [
+      { title: <HomeOutlined onClick={() => navigate("/")} /> },
+      ...items,
+    ];
+
+    return <Breadcrumb items={breadcrumbItems?.filter(Boolean)} />;
   };
 
   const handleLanguageChange = (lang) => {
@@ -147,6 +182,12 @@ const ProLayouts = ({ children }) => {
     <ProLayout
       layout="mix"
       title="E-Sender"
+      breadcrumbRender={(routers = []) => routers}
+      headerContentRender={() => <BreadcrumbCustom />}
+      route={menuRoutes}
+      location={{
+        pathname: location.pathname,
+      }}
       logo={false}
       avatarProps={{
         render: () => {
@@ -360,9 +401,6 @@ const ProLayouts = ({ children }) => {
       }}
 
     >
-
-
-
       {children}
     </ProLayout >
   );

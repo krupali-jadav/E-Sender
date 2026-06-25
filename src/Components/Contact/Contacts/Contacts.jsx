@@ -62,7 +62,7 @@ function Contacts() {
     const fetchContacts = async () => {
         const payload = {
             page: page - 1,
-            limit: 10,
+            limit: 20,
             search: search,
             sort_by: sortBy,
             filter_by: isApplyFilter
@@ -101,7 +101,7 @@ function Contacts() {
         try {
             const response = await getAllGroups({
                 page: 0,
-                limit: 100,
+                // limit: 10,
                 search: "",
             });
 
@@ -267,50 +267,50 @@ function Contacts() {
             },
         },
         {
-    title: t("custom.fields", {
-        defaultValue: "Custom Fields",
-    }),
-    dataIndex: "fields",
-    key: "fields",
-    render: (_, record) => {
-        if (!record.fields?.length) return "-";
+            title: t("custom.fields", {
+                defaultValue: "Custom Fields",
+            }),
+            dataIndex: "fields",
+            key: "fields",
+            render: (_, record) => {
+                if (!record.fields?.length) return "-";
 
-        return (
-            <Space wrap>
-                {record.fields.slice(0, 2).map((field) => (
-                    <Tag key={field.fieldId?._id || field.fieldId}>
-                        {field.value}
-                    </Tag>
-                ))}
+                return (
+                    <Space wrap>
+                        {record.fields.slice(0, 2).map((field) => (
+                            <Tag key={field.fieldId?._id || field.fieldId}>
+                                {field.value}
+                            </Tag>
+                        ))}
 
-                {record.fields.length > 2 && (
-                    <Popover
-                        placement="bottomLeft"
-                        trigger="hover"
-                        content={
-                            <Space direction="vertical">
-                                {record.fields.slice(2).map((field) => (
-                                    <Tag
-                                        key={
-                                            field.fieldId?._id ||
-                                            field.fieldId
-                                        }
-                                    >
-                                        {field.value}
-                                    </Tag>
-                                ))}
-                            </Space>
-                        }
-                    >
-                        <Tag style={{ cursor: "pointer" }}>
-                            +{record.fields.length - 2}
-                        </Tag>
-                    </Popover>
-                )}
-            </Space>
-        );
-    },
-},
+                        {record.fields.length > 2 && (
+                            <Popover
+                                placement="bottomLeft"
+                                trigger="hover"
+                                content={
+                                    <Space direction="vertical">
+                                        {record.fields.slice(2).map((field) => (
+                                            <Tag
+                                                key={
+                                                    field.fieldId?._id ||
+                                                    field.fieldId
+                                                }
+                                            >
+                                                {field.value}
+                                            </Tag>
+                                        ))}
+                                    </Space>
+                                }
+                            >
+                                <Tag style={{ cursor: "pointer" }}>
+                                    +{record.fields.length - 2}
+                                </Tag>
+                            </Popover>
+                        )}
+                    </Space>
+                );
+            },
+        },
         {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
             dataIndex: "unsubscribe",
@@ -489,7 +489,15 @@ function Contacts() {
                             columns={columns}
                             dataSource={data}
                             loading={loading}
-                            pagination={false}
+                            pagination={{
+                                current: page,
+                                pageSize: 10,
+                                total: total,
+                                showSizeChanger: false,
+                                onChange: (newPage) => {
+                                    setPage(newPage);
+                                },
+                            }}
                             scroll={{ x: "max-content" }}
                             rowSelection={rowSelection}
                         />
