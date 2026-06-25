@@ -294,6 +294,7 @@ const Profile = () => {
             <Button
               type="primary"
               htmlType="submit"
+              loading={loading}
             >
               Save
             </Button>

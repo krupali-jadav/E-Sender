@@ -3,14 +3,17 @@ import { Button, Card, Col, Form, Input, message, Row } from "antd"
 import { t } from "i18next"
 import { useSelector } from "react-redux";
 import { saveSocialMedia } from "./SettingApi";
+import { useState } from "react";
 
 function SocialMedia() {
   const [form] = Form.useForm();
   const theme = useSelector((state) => state?.app?.theme);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
     console.log("Form Values:", values);
     try {
+      setLoading(true);
       const payload = {
         linkedin: values.linkedin,
         facebook: values.facebook,
@@ -29,6 +32,8 @@ function SocialMedia() {
     } catch (error) {
       console.log(error);
       message.error("Failed to save social media details");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -100,7 +105,7 @@ function SocialMedia() {
             Last Updated:
           </Col>
           <Col >
-            <Button type="primary" htmlType="submit">Save</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>Save</Button>
           </Col>
         </Row>
       </Form>

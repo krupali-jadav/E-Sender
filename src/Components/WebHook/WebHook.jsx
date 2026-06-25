@@ -1,10 +1,11 @@
-import { CopyOutlined, PlusOutlined } from "@ant-design/icons"
+import { PlusOutlined } from "@ant-design/icons"
 import { PageContainer } from "@ant-design/pro-components"
 import { Button, Card, Flex, message, Space, Table, Tag, Typography } from "antd"
 import { t } from "i18next"
 import { useState } from "react"
 import CreateWebHook from "./CreateWebHook"
 import { useNavigate } from "react-router-dom"
+const { Text } = Typography;
 
 function WebHooks() {
     const navigate = useNavigate();
@@ -20,16 +21,8 @@ function WebHooks() {
                     <Typography.Link
                         onClick={() => navigate("/webhook-details")}
                     >
-                        {endpoint}
+                        <Text copyable>{endpoint}</Text>
                     </Typography.Link>
-
-                    <CopyOutlined
-                        onClick={() => {
-                            navigator.clipboard.writeText(endpoint);
-                            message.success("Copied!");
-                        }}
-                        style={{ cursor: "pointer" }}
-                    />
                 </Space>
             ),
         },

@@ -19,6 +19,7 @@ const { Text } = Typography;
 
 function TemplateCampaigns() {
   const [selectedRowKey, setSelectedRowKey] = useState(null);
+  const [loading, setLoading] = useState(false);
   const rowSelection = {
     type: "radio",
     selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
@@ -48,16 +49,6 @@ function TemplateCampaigns() {
       key: "actions",
       render: () => (
         <MoreOutlined />
-        // <Space>
-        //   <Button size="small" type="primary">
-        //     {/* {t("edit", { defaultValue: "Edit" })} */}
-        //     Edit
-        //   </Button>
-        //   <Button size="small" danger>
-        //     {/* {t("delete", { defaultValue: "Delete" })} */}
-        //     Delete
-        //   </Button>
-        // </Space>
       ),
     },
   ];
@@ -132,7 +123,7 @@ function TemplateCampaigns() {
               {t("previous", { defaultValue: "Previous", })}
             </Button>
 
-            <Button type="primary">
+            <Button type="primary" loading={loading}>
               {t("next", { defaultValue: "Next", })}
             </Button>
           </Flex>

@@ -20,6 +20,7 @@ import PhonePreview from "./PhonePreview";
 const { Text } = Typography;
 
 const CampaignStep = () => {
+  const [loading, setLoading] = useState(false);
 
   const [scheduleType, setScheduleType] = useState("now");
   return (
@@ -95,7 +96,7 @@ const CampaignStep = () => {
           </Card>
           <Flex justify="end" gap="small" style={{ marginTop: 8 }}>
             <Button>{t("previous", { defaultValue: "Previous" })}</Button>
-            <Button type="primary">{t("send.now", { defaultValue: "Send Now" })}</Button>
+            <Button type="primary" loading={loading}>{t("send.now", { defaultValue: "Send Now" })}</Button>
           </Flex>
         </Col>
       

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, Typography, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
 import { addContact, saveContact } from "./ContactsApi";
 import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
+const { Text } = Typography;
 
 function AddContact({ open, onClose, editData, fetchContacts, }) {
     const [groupName, setGroupName] = useState("");
@@ -15,6 +16,7 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
     const [customFields, setCustomFields] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedFields, setSelectedFields] = useState([]);
+    const [fieldValues, setFieldValues] = useState({});
 
     const handleFieldSelect = (fieldId) => {
         setSelectedFields((prev) =>
@@ -95,13 +97,12 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                 name: values.name,
                 email: values.email,
                 groups: values.groups || [],
-                fields: selectedFields.map((fieldId) => ({
-                    fieldId,
-                    value:
-                        customFields.find(
-                            (item) => item._id === fieldId
-                        )?.name || "",
-                })),
+                fields: customFields
+                    .filter((field) => fieldValues[field._id]?.trim())
+                    .map((field) => ({
+                        fieldId: field._id,
+                        value: fieldValues[field._id],
+                    })),
             };
             const data = editData
                 ? await saveContact({
@@ -131,31 +132,25 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
     };
 
     useEffect(() => {
-        if (!open) return;
-
         if (editData) {
             form.setFieldsValue({
                 name: editData.name,
                 email: editData.email,
-                groups:
-                    editData.groups?.map(
-                        (group) => group._id
-                    ) || [],
+                phonenumber: editData.phonenumber,
+                groups: editData.groups?.map((g) => g._id),
             });
 
-            setSelectedFields(
-                editData.fields?.map(
-                    (field) =>
-                        field.fieldId?._id ||
-                        field.fieldId
-                ) || []
-            );
-        } else {
-            form.resetFields();
-            setSelectedFields([]);
-            setPhone("");
+            const customFieldData = {};
+
+            editData.fields?.forEach((field) => {
+                customFieldData[
+                    field.fieldId?._id || field.fieldId
+                ] = field.value;
+            });
+
+            setFieldValues(customFieldData);
         }
-    }, [open, editData, form]);
+    }, [editData, form]);
 
     const fetchGroups = async () => {
         try {
@@ -231,34 +226,6 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                             <Input
                                 placeholder={t("email", { defaultValue: "Enter Email", })} />
                         </Form.Item>
-
-                        {customFields.length > 0 && (
-                            <>
-                                <div style={{ marginBottom: 12 }}>
-                                    <strong>Custom Fields:</strong>
-                                </div>
-
-                                <Space wrap>
-                                    {customFields.map((field) => (
-                                        <Tag
-                                            key={field._id}
-                                            color={
-                                                selectedFields.includes(field._id)
-                                                    ? "blue"
-                                                    : "default"
-                                            }
-                                            style={{
-                                                cursor: "pointer",
-                                                padding: "4px 8px",
-                                            }}
-                                            onClick={() => handleFieldSelect(field._id)}
-                                        >
-                                            {field.name}
-                                        </Tag>
-                                    ))}
-                                </Space>
-                            </>
-                        )}
                     </Col>
 
                     <Col span={12}>
@@ -326,6 +293,28 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                             />
                         </Form.Item>
                     </Col>
+
+                </Row>
+                <div style={{ marginBottom: 12 }}>
+                    <Text strong>Custom Fields :</Text>
+                </div>
+                <Row gutter={16}>
+                    {customFields.map((field) => (
+                        <Col span={12} key={field._id}>
+                            <Form.Item label={field.name}>
+                                <Input
+                                    placeholder={`Enter ${field.name}`}
+                                    value={fieldValues[field._id] || ""}
+                                    onChange={(e) =>
+                                        setFieldValues((prev) => ({
+                                            ...prev,
+                                            [field._id]: e.target.value,
+                                        }))
+                                    }
+                                />
+                            </Form.Item>
+                        </Col>
+                    ))}
                 </Row>
             </Form>
         </Modal>

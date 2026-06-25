@@ -10,6 +10,7 @@ const { Text } = Typography;
 
 function DomainCampaigns() {
   const [selectedRowKey, setSelectedRowKey] = useState(null);
+  const [loading, setLoading] = useState(false);
   const rowSelection = {
     type: "radio",
     selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
@@ -67,16 +68,6 @@ function DomainCampaigns() {
       key: "actions",
       render: () => (
         <MoreOutlined />
-        // <Space>
-        //   <Button size="small" type="primary">
-        //     {/* {t("edit", { defaultValue: "Edit" })} */}
-        //     Edit
-        //   </Button>
-        //   <Button size="small" danger>
-        //     {/* {t("delete", { defaultValue: "Delete" })} */}
-        //     Delete
-        //   </Button>
-        // </Space>
       ),
     },
   ];
@@ -146,7 +137,7 @@ function DomainCampaigns() {
 
           </Card>
           <Flex justify="end" style={{ marginTop: 16 }}>
-            <Button type="primary">{t("save", { defaultValue: "Save" })}</Button>
+            <Button type="primary" loading={loading}>{t("save", { defaultValue: "Save" })}</Button>
           </Flex>
         </Col>
         {/* Right Side */}

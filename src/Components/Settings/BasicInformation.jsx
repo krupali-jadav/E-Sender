@@ -10,11 +10,13 @@ function BasicInformation() {
 
   const theme = useSelector((state) => state?.app?.theme);
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleSubmit = async (values) => {
     console.log("Form Values:", values);
     try {
+      setLoading(true);
       const payload = {
         businessName: values.name,
         address: values.address,
@@ -35,6 +37,8 @@ function BasicInformation() {
     } catch (error) {
       console.log(error);
       message.error("Failed to save basic information");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -187,7 +191,7 @@ function BasicInformation() {
           </Col>
 
           <Col>
-            <Button type="primary" htmlType='submit'>
+            <Button type="primary" htmlType='submit' loading={loading}>
               Save
             </Button>
           </Col>

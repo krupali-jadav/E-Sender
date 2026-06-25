@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Select, Button, Space,Table, } from "antd";
+import { Modal, Form, Input, Select, Button, Space, Table, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { t } from "i18next";
@@ -9,6 +9,7 @@ const ManualImport = ({ open, onClose }) => {
   const [groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [selectedGroups, setSelectedGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleAddGroup = () => {
     if (!groupName.trim()) return;
@@ -41,7 +42,7 @@ const ManualImport = ({ open, onClose }) => {
 
   return (
     <Modal
-      title={t("manual.import", { defaultValue: "Manual Import" })} 
+      title={t("manual.import", { defaultValue: "Manual Import" })}
       open={open}
       onCancel={onClose}
       width={900}
@@ -50,7 +51,7 @@ const ManualImport = ({ open, onClose }) => {
         <Button key="cancel" onClick={onClose}>
           {t("cancel", { defaultValue: "Cancel" })}
         </Button>,
-        <Button key="import" type="primary">
+        <Button key="import" type="primary" loading={loading}>
           {t("excel.import", { defaultValue: "Excel Import" })}
         </Button>,
       ]}
@@ -77,7 +78,7 @@ const ManualImport = ({ open, onClose }) => {
 
                 <Space.Compact block>
                   <Input
-                    placeholder={t("group.name", { defaultValue: "Enter Group Name",})}
+                    placeholder={t("group.name", { defaultValue: "Enter Group Name", })}
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
                   />

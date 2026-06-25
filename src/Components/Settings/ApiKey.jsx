@@ -1,9 +1,9 @@
-import { Button, Card, Input, message } from "antd";
+import { Button, Card, Input, message, Typography } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { generateApiKey } from "./SettingApi";
-
+const { Text } = Typography;
 function ApiKey() {
   const theme = useSelector((state) => state?.app?.theme);
   const [visible, setVisible] = useState(false);
@@ -45,7 +45,7 @@ function ApiKey() {
       style={{
         borderRadius: 0,
         borderColor: theme ? "transparent" : "#fff",
-        width:"42%"
+        width: "40%"
       }} >
       <div style={{ marginBottom: 8 }}>
         Your API Key
@@ -59,14 +59,15 @@ function ApiKey() {
             visible,
             onVisibleChange: setVisible,
           }}
-          style={{ width: "calc(100% - 160px)" }}
+          suffix={
+            <Typography.Text
+              copyable={{
+                text: apiKey,
+              }}
+            />
+          }
+          style={{width:"82%"}}
         />
-
-        <Button
-          icon={<CopyOutlined />}
-          onClick={handleCopy}
-        />
-
         <Button
           type="primary"
           loading={loading}

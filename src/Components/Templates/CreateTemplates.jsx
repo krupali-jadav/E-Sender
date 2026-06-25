@@ -1,15 +1,15 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Form, Input, List, message, Modal, Row, Space } from "antd";
-// import Package from "esender-email-editor";
+import { Button, Card, Col, Form, Input, List, message, Modal, Row, Space, Typography } from "antd";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { createTemplate, getTemplateById, updateTemplate } from "./TemplatesApi";
 import { useSelector } from "react-redux";
 import Package from "esender-email-editor";
-import { CheckCircleFilled, CopyOutlined, PlusOutlined } from "@ant-design/icons";
+import { CheckCircleFilled, PlusOutlined } from "@ant-design/icons";
 import axiosInstance from "../../util/axiosInstance";
 import CreateProjectModal from "./CreateProject";
+const { Text } = Typography;
 
 function CreateTemplates() {
     const navigate = useNavigate();
@@ -27,6 +27,7 @@ function CreateTemplates() {
 
     const fetchTemplate = async () => {
         try {
+            setLoading(true);
             const data = await getTemplateById(templateId);
 
             console.log("Template API Response", data);
@@ -35,6 +36,8 @@ function CreateTemplates() {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
     useEffect(() => {
@@ -211,11 +214,12 @@ function CreateTemplates() {
                                 <Col>
                                     <Form.Item>
                                         <Button
+                                            loading={loading}
                                             type="primary"
                                             htmlType="submit"
                                         >
                                             {templateId
-                                                ? t("edit", { defaultValue: "Edit" })
+                                                ? t("edit", { defaultValue: "Save" })
                                                 : t("create", { defaultValue: "Create" })}
                                         </Button>
                                     </Form.Item>
@@ -285,26 +289,13 @@ function CreateTemplates() {
                                     <List.Item.Meta
                                         title={project.name}
                                         description={
-                                            <span>
+                                            <Text
+                                                copyable={{
+                                                    text: project._id || project.projectId,
+                                                }}
+                                            >
                                                 {project._id || project.projectId}
-
-                                                <CopyOutlined
-                                                    style={{
-                                                        marginLeft: 8,
-                                                        cursor: "pointer",
-                                                        color: "#1677ff",
-                                                    }}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-
-                                                        navigator.clipboard.writeText(
-                                                            project._id || project.projectId
-                                                        );
-
-                                                        message.success("   copied");
-                                                    }}
-                                                />
-                                            </span>
+                                            </Text>
                                         }
                                     />
                                 </List.Item>

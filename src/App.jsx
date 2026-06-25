@@ -26,6 +26,7 @@ import CreateCampaigns from "./Components/Campaigns/CreateCampaigns/CreateCampai
 import WebHook from "./Components/WebHook/WebHook";
 import Media from "./Components/Media/Media";
 import WebHookDetails from "./Components/WebHook/WebHookDetails";
+import AddMedia from "./Components/Media/AddMedia";
 
 const ProtectedRoute = ({
   component: Component,

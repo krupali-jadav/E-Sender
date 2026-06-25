@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, Modal, Row, Select, Space } from 'antd'
 import { t } from 'i18next'
+import { useState } from 'react';
 
 function CreateWebHook({ open, onClose }) {
+  const [loading, setLoading] = useState(false);
 
   const options = [
     {
@@ -70,7 +72,7 @@ function CreateWebHook({ open, onClose }) {
           <Button key="cancel" onClick={onClose}>
             {t("cancel", { defaultValue: "Cancel" })}
           </Button>
-          <Button key="add" type="primary">
+          <Button key="add" type="primary" loading={loading}>
             {t("add", { defaultValue: "Add" })}
           </Button>
         </Space>

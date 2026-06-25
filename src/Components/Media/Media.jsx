@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography, Spin } from "antd";
+import { Button, Card, Flex, Space, Tabs, Row, Col, message, Modal, Typography, Spin, Empty } from "antd";
 import { t } from "i18next";
 import SearchHeader from "../../Components/Search Header/SearchHeader";
 import AddMedia from "./AddMedia";
@@ -152,6 +152,19 @@ function Media() {
                 <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
                     <Spin size="middle" />
                 </div>
+            ) : mediaList.length === 0 ? (
+                <Empty
+                    description="No Media Available"
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                >
+                    <Button
+                        type="primary"
+                        onClick={() => setAddMediaOpen(true)}
+                        icon={<PlusOutlined />}
+                    >
+                        Add Media
+                    </Button>
+                </Empty>
             ) : (
                 <Row gutter={[16, 16]}>
                     {mediaList.map((item) => (

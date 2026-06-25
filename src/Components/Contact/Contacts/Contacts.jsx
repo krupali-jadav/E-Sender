@@ -208,6 +208,33 @@ function Contacts() {
         }
     };
 
+    // For Dynamic Custome Field 
+    const uniqueFields = [
+        ...new Map(
+            data
+                .flatMap((contact) => contact.fields || [])
+                .map((field) => [
+                    field.fieldId?._id,
+                    field.fieldId,
+                ])
+        ).values(),
+    ];
+
+    const customFieldColumns = uniqueFields.map((field) => ({
+        title: field.name,
+        dataIndex: field._id,
+        key: field._id,
+
+        render: (_, record) => {
+            const fieldData = record.fields?.find(
+                (f) =>
+                    (f.fieldId?._id || f.fieldId) === field._id
+            );
+
+            return fieldData?.value || "-";
+        },
+    }));
+
     const columns = [
         {
             title: t("sn", { defaultValue: "SN" }),
@@ -267,51 +294,6 @@ function Contacts() {
             },
         },
         {
-            title: t("custom.fields", {
-                defaultValue: "Custom Fields",
-            }),
-            dataIndex: "fields",
-            key: "fields",
-            render: (_, record) => {
-                if (!record.fields?.length) return "-";
-
-                return (
-                    <Space wrap>
-                        {record.fields.slice(0, 2).map((field) => (
-                            <Tag key={field.fieldId?._id || field.fieldId}>
-                                {field.value}
-                            </Tag>
-                        ))}
-
-                        {record.fields.length > 2 && (
-                            <Popover
-                                placement="bottomLeft"
-                                trigger="hover"
-                                content={
-                                    <Space direction="vertical">
-                                        {record.fields.slice(2).map((field) => (
-                                            <Tag
-                                                key={
-                                                    field.fieldId?._id ||
-                                                    field.fieldId
-                                                }
-                                            >
-                                                {field.value}
-                                            </Tag>
-                                        ))}
-                                    </Space>
-                                }
-                            >
-                                <Tag style={{ cursor: "pointer" }}>
-                                    +{record.fields.length - 2}
-                                </Tag>
-                            </Popover>
-                        )}
-                    </Space>
-                );
-            },
-        },
-        {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
             dataIndex: "unsubscribe",
             key: "unsubscribed",
@@ -347,6 +329,7 @@ function Contacts() {
                 />
             ),
         },
+        ...customFieldColumns,
         {
             title: t("created.at", { defaultValue: "Created At" }),
             dataIndex: "createdAt",
@@ -436,9 +419,12 @@ function Contacts() {
                         <Button
                             type="primary"
                             icon={<PlusOutlined />}
-                            onClick={() => setAddContactOpen(true)}
+                            onClick={() => {
+                                setEditContact(null);
+                                setAddContactOpen(true);
+                            }}
                         >
-                            {t("add.contact", { defaultValue: "Add Contact" })}
+                            Add Contact
                         </Button>
 
                         <AddContact

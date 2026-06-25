@@ -7,6 +7,7 @@ import { addMedia, addMultipleMedia } from './MediaApi'
 
 function AddMedia({ open, onClose, fetchMedia }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const uploadProps = {
         multiple: true,
@@ -92,7 +93,7 @@ function AddMedia({ open, onClose, fetchMedia }) {
                         {t("cancel", { defaultValue: "Cancel" })}
                     </Button>
 
-                    <Button type="primary" onClick={handleUpload}>
+                    <Button type="primary" onClick={handleUpload} loading={loading}>
                         {t("upload", { defaultValue: "Upload" })}
                     </Button>
                 </Flex>

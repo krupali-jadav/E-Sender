@@ -10,12 +10,14 @@ import { saveBillingDetails } from './SettingApi';
 function BillingDetails() {
 
     const [phone, setPhone] = useState("");
+    const [loading, setLoading] = useState(false);
     const theme = useSelector((state) => state?.app?.theme);
     const [form] = Form.useForm();
 
     const handleSubmit = async (values) => {
         console.log("Form Values:", values);
         try {
+            setLoading(true);
             const payload = {
                 businessName: values.name,
                 gst: values.gst_number,
@@ -35,6 +37,8 @@ function BillingDetails() {
         } catch (error) {
             console.log(error);
             message.error("Failed to save billing details");
+        } finally {
+            setLoading(true);
         }
     };
 
@@ -151,7 +155,7 @@ function BillingDetails() {
                     </Col>
 
                     <Col>
-                        <Button type="primary" htmlType='submit'>
+                        <Button type="primary" htmlType='submit' loading={loading}>
                             Save
                         </Button>
                     </Col>

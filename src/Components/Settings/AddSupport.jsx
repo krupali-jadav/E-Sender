@@ -6,10 +6,12 @@ import { addSupport, updateSupport } from './SettingApi';
 
 function AddSupport({ open, onClose, onSuccess, editData }) {
     const [phone, setPhone] = useState("");
+    const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
 
     const handleSubmit = async (values) => {
         try {
+            setLoading(true);
             const payload = {
                 name: values.name,
                 phone,
@@ -41,6 +43,8 @@ function AddSupport({ open, onClose, onSuccess, editData }) {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -87,6 +91,7 @@ function AddSupport({ open, onClose, onSuccess, editData }) {
                 <Button
                     key="add"
                     type="primary"
+                    loading={loading}
                     onClick={() => form.submit()}
                 >
                     {editData ? "Edit" : "Add"}

@@ -1,5 +1,5 @@
-import { Row, Col, Card, Button, Switch, Space, Modal, List, message, Spin, Empty } from "antd";
-import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, CopyOutlined, } from "@ant-design/icons";
+import { Row, Col, Card, Button, Switch, Space, Modal, List, message, Spin, Empty, Typography } from "antd";
+import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -10,7 +10,7 @@ import { getTemplatesByProject } from "./TemplatesApi";
 import axiosInstance from "../../util/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProject } from "../../redux/reducers/reducer.app";
-
+const { Text } = Typography;
 
 function Templates() {
   const dispatch = useDispatch();
@@ -108,6 +108,19 @@ function Templates() {
             <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
               <Spin size="middle" />
             </div>
+          ) : templates.length === 0 ? (
+            <Empty
+              description="No Templates Available"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            >
+              <Button
+                type="primary"
+                onClick={() => navigate("/templates/create-template")}
+                icon={<PlusOutlined />}
+              >
+                Create Template
+              </Button>
+            </Empty>
           ) : (
             <Row gutter={[16, 16]}>
               {templates.map((item) => {
@@ -206,26 +219,13 @@ function Templates() {
                   <List.Item.Meta
                     title={project.name}
                     description={
-                      <span>
+                      <Text
+                        copyable={{
+                          text: project._id || project.projectId,
+                        }}
+                      >
                         {project._id || project.projectId}
-
-                        <CopyOutlined
-                          style={{
-                            marginLeft: 8,
-                            cursor: "pointer",
-                            color: "#1677ff",
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-
-                            navigator.clipboard.writeText(
-                              project._id || project.projectId
-                            );
-
-                            message.success("copied");
-                          }}
-                        />
-                      </span>
+                      </Text>
                     }
                   />
                 </List.Item>
