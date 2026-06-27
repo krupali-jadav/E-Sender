@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 
 const { Text } = Typography;
 
-const CreateProjectModal = ({ open, onCancel, refreshProjects, }) => {
+const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) => {
     const [form] = Form.useForm();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -63,7 +63,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, }) => {
             open={open}
             onCancel={onCancel}
             footer={null}
-            title="Create New Project"
+            title={editProject ? "Edit Project" : "Create New Project"}
             centered
             width={600}
         >
@@ -95,7 +95,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, }) => {
                         htmlType="submit"
                         loading={loading}
                     >
-                        Create Project
+                        {editProject ? "Save Project" : "Create Project"}
                     </Button>
                 </Flex>
             </Form>

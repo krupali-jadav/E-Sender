@@ -75,9 +75,6 @@ function CreateTemplates() {
             const html = editorRef.current?.getHtml();
             const json = editorRef.current?.getJson();
 
-            console.log("HTML:", html);
-            console.log("JSON:", json);
-
             const payload = {
                 HTML: html,
                 JSON: {

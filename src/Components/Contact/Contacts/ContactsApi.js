@@ -90,3 +90,15 @@ export const deleteMultipleContacts = async (payload) => {
         message.error("Failed to delete contacts");
     }
 };
+
+export const bulkAddContacts = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/api/user/contact/add/bulk", payload);
+
+        return response.data;
+
+    } catch (error) {
+        console.log(error);
+        message.error("Failed to import contacts");
+    }
+};

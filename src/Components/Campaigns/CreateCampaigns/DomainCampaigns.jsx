@@ -142,7 +142,7 @@ function DomainCampaigns() {
         </Col>
         {/* Right Side */}
         <Col xs={24} lg={6}>
-          <PhonePreview />
+          <PhonePreview page="DomainCampaign"/>
         </Col>
       </Row>
     </Space>

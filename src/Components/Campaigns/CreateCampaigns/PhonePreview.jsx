@@ -12,7 +12,7 @@ import { LuForward } from "react-icons/lu";
 import { useSelector } from 'react-redux'
 import { t } from 'i18next'
 
-function PhonePreview() {
+function PhonePreview({ template, page }) {
   const [open, setOpen] = useState(false);
   const theme = useSelector((state) => state?.app?.theme);
   const domainName = useSelector((state) => state.domain.selectedDomain);
@@ -153,33 +153,44 @@ function PhonePreview() {
                     </Text>
                   </div>
 
-
-                  <div style={{ marginBottom: 5 }}>
-                    <Text type="secondary" style={{ display: "inline-block", width: 40, }}>
-                      <LockOutlined />
-                    </Text>
-                    <Text style={{ fontSize: 13 }}>
-                      test123@gmail.com
-                    </Text>
-                  </div>
-
                   <div>
                     <Text style={{ display: "inline-block", width: 40, }}></Text>
                     <a href="#">View security details</a>
                   </div>
                 </Card>
               )}
-              <Card style={{ marginTop: 16, }} styles={{ body: { padding: 15 } }}>
-                <Col style={{ display: "flex", flexDirection: "column", textAlign: "center", alignItems: "center", gap: 10, }}>
-                  <Image src={Google} height={30} width={30} />
-                  <Title level={5} >Keep Track  of your Google Account data</Title>
-                  <Text></Text>
-                </Col>
-                <Divider />
-                <Col style={{ textAlign: "center", height: 30, }}>
-                  <Text>https://example.com</Text>
-                </Col>
+
+              <Card
+                style={{ marginTop: 16, height: 350, overflow: "hidden", }}
+                styles={{
+                  body: { padding: 0, height: "100%", overflow: "hidden", },
+                }}
+              >
+                {template ? (
+                  <div
+                    style={{
+                      height: "100%",
+                      overflowY: "auto",
+                      overflowX: "hidden",
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{ __html: template.html }}
+                    />
+                  </div>
+                ) : (
+                  <Flex justify="center" align="center" style={{ height: "100%" }}>
+                    <Text Text type="secondary" >
+                      {page === "DomainCampaign"
+                        ? "No Template"
+                        : "Select a Template"}
+                    </Text >
+                  </Flex>
+                )}
               </Card>
+
             </Card>
             <Flex
               justify="center"

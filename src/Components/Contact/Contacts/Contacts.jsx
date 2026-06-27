@@ -401,6 +401,7 @@ function Contacts() {
                         <ManualImport
                             open={manualImportOpen}
                             onClose={() => setManualImportOpen(false)}
+                            fetchContacts={fetchContacts}
                         />
 
                         <Button

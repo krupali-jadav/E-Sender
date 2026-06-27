@@ -20,6 +20,7 @@ function Templates() {
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [editProject, setEditProject] = useState(null);
   const selectedProject = useSelector(
     (state) => state.app.selectedProject
   );
@@ -88,6 +89,7 @@ function Templates() {
                 open={open}
                 onCancel={() => setOpen(false)}
                 refreshProjects={getProjects}
+                editProject={editProject}
               />
               <Button
                 type="primary"
@@ -174,7 +176,10 @@ function Templates() {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setEditProject(null);
+                setOpen(true);
+              }}
             >
               Create Project
             </Button>
@@ -206,14 +211,26 @@ function Templates() {
                     setProjectModalOpen(false);
                   }}
                   extra={
-                    isSelected && (
-                      <CheckCircleFilled
-                        style={{
-                          color: "#52c41a",
-                          fontSize: 18,
+                    <Space size={12}>
+                      {isSelected && (
+                        <CheckCircleFilled
+                          style={{
+                            color: "#52c41a",
+                            fontSize: 18,
+                          }}
+                        />
+                      )}
+                      <Button
+                        type="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditProject(project);
+                          setOpen(true);
                         }}
-                      />
-                    )
+                      >
+                        Edit
+                      </Button>
+                    </Space>
                   }
                 >
                   <List.Item.Meta

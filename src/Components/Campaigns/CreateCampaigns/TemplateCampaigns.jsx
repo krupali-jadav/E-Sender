@@ -1,32 +1,74 @@
 import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Card,
-  Col,
-  Flex,
-  Input,
-  Row,
-  Space,
-  Table,
-  Typography,
-} from "antd";
+import { Button, Card, Col, Flex, Input, Popover, Row, Space, Table, Typography, } from "antd";
 import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PhonePreview from "./PhonePreview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getTemplatesByProject } from "../../Templates/TemplatesApi";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 
 function TemplateCampaigns() {
   const [selectedRowKey, setSelectedRowKey] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [templates, setTemplates] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const selectedProject = useSelector((state) => state.app.selectedProject);
+
+  const getProjectTemplates = async (projectId) => {
+    setLoading(true);
+
+    try {
+      const response = await getTemplatesByProject(projectId);
+      console.log("API Response:", response);
+      if (response?.success) {
+        setTemplates(response.templates || []);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProject) {
+      getProjectTemplates(
+        selectedProject._id || selectedProject.projectId
+      );
+    }
+  }, [selectedProject]);
+
+  const tableData = (templates || []).map((item, index) => ({
+    key: item._id,
+    sn: index + 1,
+    name: item.JSON?.templateName,
+    html: item.HTML,
+    createdAt: item.createdAt?.split("T")[0],
+  }));
+
+  const TemplatePreview = ({ html }) => (
+    <iframe
+      srcDoc={html}
+      title="Template Preview"
+      style={{
+        width: 280,
+        height: 400,
+        border: "1px solid #d9d9d9",
+        borderRadius: 8,
+        background: "#fff",
+      }}
+    />
+  );
+
   const rowSelection = {
     type: "radio",
     selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
-    onChange: (selectedRowKeys,) => {
+    onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRowKey(selectedRowKeys[0]);
+      setSelectedTemplate(selectedRows[0]);
     },
   };
+
   const navigate = useNavigate();
   const columns = [
     {
@@ -38,6 +80,17 @@ function TemplateCampaigns() {
       title: t("name", { defaultValue: "Name" }),
       dataIndex: "name",
       key: "name",
+      render: (text, record) => (
+        <Popover
+          placement="rightTop"
+          trigger="hover"
+          content={<TemplatePreview html={record.html} />}
+        >
+          <span style={{ color: "#1677ff", cursor: "pointer", }}>
+            {text}
+          </span>
+        </Popover>
+      ),
     },
     {
       title: t("created.at", { defaultValue: "Created At" }),
@@ -52,21 +105,6 @@ function TemplateCampaigns() {
       ),
     },
   ];
-
-  const data = [
-    {
-      key: "1",
-      sn: "1",
-      name: "Template 1",
-      createdAt: "2024-01-01",
-    },
-    {
-      key: "2",
-      sn: "2",
-      name: "Template 2",
-      createdAt: "2024-01-01",
-    }
-  ]
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
@@ -107,7 +145,7 @@ function TemplateCampaigns() {
             <Table
               columns={columns}
               pagination={false}
-              dataSource={data}
+              dataSource={tableData}
               scroll={{ x: 700 }}
               rowSelection={rowSelection}
               onRow={(record) => ({
@@ -123,7 +161,7 @@ function TemplateCampaigns() {
               {t("previous", { defaultValue: "Previous", })}
             </Button>
 
-            <Button type="primary" loading={loading}>
+            <Button type="primary">
               {t("next", { defaultValue: "Next", })}
             </Button>
           </Flex>
@@ -131,7 +169,7 @@ function TemplateCampaigns() {
 
         {/* Right Side */}
         <Col xs={24} lg={6}>
-          <PhonePreview />
+          <PhonePreview template={selectedTemplate} />
         </Col>
       </Row>
     </Space>

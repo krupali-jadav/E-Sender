@@ -1,25 +1,170 @@
-import { Modal, Form, Input, Select, Button, Space, Table, } from "antd";
+import { Modal, Form, Input, Select, Button, Space, Table, Row, Col, message, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { t } from "i18next";
+import { bulkAddContacts } from "./ContactsApi";
+import { getAllGroups } from "../Group/GroupApi";
+import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 
 const { TextArea } = Input;
 
-const ManualImport = ({ open, onClose }) => {
+const ManualImport = ({ open, onClose, fetchContacts }) => {
   const [groups, setGroups] = useState([]);
-  const [groupName, setGroupName] = useState("");
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [contactsText, setContactsText] = useState("");
+  const [customFields, setCustomFields] = useState([]);
+  const [fieldValues, setFieldValues] = useState({});
+  const [previewData, setPreviewData] = useState([]);
 
-  const handleAddGroup = () => {
-    if (!groupName.trim()) return;
-    setGroups([...groups, groupName]);
-    setGroupName("");
+  const fetchGroups = async () => {
+    try {
+      const response = await getAllGroups({
+        page: 0,
+        search: "",
+      });
+
+      if (response?.status) {
+        setGroups(response.groups || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCustomFields = async () => {
+    try {
+      const response = await getAllCustomFields({
+        page: 0,
+        search: "",
+      });
+
+      if (response?.status) {
+        setCustomFields(response.fields || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      fetchGroups();
+      fetchCustomFields();
+    }
+  }, [open]);
+
+  const parseContacts = (text) => {
+    setPreviewData((prev) => {
+      const rows = text
+        .split("\n")
+        .filter((line) => line.trim())
+        .map((line, index) => {
+          const [name, email, phone] = line.split(",");
+
+          // Find existing row
+          const existingRow = prev.find((item) => item.key === index);
+
+          return {
+            ...existingRow, // Preserve custom field values
+            key: index,
+            sn: index + 1,
+            name: name?.trim() || "",
+            email: email?.trim() || "",
+            phone: phone?.trim() || "",
+          };
+        });
+
+      return rows;
+    });
+  };
+
+  const dynamicColumns = customFields.map((field) => ({
+    title: field.name,
+    dataIndex: field._id,
+    key: field._id,
+
+    render: (_, record) => (
+      <Input
+        value={record[field._id] || ""}
+        placeholder={`Enter ${field.name}`}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setPreviewData((prev) =>
+            prev.map((item) =>
+              item.key === record.key
+                ? {
+                  ...item,
+                  [field._id]: value,
+                }
+                : item
+            )
+          );
+        }}
+      />
+    ),
+  }));
+
+  const handleImport = async () => {
+    if (!contactsText.trim()) {
+      message.warning("Please enter contacts");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const contacts = previewData.map((row) => ({
+        name: row.name,
+        email: row.email,
+        phonenumber: row.phone,
+        groups: selectedGroups,
+
+        fields: customFields
+          .filter((field) => row[field._id])
+          .map((field) => ({
+            fieldId: field._id,
+            value: row[field._id],
+          })),
+      }));
+      const payload = {
+        contacts,
+      };
+
+
+      const response = await bulkAddContacts(payload);
+      console.log("Payload:", payload);
+      console.log("Response:", response);
+
+      if (response?.status) {
+        message.success(response.message || "Bulk contacts added successfully");
+        onClose();
+        fetchContacts();
+        setContactsText("");
+        setSelectedGroups([]);
+        setFieldValues({});
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setContactsText("");
+    setPreviewData([]);
+    setSelectedGroups([]);
+    setFieldValues({});
+
+    onClose();
   };
 
   const columns = [
     {
       title: t("sn", { defaultValue: "SN" }),
+      width: 70,
       dataIndex: "sn",
       key: "sn",
     },
@@ -29,15 +174,16 @@ const ManualImport = ({ open, onClose }) => {
       key: "name",
     },
     {
+      title: t("email", { defaultValue: "Email" }),
+      width: 220,
+      dataIndex: "email",
+      key: "email",
+    }, {
       title: t("phone_number", { defaultValue: "Phone Number" }),
       dataIndex: "phone",
       key: "phone",
     },
-    {
-      title: t("email", { defaultValue: "Email" }),
-      dataIndex: "email",
-      key: "email",
-    }
+    ...dynamicColumns
   ]
 
   return (
@@ -45,20 +191,32 @@ const ManualImport = ({ open, onClose }) => {
       title={t("manual.import", { defaultValue: "Manual Import" })}
       open={open}
       onCancel={onClose}
-      width={900}
+      width={1000}
       centered
       footer={[
-        <Button key="cancel" onClick={onClose}>
+        <Button key="cancel" onClose={handleClose} onClick={onClose}>
           {t("cancel", { defaultValue: "Cancel" })}
         </Button>,
-        <Button key="import" type="primary" loading={loading}>
-          {t("excel.import", { defaultValue: "Excel Import" })}
+        <Button key="import" type="primary" loading={loading} onClick={handleImport}>
+          {t("import", { defaultValue: "Import" })}
         </Button>,
       ]}
     >
       <Form layout="vertical">
-        <Form.Item label={t("contacts", { defaultValue: "Contacts" })}>
-          <TextArea rows={5} />
+        <Form.Item
+          label={t("contacts", { defaultValue: "Contacts" })}
+        >
+          <TextArea
+            rows={8}
+            value={contactsText}
+            onChange={(e) => {
+              const value = e.target.value;
+              setContactsText(value);
+              parseContacts(value);
+            }}
+          //             placeholder={`John,john@gmail.com
+          // Jane,jane@gmail.com`}
+          />
         </Form.Item>
 
         <Form.Item label={t("groups", { defaultValue: "Groups" })}>
@@ -69,30 +227,9 @@ const ManualImport = ({ open, onClose }) => {
             showSearch
             placeholder={t("select.groups", { defaultValue: "Select Groups" })}
             options={groups.map((group) => ({
-              label: group,
-              value: group,
+              label: group.name,
+              value: group._id,
             }))}
-            popupRender={(menu) => (
-              <>
-                {menu}
-
-                <Space.Compact block>
-                  <Input
-                    placeholder={t("group.name", { defaultValue: "Enter Group Name", })}
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
-                  />
-
-                  <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={handleAddGroup}
-                  >
-                    {t("add.group", { defaultValue: "Add Group" })}
-                  </Button>
-                </Space.Compact>
-              </>
-            )}
           />
         </Form.Item>
 
@@ -100,6 +237,8 @@ const ManualImport = ({ open, onClose }) => {
           columns={columns}
           dataSource={[]}
           pagination={false}
+          dataSource={previewData}
+          scroll={{ y: 260 }}
         />
       </Form>
     </Modal>
