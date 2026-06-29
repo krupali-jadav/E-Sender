@@ -1,16 +1,22 @@
 import { useState } from "react";
-import { Button, Card, Checkbox, Col, Divider, Flex, Input, Row, Space, Table, Typography, } from "antd";
+import { Button, Card, Checkbox, Col, Divider, Flex, Input, Row, Space, Switch, Table, Typography, } from "antd";
 import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";
 import ExcelImport from "../../Contact/Contacts/ExcelImport";
 import AddContact from "../../Contact/Contacts/AddContact";
+import ImportFromContacts from "../../Contact/Contacts/ImportFromContact";
+import { addCampaignContacts, } from "../../../redux/reducers/reducer.Campaign";
+import { useDispatch, useSelector } from "react-redux";
 const { Title } = Typography;
 
 function ContactCampaigns() {
   const [excelOpen, setExcelOpen] = useState(false);
   const [manualImportOpen, setManualImportOpen] = useState(false);
   const [AddContactOpen, setAddContactOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const dispatch = useDispatch();
+  const campaignContacts = useSelector((state) => state.campaign.contacts);
 
   const columns = [
     {
@@ -24,6 +30,7 @@ function ContactCampaigns() {
       dataIndex: "sn",
       key: "sn",
       width: 80,
+      render: (_, __, index) => index + 1,
     },
     {
       title: "Name",
@@ -36,14 +43,44 @@ function ContactCampaigns() {
       key: "phone",
     },
     {
-      title: "Test",
-      dataIndex: "test",
-      key: "test",
+      title: "Email",
+      dataIndex: "email",
     },
     {
-      title: "Country",
-      dataIndex: "country",
-      key: "country",
+      title: t("unsubscribed", { defaultValue: "Unsubscribed" }),
+      dataIndex: "unsubscribe",
+      key: "unsubscribed",
+      render: (_, record) => (
+        record.unsubscribed ? (
+          <Tag>{record.unsubscribed}  </Tag>
+        ) : (
+          "-"
+        )),
+    },
+    {
+      title: t("spam", { defaultValue: "Spam" }),
+      dataIndex: "spam",
+      key: "spam",
+      render: (_, record) => (
+        record.spam ? (
+          <Tag>{record.spam}  </Tag>
+        ) : (
+          "-"
+        )),
+    },
+    {
+      title: "Blocked",
+      dataIndex: "blocked",
+      key: "blocked",
+      render: (blocked, record) => (
+        <Switch
+          size="large"
+          checked={blocked}
+          onChange={(checked) =>
+            handleBlockStatus(record, checked)
+          }
+        />
+      ),
     },
     {
       title: "Actions",
@@ -66,10 +103,28 @@ function ContactCampaigns() {
             </Col>
 
             <Col>
+
               <Flex wrap="wrap" gap={8}>
-                <Button type="primary" icon={<UploadOutlined />}>
-                  {t("import.from.contacts", { defaultValue: "Import From Contacts" })}
+                <Button type="primary" icon={<UploadOutlined />} onClick={() => setManualImportOpen(true)}>
+                  {t("import.from.groupst", { defaultValue: "Import From Groups" })}
                 </Button>
+                <Button
+                  type="primary"
+                  icon={<UploadOutlined />}
+                  onClick={() => setImportOpen(true)}
+                >
+                  {t("import.from.contacts", {
+                    defaultValue: "Import From Contacts",
+                  })}
+                </Button>
+
+                <ImportFromContacts
+                  open={importOpen}
+                  onClose={() => setImportOpen(false)}
+                  onImport={(selectedContacts) => {
+                    dispatch(addCampaignContacts(selectedContacts));
+                  }}
+                />
 
                 <Button type="primary" icon={<UploadOutlined />} onClick={() => setManualImportOpen(true)}>
                   {t("manual.import", { defaultValue: "Manual Import" })}
@@ -77,6 +132,9 @@ function ContactCampaigns() {
                 <ManualImport
                   open={manualImportOpen}
                   onClose={() => setManualImportOpen(false)}
+                  onImport={(selectedContacts) => {
+                    dispatch(addCampaignContacts(selectedContacts));
+                  }}
                 />
 
                 <Button type="primary" icon={<UploadOutlined />} onClick={() => setExcelOpen(true)}>
@@ -95,7 +153,7 @@ function ContactCampaigns() {
                   onClose={() => setAddContactOpen(false)}
                 />
 
-                <Button disabled icon={<ExportOutlined />}>
+                <Button type="primary" icon={<ExportOutlined />}>
                   {t("export", { defaultValue: "Export" })}
                 </Button>
               </Flex>
@@ -105,7 +163,7 @@ function ContactCampaigns() {
           <Divider style={{ margin: 0 }} />
           {/* search */}
           <Row justify="space-between" align="middle" gutter={[16, 16]}>
-            <Col xs={24} md={8}>
+            <Col xs={24} md={6}>
               <Input.Search
                 placeholder={t("search", { defaultValue: "Search", })}
                 enterButton={<SearchOutlined />}
@@ -115,11 +173,13 @@ function ContactCampaigns() {
 
             <Col xs={24} md={16}>
               <Flex justify="end" wrap="wrap" gap={8}>
-                <Button disabled>{t("clear.all", { defaultValue: "Clear All" })}</Button>
-                <Button disabled>{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
-                <Button disabled>{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
-                <Button disabled>{t("apply.country.code", { defaultValue: "Apply Country Code" })}</Button>
-                <Button disabled>{t("delete", { defaultValue: "Delete" })}</Button>
+                <Button size="small">{t("clear.all", { defaultValue: "Clear All" })}</Button>
+                <Button size="small">{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
+                <Button size="small">{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
+                <Button size="small">{t("remove.invalid", { defaultValue: "Remove Unsubscribed" })}</Button>
+                <Button size="small">{t("remove.invalid", { defaultValue: "Remove Spam" })}</Button>
+                <Button size="small">{t("remove.invalid", { defaultValue: "Remove Blocked" })}</Button>
+                <Button size="small">{t("delete", { defaultValue: "Delete" })}</Button>
               </Flex>
             </Col>
           </Row>
@@ -128,7 +188,8 @@ function ContactCampaigns() {
 
           <Table
             columns={columns}
-            dataSource={[]}
+            dataSource={campaignContacts}
+            rowKey="_id"
             pagination={false}
             scroll={{ x: 1000 }}
           />

@@ -202,12 +202,6 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                         <Form.Item
                             label={t("name", { defaultValue: "Name" })}
                             name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter name",
-                                },
-                            ]}
                         >
                             <Input
                                 placeholder={t("name", { defaultValue: "Enter Name", })} />
@@ -232,12 +226,6 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                         <Form.Item
                             label={t("phone.number", { defaultValue: "Phone Number" })}
                             name="phone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter phone number",
-                                },
-                            ]}
                         >
                             <PhoneInput
                                 enableSearch

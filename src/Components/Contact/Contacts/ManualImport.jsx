@@ -8,7 +8,7 @@ import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 
 const { TextArea } = Input;
 
-const ManualImport = ({ open, onClose, fetchContacts }) => {
+const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -123,8 +123,13 @@ const ManualImport = ({ open, onClose, fetchContacts }) => {
 
       if (response?.status) {
         message.success(response.message || "Bulk contacts added successfully");
+        const insertedContacts = response.inserted || [];
+        if (onImport && insertedContacts.length) {
+          onImport(insertedContacts);
+        }
         onClose();
-        fetchContacts();
+        fetchContacts?.();
+        setPreviewData([]);
         setContactsText("");
         setSelectedGroups([]);
         setFieldValues({});
