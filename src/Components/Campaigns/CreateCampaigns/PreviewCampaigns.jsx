@@ -72,26 +72,41 @@ const CampaignStep = () => {
               </Col>
               <Col xs={24} md={12}>
                 <Card title="Schedule Your Campaign">
-                  <Radio.Group value={scheduleType}
-                    onChange={(e) => setScheduleType(e.target.value)}>
-            
-                    <Space direction="vertical">
-                      <Radio value="now">{t("send.it.now", { defaultValue: "Send It Now" })}</Radio>
-                      <Radio value="schedule">
-                        {t("schedule.it.for.a.specific.time", { defaultValue: "Schedule It For A Specific Time" })}
+                  <Radio.Group
+                    value={scheduleType}
+                    onChange={(e) => setScheduleType(e.target.value)}
+                  >
+                    <Space direction="vertical" style={{ width: "100%" }}>
+                      <Radio value="now">
+                        {t("send.it.now", { defaultValue: "Send It Now" })}
                       </Radio>
+
+                      <div>
+                        <Radio value="schedule">
+                          {t("schedule.it.for.a.specific.time", {
+                            defaultValue: "Schedule It For A Specific Time",
+                          })}
+                        </Radio>
+
+                        {scheduleType === "schedule" && (
+                          <div
+                            style={{ marginTop: 8, marginLeft: 24, }}
+                          >
+                            <DatePicker
+                              showTime={{ use12Hours: true, format: "hh:mm A" }}
+                              format="DD-MM-YYYY hh:mm A"
+                              placeholder="Select Date & Time"
+                              style={{ width: 250 }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </Space>
                   </Radio.Group>
-                  {scheduleType === "schedule" && (
-                    <Space style={{ marginTop: 16 }}>
-                      <DatePicker placeholder="Select Date" />
-                      <TimePicker placeholder="Select Time" format="HH:mm" />
-                    </Space>
-                  )}
                 </Card>
               </Col>
             </Row>
-            
+
 
           </Card>
           <Flex justify="end" gap="small" style={{ marginTop: 8 }}>
@@ -99,16 +114,16 @@ const CampaignStep = () => {
             <Button type="primary" loading={loading}>{t("send.now", { defaultValue: "Send Now" })}</Button>
           </Flex>
         </Col>
-      
 
-      {/* Phone Preview Space */}
-      <Col xs={24} lg={6}>
-      <PhonePreview />
-      </Col>
+
+        {/* Phone Preview */}
+        <Col xs={24} lg={6}>
+          <PhonePreview />
+        </Col>
       </Row>
     </>
 
   );
 };
 
-export default CampaignStep;  
+export default CampaignStep;

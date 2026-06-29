@@ -14,6 +14,7 @@ function TemplateCampaigns() {
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [search, setSearch] = useState("");
   const selectedProject = useSelector((state) => state.app.selectedProject);
 
   const getProjectTemplates = async (projectId) => {
@@ -38,13 +39,19 @@ function TemplateCampaigns() {
     }
   }, [selectedProject]);
 
-  const tableData = (templates || []).map((item, index) => ({
-    key: item._id,
-    sn: index + 1,
-    name: item.JSON?.templateName,
-    html: item.HTML,
-    createdAt: item.createdAt?.split("T")[0],
-  }));
+  const tableData = (templates || [])
+    .filter((item) =>
+      item.JSON?.templateName
+        ?.toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .map((item, index) => ({
+      key: item._id,
+      sn: index + 1,
+      name: item.JSON?.templateName,
+      html: item.HTML,
+      createdAt: item.createdAt?.split("T")[0],
+    }));
 
   const TemplatePreview = ({ html }) => (
     <iframe
@@ -114,18 +121,29 @@ function TemplateCampaigns() {
             <Row gutter={[16, 16]} align="middle">
               <Col xs={24} md={8}>
                 <Text strong style={{ fontSize: 15 }}>
-                  {t("choose_template", { defaultValue: "Choose Template" })}
-                  <MoreOutlined />
+                  Choose Template
+                  {selectedTemplate && (
+                    <span
+                      style={{
+                        color: "#1677ff",
+                        marginLeft: 8,
+                      }}
+                    >
+                      ({selectedTemplate.name})
+                    </span>
+                  )}
                 </Text>
               </Col>
 
               <Col xs={24} md={16}>
                 <Flex justify="end" gap={10} wrap="wrap">
                   <Input.Search
-                    placeholder={t("search...", { defaultValue: "Search...", })}
-                    enterButton={<SearchOutlined />}
+                    placeholder="Search Template"
                     allowClear
-                    style={{ width: "100%", maxWidth: 350 }}
+                    enterButton={<SearchOutlined />}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{ width: 350 }}
                   />
 
                   <Button
@@ -143,6 +161,7 @@ function TemplateCampaigns() {
 
           <Card styles={{ body: { padding: 0 } }} style={{ marginTop: 16 }}>
             <Table
+              loading={loading}
               columns={columns}
               pagination={false}
               dataSource={tableData}
@@ -151,6 +170,7 @@ function TemplateCampaigns() {
               onRow={(record) => ({
                 onClick: () => {
                   setSelectedRowKey(record.key);
+                  setSelectedTemplate(record);
                 },
               })}
             />
