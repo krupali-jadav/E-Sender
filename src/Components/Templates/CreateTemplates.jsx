@@ -1,5 +1,5 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Form, Input, List, message, Modal, Row, Space, Typography } from "antd";
+import { Button, Card, Col, Form, Input, List, message, Modal, Row, Space, Spin, Typography } from "antd";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -23,6 +23,7 @@ function CreateTemplates() {
     const { templateId } = useParams();
     const [projects, setProjects] = useState([]);
     const [projectModalOpen, setProjectModalOpen] = useState(false);
+    const [editorLoading, setEditorLoading] = useState(!!templateId);
     const [open, setOpen] = useState(false);
 
     const fetchTemplate = async () => {
@@ -33,9 +34,12 @@ function CreateTemplates() {
             console.log("Template API Response", data);
             if (data?.success) {
                 setTemplateData(data.json);
+            } else {
+                setEditorLoading(false);
             }
         } catch (error) {
             console.log(error);
+            setEditorLoading(false);
         } finally {
             setLoading(false);
         }
@@ -137,6 +141,8 @@ function CreateTemplates() {
                 editorRef.current?.loadJson(design);
             } catch (err) {
                 console.log(err);
+            } finally {
+                setEditorLoading(false)
             }
         }, 1000);
     }, [templateData]);
@@ -224,14 +230,13 @@ function CreateTemplates() {
                             </Row>
                         </Form>
                     </Card>
-                    <Card style={{ minHeight: 600 }}>
-
-                        <Package
-                            ref={editorRef}
-                            apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
-                        // onLicenseError={(err: LicenseError) => console.error(err)}
-                        // showUndoRedo
-                        />
+                    <Card style={{ minHeight: 600, position: "relative" }}>
+                        <Spin spinning={editorLoading}>
+                            <Package
+                                ref={editorRef}
+                                apiKey="eed_live_9a24888b38c2ac94f5f55a37ff190d8752e2ced121449e7c"
+                            />
+                        </Spin>
                     </Card>
                 </Space>
                 <Modal

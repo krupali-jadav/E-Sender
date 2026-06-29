@@ -60,13 +60,19 @@ const ManualImport = ({ open, onClose, fetchContacts }) => {
         .split("\n")
         .filter((line) => line.trim())
         .map((line, index) => {
-          const [name, email, phone] = line.split(",");
-
-          // Find existing row
+          const parts = line.split(",").map((p) => p.trim());
+          const [name, email, phone, ...customValues] = parts;
           const existingRow = prev.find((item) => item.key === index);
+          const customFieldData = {};
+          customFields.forEach((field, i) => {
+            if (customValues[i] !== undefined && customValues[i] !== "") {
+              customFieldData[field._id] = customValues[i];
+            }
+          });
 
           return {
-            ...existingRow, // Preserve custom field values
+            ...existingRow,
+            ...customFieldData,
             key: index,
             sn: index + 1,
             name: name?.trim() || "",
@@ -78,32 +84,10 @@ const ManualImport = ({ open, onClose, fetchContacts }) => {
       return rows;
     });
   };
-
   const dynamicColumns = customFields.map((field) => ({
     title: field.name,
     dataIndex: field._id,
     key: field._id,
-
-    render: (_, record) => (
-      <Input
-        value={record[field._id] || ""}
-        placeholder={`Enter ${field.name}`}
-        onChange={(e) => {
-          const value = e.target.value;
-
-          setPreviewData((prev) =>
-            prev.map((item) =>
-              item.key === record.key
-                ? {
-                  ...item,
-                  [field._id]: value,
-                }
-                : item
-            )
-          );
-        }}
-      />
-    ),
   }));
 
   const handleImport = async () => {
@@ -214,8 +198,6 @@ const ManualImport = ({ open, onClose, fetchContacts }) => {
               setContactsText(value);
               parseContacts(value);
             }}
-          //             placeholder={`John,john@gmail.com
-          // Jane,jane@gmail.com`}
           />
         </Form.Item>
 

@@ -213,27 +213,29 @@ function Contacts() {
         ...new Map(
             data
                 .flatMap((contact) => contact.fields || [])
+                .filter((field) => field?.fieldId && field.fieldId._id)
                 .map((field) => [
-                    field.fieldId?._id,
+                    field.fieldId._id,
                     field.fieldId,
                 ])
         ).values(),
     ];
 
-    const customFieldColumns = uniqueFields.map((field) => ({
-        title: field.name,
-        dataIndex: field._id,
-        key: field._id,
+    const customFieldColumns = uniqueFields
+        .filter((field) => field && field.name)
+        .map((field) => ({
+            title: field.name,
+            dataIndex: field._id,
+            key: field._id,
 
-        render: (_, record) => {
-            const fieldData = record.fields?.find(
-                (f) =>
-                    (f.fieldId?._id || f.fieldId) === field._id
-            );
+            render: (_, record) => {
+                const fieldData = record.fields?.find(
+                    (f) => (f.fieldId?._id || f.fieldId) === field._id
+                );
 
-            return fieldData?.value || "-";
-        },
-    }));
+                return fieldData?.value || "-";
+            },
+        }));
 
     const columns = [
         {
