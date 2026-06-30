@@ -104,7 +104,6 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
         email: row.email,
         phonenumber: row.phone,
         groups: selectedGroups,
-
         fields: customFields
           .filter((field) => row[field._id])
           .map((field) => ({
@@ -112,27 +111,25 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
             value: row[field._id],
           })),
       }));
-      const payload = {
-        contacts,
-      };
 
+      const payload = { contacts };
 
+      // Contact Campaign
+      if (onImport) {
+        onImport(contacts);
+        message.success("Contacts imported successfully");
+        handleClose();
+        return;
+      }
+
+      // Contacts page
       const response = await bulkAddContacts(payload);
-      console.log("Payload:", payload);
-      console.log("Response:", response);
-
       if (response?.status) {
         message.success(response.message || "Bulk contacts added successfully");
-        const insertedContacts = response.inserted || [];
-        if (onImport && insertedContacts.length) {
-          onImport(insertedContacts);
-        }
-        onClose();
+
         fetchContacts?.();
-        setPreviewData([]);
-        setContactsText("");
-        setSelectedGroups([]);
-        setFieldValues({});
+
+        handleClose();
       }
     } catch (error) {
       console.log(error);
@@ -146,10 +143,8 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
     setPreviewData([]);
     setSelectedGroups([]);
     setFieldValues({});
-
     onClose();
   };
-
   const columns = [
     {
       title: t("sn", { defaultValue: "SN" }),

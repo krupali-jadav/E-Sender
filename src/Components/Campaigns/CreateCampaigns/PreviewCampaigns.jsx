@@ -19,7 +19,7 @@ import PhonePreview from "./PhonePreview";
 
 const { Text } = Typography;
 
-const CampaignStep = () => {
+const PreviewCampaign = ({ campaignData, setCurrent }) => {
   const [loading, setLoading] = useState(false);
 
   const [scheduleType, setScheduleType] = useState("now");
@@ -32,9 +32,9 @@ const CampaignStep = () => {
               <Col xs={24} md={12}>
                 <Card>
                   <Space direction="vertical" size="large">
-                    <Text strong>{t("campaign.name", { defaultValue: "Campaign Name" })}</Text>
-                    <Text strong>{t("selected.template", { defaultValue: "Selected Template" })}</Text>
-                    <Text strong>{t("total.contacts", { defaultValue: "Total Contacts" })}: 0</Text>
+                    <Text strong>{t("campaign.name", { defaultValue: "Campaign Name" })}: {campaignData?.name || "-"}</Text>
+                    <Text>{t("selected.template", { defaultValue: "Selected Template" })}: {campaignData?.template?.name || "-"}</Text>
+                    <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: {campaignData?.contacts?.length || 0}</Text>
                   </Space>
                 </Card>
               </Col>
@@ -110,7 +110,7 @@ const CampaignStep = () => {
 
           </Card>
           <Flex justify="end" gap="small" style={{ marginTop: 8 }}>
-            <Button>{t("previous", { defaultValue: "Previous" })}</Button>
+            <Button onClick={() => setCurrent(2)}>{t("previous", { defaultValue: "Previous" })}</Button>
             <Button type="primary" loading={loading}>{t("send.now", { defaultValue: "Send Now" })}</Button>
           </Flex>
         </Col>
@@ -118,7 +118,7 @@ const CampaignStep = () => {
 
         {/* Phone Preview */}
         <Col xs={24} lg={6}>
-          <PhonePreview />
+          <PhonePreview domainName={campaignData?.domain} />
         </Col>
       </Row>
     </>
@@ -126,4 +126,4 @@ const CampaignStep = () => {
   );
 };
 
-export default CampaignStep;
+export default PreviewCampaign;

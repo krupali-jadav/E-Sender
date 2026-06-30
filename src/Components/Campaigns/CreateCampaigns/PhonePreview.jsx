@@ -9,13 +9,12 @@ import { useState } from 'react'
 const { Text, Title } = Typography;
 import { LuReply } from "react-icons/lu";
 import { LuForward } from "react-icons/lu";
-import { useSelector } from 'react-redux'
 import { t } from 'i18next'
+import { useSelector } from 'react-redux'
 
-function PhonePreview({ template, page }) {
+function PhonePreview({ template, page, domainName }) {
   const [open, setOpen] = useState(false);
   const theme = useSelector((state) => state?.app?.theme);
-  const domainName = useSelector((state) => state.domain.selectedDomain);
   return (
     <Flex xs={24} lg={8} >
       <Col
@@ -69,7 +68,7 @@ function PhonePreview({ template, page }) {
                 <Avatar size={32}>G</Avatar>
                 <div style={{ flex: 1 }}>
                   <Row>
-                    <Text strong>https://{domainName}</Text>
+                    <Text strong>domain://{domainName}</Text>
                   </Row>
 
                   <Flex
@@ -177,7 +176,7 @@ function PhonePreview({ template, page }) {
                     }}
                   >
                     <div
-                      dangerouslySetInnerHTML={{ __html: template.html }}
+                      dangerouslySetInnerHTML={{ __html: template?.html }}
                     />
                   </div>
                 ) : (

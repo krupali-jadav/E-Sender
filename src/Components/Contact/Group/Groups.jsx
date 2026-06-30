@@ -311,7 +311,7 @@ function Groups() {
                 setPage(newPage);
               },
             }}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: "max-content",y:500 }}
             rowSelection={rowSelection}
           />
         </Card>

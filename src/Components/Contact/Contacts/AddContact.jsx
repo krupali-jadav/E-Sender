@@ -8,7 +8,7 @@ import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 const { Text } = Typography;
 
-function AddContact({ open, onClose, editData, fetchContacts, }) {
+function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
     const [groupName, setGroupName] = useState("");
     const [phone, setPhone] = useState("");
     const [form] = Form.useForm();
@@ -104,6 +104,18 @@ function AddContact({ open, onClose, editData, fetchContacts, }) {
                         value: fieldValues[field._id],
                     })),
             };
+            if (onSave) {
+                onSave({
+                    _id: editData?._id || Date.now().toString(),
+                    ...payload,
+                });
+                message.success("Contact added successfully");
+                form.resetFields();
+                setPhone("");
+                setFieldValues({});
+                onClose();
+                return;
+            }
             const data = editData
                 ? await saveContact({
                     contact_id: editData._id,

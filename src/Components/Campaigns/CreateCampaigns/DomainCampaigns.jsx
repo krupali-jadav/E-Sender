@@ -4,21 +4,26 @@ import { Typography } from "antd";
 import { MoreOutlined, SearchOutlined } from "@ant-design/icons";
 import PhonePreview from "./PhonePreview";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setSelectedDomain } from "../../../redux/reducers/reducer.Domain";
 const { Text } = Typography;
 
-function DomainCampaigns() {
+function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
   const [selectedRowKey, setSelectedRowKey] = useState(null);
   const [loading, setLoading] = useState(false);
   const rowSelection = {
     type: "radio",
     selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
-    onChange: (selectedRowKeys,) => {
-      setSelectedRowKey(selectedRowKeys[0]);
+    onChange: (selectedRowKeys, selectedRows) => {
+      const key = selectedRowKeys[0];
+      const row = selectedRows[0];
+
+      setSelectedRowKey(key);
+
+      setCampaignData((prev) => ({
+        ...prev,
+        domain: row.name,
+      }));
     },
   };
-  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -34,7 +39,10 @@ function DomainCampaigns() {
         <Button
           type="link"
           onClick={() => {
-            dispatch(setSelectedDomain(record.name));
+            setCampaignData((prev) => ({
+              ...prev,
+              domain: record.name,
+            }));
             setSelectedRowKey(record.key);
           }}
           style={{ padding: 0 }}
@@ -96,15 +104,28 @@ function DomainCampaigns() {
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={18}>
           <Card>
-            <Form layout="vertical">
-              <Form.Item label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
+            <Form
+              layout="vertical"
+              initialValues={{ name: campaignData?.name }}
+              onValuesChange={(changedValues) => {
+                if (changedValues.name !== undefined) {
+                  setCampaignData((prev) => ({
+                    ...prev,
+                    name: changedValues.name,
+                  }));
+                }
+              }}
+            >
+              <Form.Item
+                label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
                 name="name"
                 rules={[
                   {
                     required: true,
                     message: "Please enter Campaigns Name",
                   },
-                ]}>
+                ]}
+              >
                 <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
               </Form.Item>
             </Form>
@@ -129,23 +150,37 @@ function DomainCampaigns() {
                 onRow={(record) => ({
                   onClick: () => {
                     setSelectedRowKey(record.key);
-                    dispatch(setSelectedDomain(record.name));
-                  },
+                    setCampaignData((prev) => ({
+                      ...prev,
+                      domain: record.name,
+                    }));
+                  }
                 })}
               />
             </Space>
 
           </Card>
-          <Flex justify="end" style={{ marginTop: 16 }}>
+          <Flex justify="end" style={{ marginTop: 16 }} gap={6}>
             <Button type="primary" loading={loading}>{t("save", { defaultValue: "Save" })}</Button>
+            <Button
+              type="primary"
+              loading={loading}
+              disabled={!campaignData.domain}
+              onClick={() => setCurrent(1)}
+            >
+              Next
+            </Button>
           </Flex>
         </Col>
         {/* Right Side */}
         <Col xs={24} lg={6}>
-          <PhonePreview page="DomainCampaign"/>
+          <PhonePreview
+            page="DomainCampaign"
+            domainName={campaignData.domain}
+          />
         </Col>
       </Row>
-    </Space>
+    </Space >
   )
 }
 

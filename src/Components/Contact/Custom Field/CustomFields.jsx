@@ -338,7 +338,7 @@ function CustomFields() {
             columns={columns}
             dataSource={fields}
             loading={loading}
-            scroll={{ x: "max-content" }}
+            scroll={{ x: "max-content",y:500 }}
             rowSelection={rowSelection}
             pagination={{
               current: page,

@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useMemo, useState } from "react";
 import { message } from "antd";
 import { bulkAddContacts } from "./ContactsApi";
-import { getAllCustomFields } from "../../Contact/Custom Field/CustomeFieldApi"; 
+import { getAllCustomFields } from "../../Contact/Custom Field/CustomeFieldApi";
 import { t } from "i18next";
 
-function ExcelImport({ open, onClose, onSubmit = () => { } }) {
+function ExcelImport({ open, onClose, onSubmit}) {
     const [submitting, setSubmitting] = useState(false);
     const [customFields, setCustomFields] = useState([]);
     const [loadingFields, setLoadingFields] = useState(false);
@@ -94,21 +94,31 @@ function ExcelImport({ open, onClose, onSubmit = () => { } }) {
 
     const handleSubmit = async (data) => {
         const safeRows = Array.isArray(data) ? data : [];
-        const missingPhone = safeRows.some((row) => !row.phone);
-        if (missingPhone) {
-            message.error(t("phone.required", { defaultValue: "Phone number is required for all rows" }));
-            return;
-        }
-
         const enrichedRows = safeRows.map(buildPayloadRow);
-        console.log("Final payload being sent:", JSON.stringify(enrichedRows, null, 2));
 
         setSubmitting(true);
+
         try {
-            const result = await bulkAddContacts({ contacts: enrichedRows });
-            message.success(result?.message || "Bulk contacts added successfully");
-            onSubmit(enrichedRows, result);
-            onClose();
+            // Campaign page
+            if (onSubmit) {
+                onSubmit(enrichedRows);
+                message.success("Contacts imported successfully");
+                onClose();
+                return;
+            }
+
+            // Contacts page
+            const result = await bulkAddContacts({
+                contacts: enrichedRows,
+            });
+
+            if (result?.status) {
+                message.success(
+                    result?.message || "Bulk contacts added successfully"
+                );
+
+                onClose();
+            }
         } finally {
             setSubmitting(false);
         }

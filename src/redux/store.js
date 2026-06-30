@@ -3,7 +3,6 @@ import userReducer from './reducers/Reducer.user';
 import appReducer from './reducers/reducer.app';
 import domainReducer from './reducers/reducer.Domain';
 import { persistStore, persistReducer, } from 'redux-persist';
-import campaignReducer from "../redux/reducers/reducer.Campaign";
 
 import storage from 'redux-persist/lib/storage';
 
@@ -22,17 +21,11 @@ const persistedAppReducer = persistReducer(
     appReducer
 );
 
-const persistedCampaignReducer = persistReducer(
-    { key: 'campaign', storage: storage.default ? storage.default : storage },
-    campaignReducer
-)
-
 export const store = configureStore({
     reducer: {
         user: persistedReducer,
         app: persistedAppReducer,
         domain: domainReducer,
-        campaign: persistedCampaignReducer
 
     },
     middleware: (getDefaultMiddleware) =>

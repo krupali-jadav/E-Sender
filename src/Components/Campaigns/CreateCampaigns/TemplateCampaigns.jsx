@@ -9,14 +9,12 @@ import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 
-function TemplateCampaigns() {
+function TemplateCampaigns({ campaignData, setCampaignData,setCurrent }) {
   const [selectedRowKey, setSelectedRowKey] = useState(null);
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [search, setSearch] = useState("");
   const selectedProject = useSelector((state) => state.app.selectedProject);
-
   const getProjectTemplates = async (projectId) => {
     setLoading(true);
 
@@ -70,9 +68,20 @@ function TemplateCampaigns() {
   const rowSelection = {
     type: "radio",
     selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
-    onChange: (selectedRowKeys, selectedRows) => {
-      setSelectedRowKey(selectedRowKeys[0]);
-      setSelectedTemplate(selectedRows[0]);
+    onChange: (keys, rows) => {
+      const row = rows[0];
+
+      setSelectedRowKey(keys[0]);
+
+      setCampaignData(prev => ({
+        ...prev,
+        template: {
+          id: row.key,
+          name: row.name,
+          html: row.html,
+        },
+      }));
+
     },
   };
 
@@ -122,14 +131,14 @@ function TemplateCampaigns() {
               <Col xs={24} md={8}>
                 <Text strong style={{ fontSize: 15 }}>
                   Choose Template
-                  {selectedTemplate && (
+                  {campaignData?.template && (
                     <span
                       style={{
                         color: "#1677ff",
                         marginLeft: 8,
                       }}
                     >
-                      ({selectedTemplate.name})
+                      ({campaignData.template.name})
                     </span>
                   )}
                 </Text>
@@ -170,18 +179,25 @@ function TemplateCampaigns() {
               onRow={(record) => ({
                 onClick: () => {
                   setSelectedRowKey(record.key);
-                  setSelectedTemplate(record);
-                },
+                  setCampaignData(prev => ({
+                    ...prev,
+                    template: {
+                      id: record.key,
+                      name: record.name,
+                      html: record.html,
+                    },
+                  }));
+                }
               })}
             />
           </Card>
 
           <Flex justify="end" gap={10} wrap="wrap" style={{ marginTop: 16 }} >
-            <Button>
+            <Button onClick={() => setCurrent(0)}>
               {t("previous", { defaultValue: "Previous", })}
             </Button>
 
-            <Button type="primary">
+            <Button type="primary" onClick={() => setCurrent(2)}>
               {t("next", { defaultValue: "Next", })}
             </Button>
           </Flex>
@@ -189,7 +205,10 @@ function TemplateCampaigns() {
 
         {/* Right Side */}
         <Col xs={24} lg={6}>
-          <PhonePreview template={selectedTemplate} />
+          <PhonePreview
+            template={campaignData?.template}
+            domainName={campaignData?.domain}
+          />
         </Col>
       </Row>
     </Space>
