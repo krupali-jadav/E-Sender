@@ -8,7 +8,7 @@ import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 const { Text } = Typography;
 
-function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
+function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups }) {
     const [groupName, setGroupName] = useState("");
     const [phone, setPhone] = useState("");
     const [form] = Form.useForm();
@@ -105,10 +105,14 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
                     })),
             };
             if (onSave) {
-                onSave({
-                    _id: editData?._id || Date.now().toString(),
-                    ...payload,
+                await new Promise((resolve) => {
+                    onSave({
+                        _id: editData?._id || Date.now().toString(),
+                        ...payload,
+                    });
+                    setTimeout(resolve, 700); 
                 });
+
                 message.success("Contact added successfully");
                 form.resetFields();
                 setPhone("");
@@ -144,6 +148,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
     };
 
     useEffect(() => {
+    if (open) {
         if (editData) {
             form.setFieldsValue({
                 name: editData.name,
@@ -155,14 +160,17 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
             const customFieldData = {};
 
             editData.fields?.forEach((field) => {
-                customFieldData[
-                    field.fieldId?._id || field.fieldId
-                ] = field.value;
+                customFieldData[field.fieldId?._id || field.fieldId] = field.value;
             });
 
             setFieldValues(customFieldData);
+        } else {
+            form.resetFields();
+            setPhone("");
+            setFieldValues({});
         }
-    }, [editData, form]);
+    }
+}, [open, editData, form]);
 
     const fetchGroups = async () => {
         try {
@@ -248,50 +256,52 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
                             />
                         </Form.Item>
 
-                        <Form.Item
-                            name="groups"
-                            label={t("groups", { defaultValue: "Groups" })}
-                        >
-                            <Select
-                                mode="multiple"
-                                showSearch
-                                placeholder={t("select.groups", {
-                                    defaultValue: "Select Groups",
-                                })}
-                                options={groupOptions.map((group) => ({
-                                    label: group.name,
-                                    value: group._id,
-                                }))}
-                                popupRender={(menu) => (
-                                    <>
-                                        {menu}
+                        {showGroups && (
+                            <Form.Item
+                                name="groups"
+                                label="Groups"
+                            >
+                                <Select
+                                    mode="multiple"
+                                    showSearch
+                                    placeholder={t("select.groups", {
+                                        defaultValue: "Select Groups",
+                                    })}
+                                    options={groupOptions.map((group) => ({
+                                        label: group.name,
+                                        value: group._id,
+                                    }))}
+                                    popupRender={(menu) => (
+                                        <>
+                                            {menu}
 
-                                        <Space.Compact
-                                            block
-                                            style={{
-                                                padding: 8,
-                                            }}
-                                        >
-                                            <Input
-                                                placeholder="Enter Group Name"
-                                                value={groupName}
-                                                onChange={(e) =>
-                                                    setGroupName(e.target.value)
-                                                }
-                                            />
-
-                                            <Button
-                                                type="primary"
-                                                icon={<PlusOutlined />}
-                                                onClick={handleAddGroup}
+                                            <Space.Compact
+                                                block
+                                                style={{
+                                                    padding: 8,
+                                                }}
                                             >
-                                                Add Group
-                                            </Button>
-                                        </Space.Compact>
-                                    </>
-                                )}
-                            />
-                        </Form.Item>
+                                                <Input
+                                                    placeholder="Enter Group Name"
+                                                    value={groupName}
+                                                    onChange={(e) =>
+                                                        setGroupName(e.target.value)
+                                                    }
+                                                />
+
+                                                <Button
+                                                    type="primary"
+                                                    icon={<PlusOutlined />}
+                                                    onClick={handleAddGroup}
+                                                >
+                                                    Add Group
+                                                </Button>
+                                            </Space.Compact>
+                                        </>
+                                    )}
+                                />
+                            </Form.Item>
+                        )}
                     </Col>
 
                 </Row>
@@ -317,7 +327,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, }) {
                     ))}
                 </Row>
             </Form>
-        </Modal>
+        </Modal >
     );
 }
 

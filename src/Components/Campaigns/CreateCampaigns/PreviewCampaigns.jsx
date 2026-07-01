@@ -43,7 +43,7 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
                   <Text>{t("email", { defaultValue: "Email" })}</Text>
 
                   <Row gutter={[16, 16]} align="middle" justify="space-between" style={{ marginTop: 10 }}>
-                    <Col xs={24} sm={24} md={26} lg={24} xl={8} xxl={18} >
+                    <Col xs={24} sm={24} md={26} lg={24} xl={16} xxl={8} >
                       <Input placeholder={t("enter.email", { defaultValue: "Enter Email" })} />
                     </Col>
                     <Col>

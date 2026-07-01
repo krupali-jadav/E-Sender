@@ -13,7 +13,7 @@ import axiosInstance from '../../../util/axiosInstance'
 import { changeContactBlockStatus, deleteContact, deleteMultipleContacts, getAllContacts } from './ContactsApi'
 import { getAllGroups } from '../Group/GroupApi'
 
-function Contacts() {
+function Contacts({ showGroups }) {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
@@ -404,6 +404,7 @@ function Contacts() {
                             open={manualImportOpen}
                             onClose={() => setManualImportOpen(false)}
                             fetchContacts={fetchContacts}
+                            showGroups={true}
                         />
 
                         <Button
@@ -438,6 +439,7 @@ function Contacts() {
                             }}
                             editData={editContact}
                             fetchContacts={fetchContacts}
+                            showGroups={true}
                         />
                         <Button
                             danger
@@ -487,7 +489,7 @@ function Contacts() {
                                     setPage(newPage);
                                 },
                             }}
-                            scroll={{ x: "max-content",y:500 }}
+                            scroll={{ x: "max-content", y: 500 }}
                             rowSelection={rowSelection}
                         />
                     </Card>

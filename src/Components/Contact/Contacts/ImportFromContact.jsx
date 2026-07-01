@@ -59,7 +59,7 @@ function ImportFromContacts({
         try {
             const data = await getAllCustomFields({
                 page: 0,
-                limit: 100,
+                limit: 10,
             });
 
             if (data?.status) {
@@ -82,7 +82,6 @@ function ImportFromContacts({
         }
     }, [open]);
 
-    // jab modal dubara khulta hai to page/search reset
     useEffect(() => {
         if (open) {
             setPage(1);
@@ -91,13 +90,20 @@ function ImportFromContacts({
         }
     }, [open]);
 
-    const handleImport = () => {
-        const selected = contacts.filter((item) =>
-            selectedRowKeys.includes(item._id)
-        );
-        onImport(selected);
-        setSelectedRowKeys([]);
-        onClose();
+    const handleImport = async () => {
+        setLoading(true);
+
+        try {
+            const selected = contacts.filter((item) =>
+                selectedRowKeys.includes(item._id)
+            );
+            onImport(selected);
+            await new Promise((resolve) => setTimeout(resolve, 800));
+            setSelectedRowKeys([]);
+            onClose();
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleBlockStatus = (record, checked) => {
@@ -224,7 +230,7 @@ function ImportFromContacts({
                     rowKey="_id"
                     columns={columns}
                     dataSource={contacts}
-                    scroll={{ x: "max-content", y:300 }}
+                    scroll={{ x: "max-content", y: 300 }}
                     rowSelection={{
                         selectedRowKeys,
                         onChange: (keys, rows) => {

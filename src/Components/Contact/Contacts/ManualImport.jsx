@@ -8,7 +8,7 @@ import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 
 const { TextArea } = Input;
 
-const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
+const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) => {
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -116,7 +116,10 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
 
       // Contact Campaign
       if (onImport) {
-        onImport(contacts);
+        await new Promise((resolve) => {
+          onImport(contacts);
+          setTimeout(resolve, 800);
+        });
         message.success("Contacts imported successfully");
         handleClose();
         return;
@@ -201,19 +204,21 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport }) => {
           />
         </Form.Item>
 
-        <Form.Item label={t("groups", { defaultValue: "Groups" })}>
-          <Select
-            mode="multiple"
-            value={selectedGroups}
-            onChange={(value) => setSelectedGroups(value)}
-            showSearch
-            placeholder={t("select.groups", { defaultValue: "Select Groups" })}
-            options={groups.map((group) => ({
-              label: group.name,
-              value: group._id,
-            }))}
-          />
-        </Form.Item>
+        {showGroups && (
+          <Form.Item label={t("groups", { defaultValue: "Groups" })}>
+            <Select
+              mode="multiple"
+              value={selectedGroups}
+              onChange={(value) => setSelectedGroups(value)}
+              showSearch
+              placeholder={t("select.groups", { defaultValue: "Select Groups" })}
+              options={groups.map((group) => ({
+                label: group.name,
+                value: group._id,
+              }))}
+            />
+          </Form.Item>
+        )}
 
         <Table
           columns={columns}

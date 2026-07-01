@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Col, Divider, Flex, Input, Row, Space, Switch, Table, Tag, Typography, } from "antd";
+import { Button, Card, Checkbox, Col, Divider, Flex, Input, message, Row, Space, Switch, Table, Tag, Typography, } from "antd";
 import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";
@@ -7,15 +7,18 @@ import ExcelImport from "../../Contact/Contacts/ExcelImport";
 import AddContact from "../../Contact/Contacts/AddContact";
 import ImportFromContacts from "../../Contact/Contacts/ImportFromContact";
 import { getAllCustomFields } from "../../Contact/Custom Field/CustomeFieldApi";
-const { Title,Text } = Typography;
+import { exportToExcel } from "react-json-to-excel";
+import { getCurrentTime } from "../../../util/commom.utils";
+const { Title, Text } = Typography;
 
-function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
+function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroups }) {
   const [excelOpen, setExcelOpen] = useState(false);
   const [manualImportOpen, setManualImportOpen] = useState(false);
   const [AddContactOpen, setAddContactOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [customFields, setCustomFields] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [exporting, setExporting] = useState(false);
 
   const fetchCustomFields = async () => {
     try {
@@ -36,13 +39,6 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
     fetchCustomFields();
   }, []);
 
-  // useEffect(() => {
-  //   localStorage.setItem(
-  //     "campaignData",
-  //     JSON.stringify(campaignData)
-  //   );
-  // }, [campaignData]);
-
   const customFieldColumns = customFields.map((field) => ({
     title: field.name,
     dataIndex: field._id,
@@ -55,6 +51,30 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
       return item?.value || "-";
     },
   }));
+
+  const onExport = async () => {
+    try {
+      setExporting(true);
+
+      const contacts = campaignData.contacts || [];
+
+      const exportData = contacts.map((contact) => ({
+        Name: contact.name,
+        Phone: contact.phonenumber,
+        Email: contact.email,
+        Blocked: contact.blocked ? "Yes" : "No",
+        Spam: contact.spam ? "Yes" : "No",
+        Unsubscribe: contact.unsubscribe ? "Yes" : "No",
+      }));
+
+      exportToExcel(exportData, `Campaign_Contacts_${getCurrentTime()}`);
+    } catch (error) {
+      console.error(error);
+      message.error("An error occurred while exporting contacts.");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const handleContactAction = (type) => {
     setCampaignData((prev) => {
@@ -72,7 +92,8 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
               self.findIndex(
                 (c) =>
                   c.email === item.email ||
-                  c.phonenumber === item.phonenumber
+                  c.phonenumber === item.phonenumber ||
+                  c.name === item.name
               )
           );
           break;
@@ -253,6 +274,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
                       };
                     });
                   }}
+                  showGroups={false}
                 />
                 <Button type="primary" icon={<UploadOutlined />} onClick={() => setExcelOpen(true)}>
                   {t("excel.import", { defaultValue: "Excel Import" })}
@@ -288,9 +310,10 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent }) {
                       contacts: [...prev.contacts, contact],
                     }));
                   }}
+                  showGroups={false}
                 />
 
-                <Button type="primary" icon={<ExportOutlined />}>
+                <Button type="primary" icon={<ExportOutlined />} onClick={onExport} loading={exporting}>
                   {t("export", { defaultValue: "Export" })}
                 </Button>
               </Flex>
