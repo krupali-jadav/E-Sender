@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, Typography, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, Typography, DatePicker, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
@@ -55,7 +55,6 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
             fetchCustomFields();
         }
     }, [open]);
-
     const handleAddGroup = async () => {
         if (!groupName.trim()) {
             message.error("Please enter group name");
@@ -105,15 +104,17 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                     })),
             };
             if (onSave) {
-                await new Promise((resolve) => {
-                    onSave({
-                        _id: editData?._id || Date.now().toString(),
-                        ...payload,
-                    });
-                    setTimeout(resolve, 700); 
+                onSave({
+                    ...editData,
+                    _id: editData?._id || Date.now().toString(),
+                    ...payload,
+                    phonenumber: phone,
                 });
-
-                message.success("Contact added successfully");
+                message.success(
+                    editData
+                        ? "Contact updated successfully"
+                        : "Contact added successfully"
+                );
                 form.resetFields();
                 setPhone("");
                 setFieldValues({});
@@ -148,29 +149,29 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
     };
 
     useEffect(() => {
-    if (open) {
-        if (editData) {
-            form.setFieldsValue({
-                name: editData.name,
-                email: editData.email,
-                phonenumber: editData.phonenumber,
-                groups: editData.groups?.map((g) => g._id),
-            });
+        if (open) {
+            if (editData) {
+                form.setFieldsValue({
+                    name: editData.name,
+                    email: editData.email,
+                    phonenumber: editData.phonenumber,
+                    groups: editData.groups?.map((g) => g._id),
+                });
 
-            const customFieldData = {};
+                const customFieldData = {};
 
-            editData.fields?.forEach((field) => {
-                customFieldData[field.fieldId?._id || field.fieldId] = field.value;
-            });
+                editData.fields?.forEach((field) => {
+                    customFieldData[field.fieldId?._id || field.fieldId] = field.value;
+                });
 
-            setFieldValues(customFieldData);
-        } else {
-            form.resetFields();
-            setPhone("");
-            setFieldValues({});
+                setFieldValues(customFieldData);
+            } else {
+                form.resetFields();
+                setPhone("");
+                setFieldValues({});
+            }
         }
-    }
-}, [open, editData, form]);
+    }, [open, editData, form]);
 
     const fetchGroups = async () => {
         try {
@@ -312,16 +313,31 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                     {customFields.map((field) => (
                         <Col span={12} key={field._id}>
                             <Form.Item label={field.name}>
-                                <Input
-                                    placeholder={`Enter ${field.name}`}
-                                    value={fieldValues[field._id] || ""}
-                                    onChange={(e) =>
-                                        setFieldValues((prev) => ({
-                                            ...prev,
-                                            [field._id]: e.target.value,
-                                        }))
-                                    }
-                                />
+                                {field.type === 3 ? (
+                                    <DatePicker
+                                        style={{ width: "100%" }}
+                                        placeholder={`Select ${field.name}`}
+                                        value={fieldValues[field._id]}
+                                        onChange={(date) =>
+                                            setFieldValues((prev) => ({
+                                                ...prev,
+                                                [field._id]: date,
+                                            }))
+                                        }
+                                    />
+                                ) : (
+                                    <Input
+                                        placeholder={`Enter ${field.name}`}
+                                        value={fieldValues[field._id] || ""}
+                                        onChange={(e) =>
+                                            setFieldValues((prev) => ({
+                                                ...prev,
+                                                [field._id]: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                )}
+
                             </Form.Item>
                         </Col>
                     ))}

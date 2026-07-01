@@ -32,9 +32,9 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
               <Col xs={24} md={12}>
                 <Card>
                   <Space direction="vertical" size="large">
-                    <Text strong>{t("campaign.name", { defaultValue: "Campaign Name" })}: {campaignData?.name || "-"}</Text>
-                    <Text>{t("selected.template", { defaultValue: "Selected Template" })}: {campaignData?.template?.name || "-"}</Text>
-                    <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: {campaignData?.contacts?.length || 0}</Text>
+                    <Text>{t("campaign.name", { defaultValue: "Campaign Name" })}:<Text strong> {campaignData?.domain || "-"}</Text></Text>
+                    <Text>{t("selected.template", { defaultValue: "Selected Template" })}: <Text strong>{campaignData?.template?.name || "-"}</Text></Text>
+                    <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: <Text strong>{campaignData?.contacts?.length || 0}</Text></Text>
                   </Space>
                 </Card>
               </Col>
@@ -43,7 +43,7 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
                   <Text>{t("email", { defaultValue: "Email" })}</Text>
 
                   <Row gutter={[16, 16]} align="middle" justify="space-between" style={{ marginTop: 10 }}>
-                    <Col xs={24} sm={24} md={26} lg={24} xl={16} xxl={8} >
+                    <Col xs={24} sm={24} md={26} lg={24} xl={16} xxl={18} >
                       <Input placeholder={t("enter.email", { defaultValue: "Enter Email" })} />
                     </Col>
                     <Col>
@@ -54,20 +54,8 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
                 </Card>
               </Col>
               <Col xs={24} md={12}>
-                <Card title={t("instances", { defaultValue: "Instances" })}>
-                  <Flex justify="end" align="center" gap="small">
-                    <Pagination simple current={1} total={2} pageSize={3} />
-
-                    <Select
-                      defaultValue="2"
-                      style={{ width: 100 }}
-                      options={[
-                        { value: "2", label: "2 / page" },
-                        { value: "5", label: "5 / page" },
-                        { value: "10", label: "10 / page" },
-                      ]}
-                    />
-                  </Flex>
+                <Card title={t("domain", { defaultValue: "Domain" })}>
+                  <Text>domain://{campaignData?.domain || "-"}</Text>
                 </Card>
               </Col>
               <Col xs={24} md={12}>
@@ -118,7 +106,9 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
 
         {/* Phone Preview */}
         <Col xs={24} lg={6}>
-          <PhonePreview domainName={campaignData?.domain} />
+          <PhonePreview
+            domainName={campaignData?.domain}
+            template={campaignData?.template} />
         </Col>
       </Row>
     </>

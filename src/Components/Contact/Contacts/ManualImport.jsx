@@ -116,10 +116,7 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
 
       // Contact Campaign
       if (onImport) {
-        await new Promise((resolve) => {
-          onImport(contacts);
-          setTimeout(resolve, 800);
-        });
+        onImport(contacts);                                                             
         message.success("Contacts imported successfully");
         handleClose();
         return;

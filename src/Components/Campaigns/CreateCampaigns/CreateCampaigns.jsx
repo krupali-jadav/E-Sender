@@ -10,7 +10,9 @@ function CreateCampaigns() {
   const [current, setCurrent] = useState(0);
   const [campaignData, setCampaignData] = useState({
     domain: null,
+    domainKey: null,
     template: null,
+    templateKey: null,
     contacts: [],
   });
 

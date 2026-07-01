@@ -7,20 +7,19 @@ import { useState } from "react";
 const { Text } = Typography;
 
 function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
-  const [selectedRowKey, setSelectedRowKey] = useState(null);
   const [loading, setLoading] = useState(false);
   const rowSelection = {
     type: "radio",
-    selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
+    selectedRowKeys: campaignData.domainKey
+      ? [campaignData.domainKey]
+      : [],
     onChange: (selectedRowKeys, selectedRows) => {
       const key = selectedRowKeys[0];
       const row = selectedRows[0];
-
-      setSelectedRowKey(key);
-
       setCampaignData((prev) => ({
         ...prev,
         domain: row.name,
+        domainKey: key,
       }));
     },
   };
@@ -42,8 +41,8 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
             setCampaignData((prev) => ({
               ...prev,
               domain: record.name,
+              domainKey: record.key,
             }));
-            setSelectedRowKey(record.key);
           }}
           style={{ padding: 0 }}
         >
@@ -149,10 +148,10 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                 rowSelection={rowSelection}
                 onRow={(record) => ({
                   onClick: () => {
-                    setSelectedRowKey(record.key);
                     setCampaignData((prev) => ({
                       ...prev,
                       domain: record.name,
+                      domainKey: record.key,
                     }));
                   }
                 })}
@@ -176,6 +175,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
         <Col xs={24} lg={6}>
           <PhonePreview
             page="DomainCampaign"
+            template={campaignData?.template}
             domainName={campaignData.domain}
           />
         </Col>

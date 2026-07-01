@@ -7,18 +7,20 @@ import {
     Space,
     Switch,
     Tag,
+    Form,
+    Select,
+    Flex,
+    Row,
+    message,
 } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { getAllContacts } from "./ContactsApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 import { t } from "i18next";
+import { getAllGroups } from "../Group/GroupApi";
 
-function ImportFromContacts({
-    open,
-    onClose,
-    onImport,
-}) {
+function ImportFromContacts({ open, onClose, onImport, }) {
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -26,11 +28,12 @@ function ImportFromContacts({
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [groups, setGroups] = useState([]);
+    const [groupIds, setGroupIds] = useState([]);
     const pageSize = 10;
 
     const fetchContacts = async () => {
         setLoading(true);
-
         try {
             const data = await getAllContacts({
                 page: page - 1,
@@ -43,9 +46,9 @@ function ImportFromContacts({
                         start_date: null,
                         end_date: null,
                     },
+                    group_ids: groupIds,
                 },
             });
-
             if (data?.status) {
                 setContacts(data.contacts || []);
                 setTotal(data.total || 0);
@@ -54,6 +57,31 @@ function ImportFromContacts({
             setLoading(false);
         }
     };
+    useEffect(() => {
+        if (open) {
+            fetchContacts();
+        }
+    }, [open, page, search, groupIds]);
+
+    const fetchGroups = async () => {
+        try {
+            const response = await getAllGroups({
+                page: 0,
+                search: search,
+            });
+            if (response?.status) {
+                setGroups(response.groups || []);
+            }
+        } catch (error) {
+            console.log(error);
+            message.error(response?.message || "Failed to fetch groups");
+        }
+    };
+    useEffect(() => {
+        if (open) {
+            fetchGroups();
+        }
+    }, [open]);
 
     const fetchCustomFields = async () => {
         try {
@@ -61,21 +89,14 @@ function ImportFromContacts({
                 page: 0,
                 limit: 10,
             });
-
             if (data?.status) {
                 setCustomFields(data.fields || []);
             }
         } catch (error) {
             console.log(error);
+            message.error(data?.message || "Failed to fetch custom fields");
         }
     };
-
-    useEffect(() => {
-        if (open) {
-            fetchContacts();
-        }
-    }, [open, page, search]);
-
     useEffect(() => {
         if (open) {
             fetchCustomFields();
@@ -92,13 +113,11 @@ function ImportFromContacts({
 
     const handleImport = async () => {
         setLoading(true);
-
         try {
             const selected = contacts.filter((item) =>
                 selectedRowKeys.includes(item._id)
             );
             onImport(selected);
-            await new Promise((resolve) => setTimeout(resolve, 800));
             setSelectedRowKeys([]);
             onClose();
         } finally {
@@ -203,27 +222,45 @@ function ImportFromContacts({
                     key="import"
                     type="primary"
                     onClick={handleImport}
-                    loading={loading}
                 >
                     Import
                 </Button>,
             ]}
         >
-            <Space
-                direction="vertical"
-                style={{ width: "100%" }}
-            >
-                <Input.Search
-                    placeholder="Search Contact"
-                    enterButton={<SearchOutlined />}
-                    allowClear
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onSearch={(value) => {
-                        setSearch(value);
-                        setPage(1);
-                    }}
-                />
+            <Space direction="vertical" style={{ width: "100%" }}>
+                <Row justify="space-between" align="middle" gutter={[16, 16]}>
+                    <Input.Search
+                        style={{ width: 350 }}
+                        placeholder="Search Contact"
+                        enterButton={<SearchOutlined />}
+                        allowClear
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onSearch={(value) => {
+                            setSearch(value);
+                            setPage(1);
+                        }}
+                    />
+
+                    <Form.Item label={t("filter_by_groups", { defaultValue: "Filter by Groups" })} style={{ marginBottom: 0 }} >
+                        <Select
+                            mode="multiple"
+                            showSearch
+                            style={{ width: 300 }}
+                            optionFilterProp="label"
+                            value={groupIds}
+                            onChange={(value) => {
+                                setGroupIds(value);
+                                setPage(1);
+                            }}
+                            placeholder="Filter by Groups"
+                            options={groups.map((group) => ({
+                                label: group.name,
+                                value: group._id,
+                            }))}
+                        />
+                    </Form.Item>
+                </Row>
 
                 <Table
                     loading={loading}

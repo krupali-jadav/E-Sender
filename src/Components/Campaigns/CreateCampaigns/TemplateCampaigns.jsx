@@ -9,8 +9,7 @@ import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 
-function TemplateCampaigns({ campaignData, setCampaignData,setCurrent }) {
-  const [selectedRowKey, setSelectedRowKey] = useState(null);
+function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [search, setSearch] = useState("");
@@ -67,14 +66,14 @@ function TemplateCampaigns({ campaignData, setCampaignData,setCurrent }) {
 
   const rowSelection = {
     type: "radio",
-    selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
+    selectedRowKeys: campaignData.templateKey
+      ? [campaignData.templateKey]
+      : [],
     onChange: (keys, rows) => {
       const row = rows[0];
-
-      setSelectedRowKey(keys[0]);
-
       setCampaignData(prev => ({
         ...prev,
+        templateKey: keys[0],
         template: {
           id: row.key,
           name: row.name,
@@ -178,9 +177,9 @@ function TemplateCampaigns({ campaignData, setCampaignData,setCurrent }) {
               rowSelection={rowSelection}
               onRow={(record) => ({
                 onClick: () => {
-                  setSelectedRowKey(record.key);
                   setCampaignData(prev => ({
                     ...prev,
+                    templateKey: record.key,
                     template: {
                       id: record.key,
                       name: record.name,

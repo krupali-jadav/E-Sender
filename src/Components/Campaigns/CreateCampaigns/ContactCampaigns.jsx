@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Col, Divider, Flex, Input, message, Row, Space, Switch, Table, Tag, Typography, } from "antd";
-import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, } from "@ant-design/icons";
+import { Button, Card, Checkbox, Col, Divider, Flex, Input, message, Popconfirm, Row, Space, Switch, Table, Tag, Typography, } from "antd";
+import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, EditOutlined, DeleteOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";
 import ExcelImport from "../../Contact/Contacts/ExcelImport";
@@ -19,12 +19,40 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
   const [customFields, setCustomFields] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [exporting, setExporting] = useState(false);
+  const [editContact, setEditContact] = useState(null);
+
+  const handleSave = (contact) => {
+    setCampaignData((prev) => {
+      if (editContact) {
+        return {
+          ...prev,
+          contacts: prev.contacts.map((item) =>
+            item._id === contact._id ? contact : item
+          ),
+        };
+      }
+      return {
+        ...prev,
+        contacts: [...prev.contacts, contact],
+      };
+    });
+    setEditContact(null);
+    setAddContactOpen(false);
+  };
+  const handleDelete = (record) => {
+    setCampaignData((prev) => ({
+      ...prev,
+      contacts: prev.contacts.filter(
+        (item) => item._id !== record._id
+      ),
+    }));
+  };
 
   const fetchCustomFields = async () => {
     try {
       const data = await getAllCustomFields({
         page: 0,
-        limit: 100,
+        limit: 10,
       });
 
       if (data?.status) {
@@ -47,7 +75,6 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       const item = record.fields?.find(
         (f) => (f.fieldId?._id || f.fieldId) === field._id
       );
-
       return item?.value || "-";
     },
   }));
@@ -91,9 +118,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
               index ===
               self.findIndex(
                 (c) =>
-                  c.email === item.email ||
-                  c.phonenumber === item.phonenumber ||
-                  c.name === item.name
+                  c.email === item.email
               )
           );
           break;
@@ -136,6 +161,19 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
     });
   };
 
+  // This is for disable
+  const hasContacts = campaignData.contacts.length > 0;
+  const hasBlocked = campaignData.contacts.some((c) => c.blocked);
+  const hasSpam = campaignData.contacts.some((c) => c.spam);
+  const hasUnsubscribed = campaignData.contacts.some((c) => c.unsubscribe);
+  const hasInvalid = campaignData.contacts.some(
+    (c) => !c.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)
+  );
+  const hasDuplicate =
+    campaignData.contacts.length !==
+    new Set(campaignData.contacts.map((c) => c.email)).size;
+
+  // This is for counting
   const totalCount = campaignData.contacts.length;
   const selectedCount = selectedRowKeys.length;
   const spamCount = campaignData.contacts.filter((c) => c.spam).length;
@@ -144,6 +182,12 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
   const invalidCount = campaignData.contacts.filter(
     (c) => !c.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)
   ).length;
+  const duplicateCount = campaignData.contacts.length -
+    new Set(
+      campaignData.contacts.map(
+        (contact) => contact.email
+      )
+    ).size;
 
   const columns = [
     {
@@ -173,7 +217,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       key: "unsubscribed",
       render: (_, record) => (
         record.unsubscribed ? (
-          <Tag>{record.unsubscribed}  </Tag>
+          <Tag>{record.unsubscribed}</Tag>
         ) : (
           "-"
         )),
@@ -184,7 +228,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       key: "spam",
       render: (_, record) => (
         record.spam ? (
-          <Tag>{record.spam}  </Tag>
+          <Tag>{record.spam}</Tag>
         ) : (
           "-"
         )),
@@ -193,17 +237,47 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       title: "Blocked",
       dataIndex: "blocked",
       key: "blocked",
-      render: (blocked, record) => (
-        <Switch
-          size="large"
-          checked={blocked}
-          onChange={(checked) =>
-            handleBlockStatus(record, checked)
-          }
-        />
-      ),
+      render: (blocked) =>
+        blocked ? (
+          <Tag>Yes</Tag>
+        ) : (
+          <Tag>No</Tag>
+        ),
     },
     ...customFieldColumns,
+    {
+      title: "Actions",
+      key: "actions",
+      width: 120,
+      fixed: "right",
+      render: (_, record) => (
+        <Flex gap={8}>
+          <Button
+            size="small"
+            icon={<EditOutlined />}
+            onClick={() => {
+              setEditContact(record);
+              setAddContactOpen(true);
+            }}
+          />
+
+          <Popconfirm
+            title="Delete Contact"
+            description="Are you sure you want to delete this contact?"
+            okText="Yes"
+            cancelText="No"
+            placement="top"
+            onConfirm={() => handleDelete(record)}
+          >
+            <Button
+              size="small"
+              danger
+              icon={<DeleteOutlined />}
+            />
+          </Popconfirm>
+        </Flex>
+      ),
+    },
   ];
 
   return (
@@ -303,13 +377,12 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
                 </Button>
                 <AddContact
                   open={AddContactOpen}
-                  onClose={() => setAddContactOpen(false)}
-                  onSave={(contact) => {
-                    setCampaignData((prev) => ({
-                      ...prev,
-                      contacts: [...prev.contacts, contact],
-                    }));
+                  editData={editContact}
+                  onClose={() => {
+                    setAddContactOpen(false);
+                    setEditContact(null);
                   }}
+                  onSave={handleSave}
                   showGroups={false}
                 />
 
@@ -333,13 +406,13 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
 
             <Col xs={24} md={16}>
               <Flex justify="end" wrap="wrap" gap={8}>
-                <Button size="small" onClick={() => handleContactAction("clear")}>{t("clear.all", { defaultValue: "Clear All" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("duplicate")}>{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("invalid")}>{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("unsubscribe")}>{t("remove.invalid", { defaultValue: "Remove Unsubscribed" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("spam")}>{t("remove.invalid", { defaultValue: "Remove Spam" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("blocked")}>{t("remove.invalid", { defaultValue: "Remove Blocked" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("delete")}> Delete</Button>
+                <Button size="small" onClick={() => handleContactAction("clear")} disabled={!hasContacts}>{t("clear.all", { defaultValue: "Clear All" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("duplicate")} disabled={!hasDuplicate}>{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("invalid")} disabled={!hasInvalid}>{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("unsubscribe")} disabled={!hasUnsubscribed}>{t("remove.unsubscribed", { defaultValue: "Remove Unsubscribed" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("spam")} disabled={!hasSpam}>{t("remove.spam", { defaultValue: "Remove Spam" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("blocked")} disabled={!hasBlocked}>{t("remove.blocked", { defaultValue: "Remove Blocked" })}</Button>
+                <Button size="small" onClick={() => handleContactAction("delete")} disabled={!hasContacts}>{t("delete", { defaultValue: "Delete" })}</Button>
               </Flex>
             </Col>
           </Row>
@@ -351,7 +424,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
             dataSource={campaignData.contacts}
             rowKey="_id"
             pagination={false}
-            scroll={{ x: 1000 }}
+            scroll={{ x: 1000, y: 320 }}
             rowSelection={{
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
@@ -360,9 +433,10 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
           <Flex wrap="wrap" gap={16} style={{ padding: "12px 4px" }}>
             <Text strong>Total: {totalCount}</Text>
             <Text strong>Selected: {selectedCount}</Text>
-            <Text strong>Spam: {spamCount}</Text>
-            <Text strong>Blocked: {blockedCount}</Text>
+            <Text strong>Duplicates: {duplicateCount}</Text>
             <Text strong>Invalid: {invalidCount}</Text>
+            <Text strong>Blocked: {blockedCount}</Text>
+            <Text strong>Spam: {spamCount}</Text>
             <Text strong>Unsubscribed: {unsubscribedCount}</Text>
           </Flex>
         </Space >
