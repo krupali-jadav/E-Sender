@@ -97,10 +97,20 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                 email: values.email,
                 groups: values.groups || [],
                 fields: customFields
-                    .filter((field) => fieldValues[field._id]?.trim())
+                    .filter((field) => {
+                        const value = fieldValues[field._id];
+
+                        if (field.type === 3) {
+                            return value != null;
+                        }
+                        return value && String(value).trim() !== "";
+                    })
                     .map((field) => ({
                         fieldId: field._id,
-                        value: fieldValues[field._id],
+                        value:
+                            field.type === 3
+                                ? fieldValues[field._id].format("YYYY-MM-DD")
+                                : fieldValues[field._id],
                     })),
             };
             if (onSave) {
