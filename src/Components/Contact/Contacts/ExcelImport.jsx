@@ -65,7 +65,6 @@ function ExcelImport({ open, onClose, onSubmit}) {
         () => [...baseFields, ...dynamicFields],
         [baseFields, dynamicFields]
     );
-    // Har row se name/email/phone alag karo, baaki sab custom_fields me daalo
     const buildPayloadRow = (row) => {
         const identifier = row?.key ?? row?.id ?? uuidv4();
         const { name, email, phone, ...rest } = row;
