@@ -12,7 +12,6 @@ import {
     message,
 } from "antd";
 import { createProject, getProjects } from "./TemplatesApi";
-import { useParams } from "react-router-dom";
 
 const { Text } = Typography;
 

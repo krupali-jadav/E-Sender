@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Divider, Tag, Typography, DatePicker, } from "antd";
+import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Typography, DatePicker, } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
@@ -15,16 +15,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
     const [groupOptions, setGroupOptions] = useState([]);
     const [customFields, setCustomFields] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedFields, setSelectedFields] = useState([]);
     const [fieldValues, setFieldValues] = useState({});
-
-    const handleFieldSelect = (fieldId) => {
-        setSelectedFields((prev) =>
-            prev.includes(fieldId)
-                ? prev.filter((id) => id !== fieldId)
-                : [...prev, fieldId]
-        );
-    };
 
     const handlePhoneChange = (value) => {
         if (value && value.valid && value.valid()) {

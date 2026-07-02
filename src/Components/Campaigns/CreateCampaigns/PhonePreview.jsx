@@ -1,12 +1,11 @@
-import { Avatar, Button, Card, Col, Divider, Flex, Image, Row, Space, Typography } from 'antd'
+import { Avatar, Button, Card, Col, Flex, Image, Row, Space, Typography } from 'antd'
 import { FaWifi } from 'react-icons/fa'
 import { GiNetworkBars } from 'react-icons/gi'
 import { RiBattery2ChargeFill } from 'react-icons/ri'
 import Island from "../../../assets/Island.png"
-import Google from "../../../assets/Google.png"
-import { DownOutlined, LockOutlined, MoreOutlined, UpOutlined } from '@ant-design/icons'
+import { DownOutlined, MoreOutlined, UpOutlined } from '@ant-design/icons'
 import { useState } from 'react'
-const { Text, Title } = Typography;
+const { Text } = Typography;
 import { LuReply } from "react-icons/lu";
 import { LuForward } from "react-icons/lu";
 import { t } from 'i18next'

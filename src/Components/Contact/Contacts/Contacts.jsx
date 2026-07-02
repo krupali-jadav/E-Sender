@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Avatar, Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Row, Select, Space, Switch, Table, Tag } from 'antd'
+import {  Button, Card,  DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Row, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import { formatDate, getCurrentTime } from '../../../util/commom.utils';

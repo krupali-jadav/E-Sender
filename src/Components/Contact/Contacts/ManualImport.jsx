@@ -1,5 +1,4 @@
-import { Modal, Form, Input, Select, Button, Space, Table, Row, Col, message, } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select, Button, Table, message, } from "antd";
 import { useEffect, useState } from "react";
 import { t } from "i18next";
 import { bulkAddContacts } from "./ContactsApi";

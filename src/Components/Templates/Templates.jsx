@@ -1,5 +1,5 @@
-import { Row, Col, Card, Button, Switch, Space, Modal, List, message, Spin, Empty, Typography } from "antd";
-import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, CheckCircleFilled, } from "@ant-design/icons";
+import { Row, Col, Card, Button, Switch, Space, Spin, Empty } from "antd";
+import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -10,7 +10,7 @@ import { getTemplatesByProject } from "./TemplatesApi";
 import axiosInstance from "../../util/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProject } from "../../redux/reducers/reducer.app";
-const { Text } = Typography;
+import SwitchProjectModal from "./SwichProjectModel";
 
 function Templates() {
   const dispatch = useDispatch();
@@ -169,87 +169,25 @@ function Templates() {
           )}
 
         </Space>
-        <Modal
-          title={t("Switch.project", { defaultValue: "Switch Project" })}
+        <SwitchProjectModal
           open={projectModalOpen}
-          footer={<Col>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                setEditProject(null);
-                setOpen(true);
-              }}
-            >
-              Create Project
-            </Button>
-          </Col>}
           onCancel={() => setProjectModalOpen(false)}
-        >
-          <List
-            style={{ overflow: "auto", height: 300 }}
-            size="small"
-            dataSource={projects}
-            renderItem={(project) => {
-              const isSelected =
-                (selectedProject?._id || selectedProject?.projectId) ===
-                (project._id || project.projectId);
-
-              return (
-                <List.Item
-                  style={{
-                    cursor: "pointer",
-                    padding: "12px",
-                    borderRadius: 6,
-                  }}
-                  onClick={() => {
-                    dispatch(setSelectedProject(project));
-                    getProjectTemplates(
-                      project._id || project.projectId
-                    );
-
-                    setProjectModalOpen(false);
-                  }}
-                  extra={
-                    <Space size={12}>
-                      {isSelected && (
-                        <CheckCircleFilled
-                          style={{
-                            color: "#52c41a",
-                            fontSize: 18,
-                          }}
-                        />
-                      )}
-                      <Button
-                        type="primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditProject(project);
-                          setOpen(true);
-                        }}
-                      >
-                        Edit
-                      </Button>
-                    </Space>
-                  }
-                >
-                  <List.Item.Meta
-                    title={project.name}
-                    description={
-                      <Text
-                        copyable={{
-                          text: project._id || project.projectId,
-                        }}
-                      >
-                        {project._id || project.projectId}
-                      </Text>
-                    }
-                  />
-                </List.Item>
-              );
-            }}
-          />
-        </Modal>
+          projects={projects}
+          selectedProject={selectedProject}
+          onProjectSelect={(project) => {
+            getProjectTemplates(
+              project._id || project.projectId
+            );
+          }}
+          onCreateProject={() => {
+            setEditProject(null);
+            setOpen(true);
+          }}
+          onEditProject={(project) => {
+            setEditProject(project);
+            setOpen(true);
+          }}
+        />
       </PageContainer >
     </>
   );

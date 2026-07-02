@@ -1,6 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Steps } from "antd";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 import TemplateCampaigns from "./TemplateCampaigns";
 import DomainCampaigns from "./DomainCampaigns";
