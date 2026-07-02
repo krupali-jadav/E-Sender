@@ -105,6 +105,7 @@ function Groups() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message || "Failed to fetch groups");
     } finally {
       setLoading(false);
     }
@@ -154,6 +155,7 @@ function Groups() {
           }
         } catch (error) {
           console.log(error);
+          message.error(error?.message || "Failed to delete group(s)");
         }
       },
     });

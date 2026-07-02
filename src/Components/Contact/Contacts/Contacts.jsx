@@ -89,6 +89,7 @@ function Contacts({ showGroups }) {
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to fetch contacts");
         } finally {
             setLoading(false);
         }
@@ -111,6 +112,7 @@ function Contacts({ showGroups }) {
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to fetch groups");
         }
     };
     useEffect(() => {
@@ -157,6 +159,7 @@ function Contacts({ showGroups }) {
                     }
                 } catch (error) {
                     console.log(error);
+                    message.error(error?.message || "Failed to delete contact(s)");
                 }
             },
         });
@@ -174,6 +177,7 @@ function Contacts({ showGroups }) {
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to update block status");
         }
     };
 

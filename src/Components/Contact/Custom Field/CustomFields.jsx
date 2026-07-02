@@ -95,7 +95,7 @@ function CustomFields() {
       }
     } catch (error) {
       console.log(error)
-      message.error("Failed to fetch custom fields");
+      message.error(error?.message || "Failed to fetch custom fields");
     } finally {
       setLoading(false);
     }
@@ -139,6 +139,7 @@ function CustomFields() {
           }
         } catch (error) {
           console.log(error);
+          message.error(error?.message || "Failed to delete field(s)");
         }
       },
     });
@@ -338,7 +339,7 @@ function CustomFields() {
             columns={columns}
             dataSource={fields}
             loading={loading}
-            scroll={{ x: "max-content",y:500 }}
+            scroll={{ x: "max-content", y: 500 }}
             rowSelection={rowSelection}
             pagination={{
               current: page,
