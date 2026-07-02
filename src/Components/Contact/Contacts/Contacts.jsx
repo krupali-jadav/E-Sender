@@ -107,7 +107,6 @@ function Contacts({ showGroups }) {
             });
 
             if (response?.status) {
-                console.log("Groups:", response);
                 setGroups(response.groups || []);
             }
         } catch (error) {

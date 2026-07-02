@@ -124,7 +124,7 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]} >
-        <Col xs={24} lg={18}>
+        <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
           <Card>
             <Row gutter={[16, 16]} align="middle">
               <Col xs={24} md={8}>
@@ -203,7 +203,7 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
         </Col>
 
         {/* Right Side */}
-        <Col xs={24} lg={6}>
+        <Col xs={24} md={24} lg={10} xl={8} xxl={6}>
           <PhonePreview
             template={campaignData?.template}
             domainName={campaignData?.domain}

@@ -127,13 +127,15 @@ function Templates() {
             <Row gutter={[16, 16]}>
               {templates.map((item) => {
                 return (
-                  <Col xs={24} sm={12} md={8} lg={6} key={item._id}>
+                  <Col  key={item._id}>
                     <Card
                       title={item.JSON?.templateName}
                       extra={<Switch defaultChecked={item.active} />}
                       hoverable
+                      style={{ width: 380 }}
+                      
                     >
-                      <Card style={{ height: 380, overflow: "auto" }}>
+                      <Card style={{ height: 380,  overflow: "auto" }}>
                         <div
                           dangerouslySetInnerHTML={{
                             __html: item.HTML || "<p>No preview available</p>",

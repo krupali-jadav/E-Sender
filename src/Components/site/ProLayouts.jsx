@@ -1,5 +1,5 @@
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Breadcrumb, Dropdown, Select, Typography } from "antd";
+import { Avatar, Breadcrumb,Grid, Dropdown, Select, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +10,14 @@ import lang from "../../util/lang/lang";
 import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineCampaign, MdOutlinePermMedia, MdWebhook } from "react-icons/md";
-// import { t } from "i18next";
+import { formatDate } from "../../util/commom.utils";
 
 const { Title, Text } = Typography;
 
 const ProLayouts = ({ children }) => {
 
+
+  const { useBreakpoint } = Grid;
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const ProLayouts = ({ children }) => {
   const panel = useSelector((state) => state?.app?.panel);
   const language = useSelector((state) => state?.app?.lang);
   const theme = useSelector((state) => state?.app?.theme);
+  const CompanyName = t("esender.web", { defaultValue: "E-Sender Web" });
 
   const toggleTheme = () => {
     const newTheme = !theme;
@@ -45,39 +48,50 @@ const ProLayouts = ({ children }) => {
     );
   };
 
+
+
   const BreadcrumbCustom = () => {
+    const screens = useBreakpoint();
+
     const pathSegments = location.pathname.split("/").filter(Boolean);
 
     const items = pathSegments.map((segment, index) => {
       let pathToNavigate = `/${pathSegments.slice(0, index + 1).join("/")}`;
       const isLastSegment = index === pathSegments.length - 1;
 
-      if (segment === "order") {
-        pathToNavigate = pathToNavigate.replace(/\/order$/, "/orders");
-      }
-
       return {
         title: isLastSegment ? (
-          <span style={{ textTransform: "capitalize" }}>{segment}</span>
+          <span style={{ textTransform: "capitalize" }}>
+            {segment.replace(/-/g, " ")}
+          </span>
         ) : (
           <span
             style={{ cursor: "pointer", textTransform: "capitalize" }}
-            onClick={() => {
-              navigate(pathToNavigate);
-            }}
+            onClick={() => navigate(pathToNavigate)}
           >
-            {segment}
+            {segment.replace(/-/g, " ")}
           </span>
         ),
       };
     });
 
     const breadcrumbItems = [
-      { title: <HomeOutlined onClick={() => navigate("/")} /> },
+      {
+        title: (
+          <HomeOutlined
+            onClick={() => navigate("/")}
+            style={{ cursor: "pointer" }}
+          />
+        ),
+      },
       ...items,
     ];
 
-    return <Breadcrumb items={breadcrumbItems?.filter(Boolean)} />;
+    return (
+      <Breadcrumb
+        items={screens.md ? breadcrumbItems : [breadcrumbItems.at(-1)]}
+      />
+    );
   };
 
   const handleLanguageChange = (lang) => {
@@ -360,7 +374,30 @@ const ProLayouts = ({ children }) => {
 
 
       route={menuRoutes}
-
+      menuFooterRender={(props) => {
+        if (props?.collapsed) return undefined;
+        return (
+          <>
+            <div
+              style={{
+                textAlign: "center",
+                paddingBlockStart: 12,
+              }}
+            >
+              <div>
+                © {formatDate(new Date(), "YYYY")}{" "}
+                {t("designed_&_developed", {
+                  defaultValue: "Designed & Developed",
+                })}
+              </div>
+              {t("by", { defaultValue: "By" })}{" "}
+              <small>
+                <strong>{CompanyName}</strong>
+              </small>
+            </div>
+          </>
+        );
+      }}
       menuItemRender={(item, dom) => {
         const externalPages = [
           "/privacy-policy",
