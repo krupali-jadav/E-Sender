@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, message, Card, } from "antd";
 import PhoneInput from "antd-phone-input";
 import { PageContainer } from "@ant-design/pro-components";

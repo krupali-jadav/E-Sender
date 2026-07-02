@@ -168,19 +168,20 @@ function Media() {
             ) : (
                 <Row gutter={[16, 16]}>
                     {mediaList.map((item) => (
-                        <Col xs={24} sm={12} md={8} lg={4} key={item._id}>
+                        <Col key={item._id}>
                             <div
                                 onMouseEnter={() => setHoveredId(item._id)}
                                 onMouseLeave={() => setHoveredId(null)}
                                 style={{
                                     position: "relative",
-                                    width: 240,
+                                    width: 220,
                                 }}
                             >
-                                <Card
+                                <Card  xs={24} sm={12} md={8} lg={4} 
                                     hoverable
                                     style={{
                                         placeItems: "center",
+                                        height: 220,
                                     }}
                                     cover={
                                         item.type?.startsWith("image/") ? (

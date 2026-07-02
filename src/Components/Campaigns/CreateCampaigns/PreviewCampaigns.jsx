@@ -26,7 +26,7 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col xs={24} lg={18}>
+        <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
           <Card>
             <Row gutter={[16, 16]}>
               <Col xs={24} md={12}>
@@ -105,7 +105,7 @@ const PreviewCampaign = ({ campaignData, setCurrent }) => {
 
 
         {/* Phone Preview */}
-        <Col xs={24} lg={6}>
+        <Col xs={24} md={24} lg={10} xl={8} xxl={6}>
           <PhonePreview
             domainName={campaignData?.domain}
             template={campaignData?.template} />

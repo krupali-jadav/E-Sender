@@ -25,6 +25,7 @@ function AddMedia({ open, onClose, fetchMedia }) {
     };
 
     const handleUpload = async () => {
+        setLoading(true);
         if (!selectedFiles.length) {
             message.error("Please select files");
             return;
@@ -37,10 +38,7 @@ function AddMedia({ open, onClose, fetchMedia }) {
             mediaType = "image";
         } else if (firstFile.type.startsWith("video/")) {
             mediaType = "video";
-        } else if (
-            firstFile.type.includes("pdf") ||
-            firstFile.type.includes("word")
-        ) {
+        } else if (firstFile.type.startsWith("application/")) {
             mediaType = "document";
         }
 
@@ -51,11 +49,13 @@ function AddMedia({ open, onClose, fetchMedia }) {
 
         if (data?.status) {
             message.success(data?.message || "Media uploaded successfully");
-            onClose();
 
             await fetchMedia();
             setSelectedFiles([]);
+            onClose();
             handleClose();
+        } else {
+            message.error(data?.message || "Invalid media type");
         }
     };
 

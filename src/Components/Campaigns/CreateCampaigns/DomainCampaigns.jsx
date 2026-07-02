@@ -101,7 +101,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]}>
-        <Col xs={24} lg={18}>
+        <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
           <Card>
             <Form
               layout="vertical"
@@ -172,7 +172,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
           </Flex>
         </Col>
         {/* Right Side */}
-        <Col xs={24} lg={6}>
+       <Col xs={24} md={24} lg={10} xl={8} xxl={6}>
           <PhonePreview
             page="DomainCampaign"
             template={campaignData?.template}
