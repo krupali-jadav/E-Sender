@@ -161,12 +161,12 @@ function ImportFromContacts({ open, onClose, onImport, }) {
             dataIndex: "name",
         },
         {
-            title: t("phone_number", { defaultValue: "Phone Number" }),
-            dataIndex: "phonenumber",
-        },
-        {
             title: t("email", { defaultValue: "Email" }),
             dataIndex: "email",
+        },
+        {
+            title: t("phone_number", { defaultValue: "Phone Number" }),
+            dataIndex: "phonenumber",
         },
         {
             title: t("unsubscribed", { defaultValue: "Unsubscribed" }),

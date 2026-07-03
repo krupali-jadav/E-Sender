@@ -152,17 +152,18 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
       dataIndex: "sn",
       key: "sn",
     },
+     {
+      title: t("email", { defaultValue: "Email" }),
+      width: 220,
+      dataIndex: "email",
+      key: "email",
+    },
     {
       title: t("name", { defaultValue: "Name" }),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: t("email", { defaultValue: "Email" }),
-      width: 220,
-      dataIndex: "email",
-      key: "email",
-    }, {
       title: t("phone_number", { defaultValue: "Phone Number" }),
       dataIndex: "phone",
       key: "phone",

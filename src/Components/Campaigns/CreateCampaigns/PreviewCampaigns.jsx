@@ -27,12 +27,12 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col xs={24} lg={12} md={12} xl={8}>
+        <Col xs={24} lg={12} md={12} xl={12}>
 
           <div
             style={{
               height: 610,
-              maxWidth: 500,
+              maxWidth: 800,
               background: theme ? "#333333" : "#ffff",
               borderRadius: 8,
               display: "flex",
@@ -212,7 +212,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                       {t("send.it.now", { defaultValue: "Send It Now" })}
                     </Radio>
 
-                    <div>
+                    <Space direction="horizontal" style={{ width: "100%" }} >
                       <Radio value="schedule">
                         {t("schedule.it.for.a.specific.time", {
                           defaultValue: "Schedule It For A Specific Time",
@@ -231,7 +231,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                           />
                         </div>
                       )}
-                    </div>
+                    </Space>
                   </Space>
                 </Radio.Group>
               </Card>
