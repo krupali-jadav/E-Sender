@@ -245,13 +245,13 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       key: "name",
     },
     {
+      title: t("email", { defaultValue: "Email" }),
+      dataIndex: "email",
+    },
+    {
       title: t("phone_number", { defaultValue: "Phone Number" }),
       dataIndex: "phonenumber",
       key: "phonenumber",
-    },
-    {
-      title: t("email", { defaultValue: "Email" }),
-      dataIndex: "email",
     },
     {
       title: t("unsubscribed", { defaultValue: "Unsubscribed" }),

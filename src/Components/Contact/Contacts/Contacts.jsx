@@ -253,15 +253,16 @@ function Contacts({ showGroups }) {
             key: "name",
         },
         {
-            title: t("phonenumber", { defaultValue: "Phone Number" }),
-            dataIndex: "phonenumber",
-            key: "phonenumber",
-        },
-        {
             title: t("email", { defaultValue: "Email" }),
             dataIndex: "email",
             key: "email",
         },
+        {
+            title: t("phonenumber", { defaultValue: "Phone Number" }),
+            dataIndex: "phonenumber",
+            key: "phonenumber",
+        },
+        
         {
             title: t("groups", { defaultValue: "Groups" }),
             dataIndex: "groups",
