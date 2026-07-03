@@ -8,12 +8,9 @@ import { useEffect, useState } from "react";
 import CreateProjectModal from "./CreateProject";
 import { getTemplatesByProject } from "./TemplatesApi";
 import axiosInstance from "../../util/axiosInstance";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectedProject } from "../../redux/reducers/reducer.app";
 import SwitchProjectModal from "./SwichProjectModel";
 
 function Templates() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -21,9 +18,7 @@ function Templates() {
   const [projects, setProjects] = useState([]);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [editProject, setEditProject] = useState(null);
-  const selectedProject = useSelector(
-    (state) => state.app.selectedProject
-  );
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const getProjectTemplates = async (projectId) => {
     try {
@@ -49,8 +44,8 @@ function Templates() {
 
         setProjects(projectList);
 
-        if (!selectedProject && projectList.length > 0) {
-          dispatch(setSelectedProject(projectList[0]));
+        if (projectList.length > 0) {
+          setSelectedProject(projectList[0]);
         }
       }
     } catch (error) {
@@ -61,6 +56,7 @@ function Templates() {
   useEffect(() => {
     getProjects();
   }, []);
+
   useEffect(() => {
     if (selectedProject) {
       getProjectTemplates(
@@ -68,6 +64,7 @@ function Templates() {
       );
     }
   }, [selectedProject]);
+
   return (
     <>
       <Space style={{ padding: "16px 0px 0px 40px", fontSize: 15 }} size="small">
@@ -127,15 +124,15 @@ function Templates() {
             <Row gutter={[16, 16]}>
               {templates.map((item) => {
                 return (
-                  <Col  key={item._id}>
+                  <Col key={item._id}>
                     <Card
                       title={item.JSON?.templateName}
                       extra={<Switch defaultChecked={item.active} />}
                       hoverable
                       style={{ width: 380 }}
-                      
+
                     >
-                      <Card style={{ height: 380,  overflow: "auto" }}>
+                      <Card style={{ height: 380, overflow: "auto" }}>
                         <div
                           dangerouslySetInnerHTML={{
                             __html: item.HTML || "<p>No preview available</p>",
@@ -177,9 +174,7 @@ function Templates() {
           projects={projects}
           selectedProject={selectedProject}
           onProjectSelect={(project) => {
-            getProjectTemplates(
-              project._id || project.projectId
-            );
+            setSelectedProject(project);
           }}
           onCreateProject={() => {
             setEditProject(null);
