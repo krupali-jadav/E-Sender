@@ -54,7 +54,7 @@ function CreateCampaigns() {
     <PageContainer>
       <Steps
         current={current}
-        onChange={setCurrent}
+        // onChange={setCurrent} 
         items={[
           { title: "Domain" },
           { title: "Template" },

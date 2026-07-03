@@ -10,6 +10,7 @@ import { LuReply } from "react-icons/lu";
 import { LuForward } from "react-icons/lu";
 import { t } from 'i18next'
 import { useSelector } from 'react-redux'
+import { getCurrentTime } from '../../../util/commom.utils'
 
 function PhonePreview({ template, page, domainName }) {
   const [open, setOpen] = useState(false);
@@ -67,7 +68,7 @@ function PhonePreview({ template, page, domainName }) {
                 <Avatar size={32}>G</Avatar>
                 <div style={{ flex: 1 }}>
                   <Row>
-                    <Text strong>domain://{domainName}</Text>
+                    <Text strong>{domainName}</Text>
                   </Row>
 
                   <Flex
@@ -129,7 +130,7 @@ function PhonePreview({ template, page, domainName }) {
                     </Text>
 
                     <Text style={{ fontSize: 13 }}>
-                      demo123@gmail.com
+                      {domainName}
                     </Text>
                   </div>
 
@@ -147,7 +148,7 @@ function PhonePreview({ template, page, domainName }) {
                       Date
                     </Text>
                     <Text style={{ fontSize: 13 }}>
-                      Jun 12, 2026, 04:13 AM
+                      {getCurrentTime()}
                     </Text>
                   </div>
 

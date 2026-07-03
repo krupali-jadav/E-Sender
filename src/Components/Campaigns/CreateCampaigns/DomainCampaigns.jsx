@@ -1,13 +1,19 @@
-import { Button, Card, Col, Flex, Form, Input, Row, Space, Table } from "antd"
+import { Button, Card, Col, Flex, Form, Input, message, Row, Select, Space, Table } from "antd"
 import { t } from "i18next"
 import { Typography } from "antd";
-import { MoreOutlined, SearchOutlined } from "@ant-design/icons";
+import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import PhonePreview from "./PhonePreview";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 
 function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [tagOptions, setTagOptions] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+
   const rowSelection = {
     type: "radio",
     selectedRowKeys: campaignData.domainKey
@@ -104,10 +110,15 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
         <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
           <Card>
             <Form
+              form={form}
               layout="vertical"
               initialValues={{ name: campaignData?.name }}
               onValuesChange={(changedValues) => {
                 if (changedValues.name !== undefined) {
+                  form.setFieldsValue({
+                    name: changedValues.name,
+                  });
+
                   setCampaignData((prev) => ({
                     ...prev,
                     name: changedValues.name,
@@ -115,30 +126,71 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                 }
               }}
             >
-              <Form.Item
-                label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter Campaigns Name",
-                  },
-                ]}
-              >
-                <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
-              </Form.Item>
+              <Row gutter={16} align="middle">
+                <Col span={12}>
+                  <Form.Item
+                    label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter Campaigns Name",
+                      },
+                    ]}
+                  >
+                    <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label="Tags"
+                    name="tags"
+                  >
+                    <Select
+                      mode="tags"
+                      style={{ width: "100%" }}
+                      placeholder="Enter tags"
+                      value={selectedTags}
+                      options={tagOptions}
+                      onChange={(value) => {
+                        setSelectedTags(value);
+                        const updatedOptions = [
+                          ...tagOptions,
+                          ...value
+                            .filter(tag => !tagOptions.some(opt => opt.value === tag))
+                            .map(tag => ({
+                              label: tag,
+                              value: tag, 
+                            })),
+                        ];
+
+                        setTagOptions(updatedOptions);
+                      }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
             </Form>
             <Space direction="vertical" size="large" style={{ width: "100%" }}>
               <Row gutter={[16, 16]} align="middle" justify="space-between">
                 <Col>
                   <Text strong style={{ fontSize: 18 }}>Select Domain</Text>
                 </Col>
-                <Col xs={24} sm={24} md={26} lg={24} xl={8} xxl={10}>
-                  <Input.Search
-                    placeholder={t("search...", { defaultValue: "Search...", })}
-                    enterButton={<SearchOutlined />}
-                    allowClear
-                  />
+                <Col xs={24} sm={24} md={26} lg={24} xl={15} xxl={10}>
+                  <Flex gap={6}>
+                    <Input.Search
+                      placeholder={t("search...", { defaultValue: "Search...", })}
+                      enterButton={<SearchOutlined />}
+                      allowClear
+                    />
+                    <Button
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() => navigate("/domains/add")}
+                    >
+                      Add Domain
+                    </Button>
+                  </Flex>
                 </Col>
               </Row>
               <Table
@@ -160,26 +212,35 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
 
           </Card>
           <Flex justify="end" style={{ marginTop: 16 }} gap={6}>
-            <Button type="primary" loading={loading}>{t("save", { defaultValue: "Save" })}</Button>
             <Button
               type="primary"
               loading={loading}
-              disabled={!campaignData.domain}
-              onClick={() => setCurrent(1)}
+              onClick={async () => {
+                try {
+                  await form.validateFields();
+                  if (!campaignData.domain) {
+                    message.error("Please select a domain");
+                    return;
+                  }
+                  setCurrent(1);
+                } catch (error) {
+                  message.error("Please enter Campaigns Name");
+                }
+              }}
             >
               Next
             </Button>
           </Flex>
-        </Col>
+        </Col >
         {/* Right Side */}
-       <Col xs={24} md={24} lg={10} xl={8} xxl={6}>
+        < Col xs={24} md={24} lg={10} xl={8} xxl={6} >
           <PhonePreview
             page="DomainCampaign"
             template={campaignData?.template}
             domainName={campaignData.domain}
           />
         </Col>
-      </Row>
+      </Row >
     </Space >
   )
 }
