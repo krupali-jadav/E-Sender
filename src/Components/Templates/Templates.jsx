@@ -7,10 +7,13 @@ import SearchHeader from "../../Components/Search Header/SearchHeader";
 import { useEffect, useState } from "react";
 import CreateProjectModal from "./CreateProject";
 import { getTemplatesByProject } from "./TemplatesApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedProject } from "../../redux/reducers/reducer.app";
 import axiosInstance from "../../util/axiosInstance";
 import SwitchProjectModal from "./SwichProjectModel";
 
 function Templates() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -18,7 +21,9 @@ function Templates() {
   const [projects, setProjects] = useState([]);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [editProject, setEditProject] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const selectedProject = useSelector(
+    (state) => state.app.selectedProject
+  );
 
   const getProjectTemplates = async (projectId) => {
     try {
@@ -44,8 +49,8 @@ function Templates() {
 
         setProjects(projectList);
 
-        if (projectList.length > 0) {
-          setSelectedProject(projectList[0]);
+        if (!selectedProject && projectList.length > 0) {
+          dispatch(setSelectedProject(projectList[0]));
         }
       }
     } catch (error) {
@@ -174,7 +179,9 @@ function Templates() {
           projects={projects}
           selectedProject={selectedProject}
           onProjectSelect={(project) => {
-            setSelectedProject(project);
+            getProjectTemplates(
+              project._id || project.projectId
+            );
           }}
           onCreateProject={() => {
             setEditProject(null);
