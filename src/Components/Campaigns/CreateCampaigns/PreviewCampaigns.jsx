@@ -34,7 +34,6 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
               height: 610,
               maxWidth: 500,
               background: theme ? "#333333" : "#ffff",
-              border: "1px solid #e8e8e8",
               borderRadius: 8,
               display: "flex",
               flexDirection: "column",

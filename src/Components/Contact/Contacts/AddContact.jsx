@@ -237,6 +237,10 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                                     type: "email",
                                     message: "Please enter valid email",
                                 },
+                                {
+                                    required: true,
+                                    message: "Please enter email",
+                                },
                             ]}
                         >
                             <Input
