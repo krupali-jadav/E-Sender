@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Col, Divider, Flex, Input, message, Popconfirm, Row, Space, Switch, Table, Tag, Typography, } from "antd";
+import { Button, Card, Col, Divider, Flex, Input, message, Popconfirm, Row, Space, Switch, Table, Tag, Typography, } from "antd";
 import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, EditOutlined, DeleteOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";
@@ -67,6 +67,38 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
     fetchCustomFields();
   }, []);
 
+  const confirmMessages = {
+    clear: {
+      title: "Clear All Contacts",
+      description: "Are you sure you want to clear all contacts?",
+    },
+    duplicate: {
+      title: "Remove Duplicate Contacts",
+      description: "Are you sure you want to remove duplicate contacts?",
+    },
+    invalid: {
+      title: "Remove Invalid Contacts",
+      description: "Are you sure you want to remove invalid contacts?",
+    },
+    unsubscribe: {
+      title: "Remove Unsubscribed Contacts",
+      description: "Are you sure you want to remove unsubscribed contacts?",
+    },
+    spam: {
+      title: "Remove Spam Contacts",
+      description: "Are you sure you want to remove spam contacts?",
+    },
+    blocked: {
+      title: "Remove Blocked Contacts",
+      description: "Are you sure you want to remove blocked contacts?",
+    },
+    delete: {
+      title: "Delete Contacts",
+      description:
+        "Are you sure you want to delete the selected contacts?",
+    },
+  };
+
   const customFieldColumns = customFields.map((field) => ({
     title: field.name,
     dataIndex: field._id,
@@ -84,6 +116,13 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       setExporting(true);
 
       const contacts = campaignData.contacts || [];
+
+      if (contacts.length === 0) {
+        message.warning("There are no contacts to export.");
+        return;
+      }
+
+      setExporting(true);
 
       const exportData = contacts.map((contact) => ({
         Name: contact.name,
@@ -108,8 +147,12 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       let contacts = [...prev.contacts];
 
       switch (type) {
+
         case "clear":
-          contacts = [];
+          contacts = contacts.filter(
+            (item) => !selectedRowKeys.includes(item._id)
+          );
+          setSelectedRowKeys([]);
           break;
 
         case "duplicate":
@@ -162,7 +205,6 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
   };
 
   // This is for disable
-  const hasContacts = campaignData.contacts.length > 0;
   const hasBlocked = campaignData.contacts.some((c) => c.blocked);
   const hasSpam = campaignData.contacts.some((c) => c.spam);
   const hasUnsubscribed = campaignData.contacts.some((c) => c.unsubscribe);
@@ -386,7 +428,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
                   showGroups={false}
                 />
 
-                <Button type="primary" icon={<ExportOutlined />} onClick={onExport} loading={exporting}>
+                <Button type="primary" icon={<ExportOutlined />} onClick={onExport} loading={exporting} disabled={campaignData.contacts.length === 0}>
                   {t("export", { defaultValue: "Export" })}
                 </Button>
               </Flex>
@@ -406,13 +448,96 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
 
             <Col xs={24} md={16}>
               <Flex justify="end" wrap="wrap" gap={8}>
-                <Button size="small" onClick={() => handleContactAction("clear")} disabled={!hasContacts}>{t("clear.all", { defaultValue: "Clear All" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("duplicate")} disabled={!hasDuplicate}>{t("remove.duplicate", { defaultValue: "Remove Duplicate" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("invalid")} disabled={!hasInvalid}>{t("remove.invalid", { defaultValue: "Remove Invalid" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("unsubscribe")} disabled={!hasUnsubscribed}>{t("remove.unsubscribed", { defaultValue: "Remove Unsubscribed" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("spam")} disabled={!hasSpam}>{t("remove.spam", { defaultValue: "Remove Spam" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("blocked")} disabled={!hasBlocked}>{t("remove.blocked", { defaultValue: "Remove Blocked" })}</Button>
-                <Button size="small" onClick={() => handleContactAction("delete")} disabled={!hasContacts}>{t("delete", { defaultValue: "Delete" })}</Button>
+                <Popconfirm
+                  title={confirmMessages.clear.title}
+                  description={confirmMessages.clear.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("clear")}
+                >
+                  <Button
+                    size="small"
+                    disabled={selectedRowKeys.length === 0}
+                  >
+                    {t("clear.all", { defaultValue: "Clear All" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.duplicate.title}
+                  description={confirmMessages.duplicate.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("duplicate")}
+                >
+                  <Button size="small" disabled={!hasDuplicate}>
+                    {t("remove.duplicate", { defaultValue: "Remove Duplicate" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.invalid.title}
+                  description={confirmMessages.invalid.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("invalid")}
+                >
+                  <Button size="small" disabled={!hasInvalid}>
+                    {t("remove.invalid", { defaultValue: "Remove Invalid" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.unsubscribe.title}
+                  description={confirmMessages.unsubscribe.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("unsubscribe")}
+                >
+                  <Button size="small" disabled={!hasUnsubscribed}>
+                    {t("remove.unsubscribed", { defaultValue: "Remove Unsubscribed" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.spam.title}
+                  description={confirmMessages.spam.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("spam")}
+                >
+                  <Button size="small" disabled={!hasSpam}>
+                    {t("remove.spam", { defaultValue: "Remove Spam" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.blocked.title}
+                  description={confirmMessages.blocked.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("blocked")}
+                >
+                  <Button size="small" disabled={!hasBlocked}>
+                    {t("remove.blocked", { defaultValue: "Remove Blocked" })}
+                  </Button>
+                </Popconfirm>
+
+                <Popconfirm
+                  title={confirmMessages.delete.title}
+                  description={confirmMessages.delete.description}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => handleContactAction("delete")}
+                >
+                  <Button
+                    size="small"
+                    disabled={selectedRowKeys.length === 0}
+                    danger
+                  >
+                    {t("delete", { defaultValue: "Delete" })}
+                  </Button>
+                </Popconfirm>
               </Flex>
             </Col>
           </Row>
@@ -424,7 +549,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
             dataSource={campaignData.contacts}
             rowKey="_id"
             pagination={false}
-            scroll={{ x: 1000, y: 320 }}
+            scroll={{ x: "max-content", y: 320 }}
             rowSelection={{
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
@@ -444,7 +569,17 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       </Card>
       <Flex justify="end" gap={10}>
         <Button onClick={() => setCurrent(1)}>{t("previous", { defaultValue: "Previous" })}</Button>
-        <Button type="primary" onClick={() => setCurrent(3)}>{t("next", { defaultValue: "Next" })}</Button>
+        <Button type="primary" onClick={async () => {
+          try {
+            if (!campaignData.contacts || campaignData.contacts.length === 0) {
+              message.error("Add at least 1 Contact");
+              return;
+            }
+            setCurrent(3);
+          } catch (error) {
+            message.error("Please select a template");
+          }
+        }}>{t("next", { defaultValue: "Next" })}</Button>
       </Flex>
     </Space>
   );

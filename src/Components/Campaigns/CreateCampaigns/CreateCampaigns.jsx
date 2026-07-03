@@ -46,7 +46,7 @@ function CreateCampaigns() {
         );
 
       case 3:
-        return <PreviewCampaigns setCurrent={setCurrent} campaignData={campaignData} />;
+        return <PreviewCampaigns setCurrent={setCurrent} campaignData={campaignData}  domainName={campaignData?.domain}/>;
     }
   };
 
