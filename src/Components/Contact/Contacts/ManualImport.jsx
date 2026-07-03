@@ -60,7 +60,7 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
         .filter((line) => line.trim())
         .map((line, index) => {
           const parts = line.split(",").map((p) => p.trim());
-          const [name, email, phone, ...customValues] = parts;
+          const [email, name, phone, ...customValues] = parts;
           const existingRow = prev.find((item) => item.key === index);
           const customFieldData = {};
           customFields.forEach((field, i) => {
@@ -74,8 +74,8 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
             ...customFieldData,
             key: index,
             sn: index + 1,
-            name: name?.trim() || "",
             email: email?.trim() || "",
+            name: name?.trim() || "",
             phone: phone?.trim() || "",
           };
         });
@@ -99,6 +99,7 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
 
     try {
       const contacts = previewData.map((row) => ({
+        _id: crypto.randomUUID(), 
         name: row.name,
         email: row.email,
         phonenumber: row.phone,
@@ -115,7 +116,7 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
 
       // Contact Campaign
       if (onImport) {
-        onImport(contacts);                                                             
+        onImport(contacts);
         message.success("Contacts imported successfully");
         handleClose();
         return;
@@ -221,7 +222,8 @@ const ManualImport = ({ open, onClose, fetchContacts, onImport, showGroups }) =>
           dataSource={[]}
           pagination={false}
           dataSource={previewData}
-          scroll={{ y: 260 }}
+          scroll={{ y: 260, x: "max-content" }}
+          
         />
       </Form>
     </Modal>
