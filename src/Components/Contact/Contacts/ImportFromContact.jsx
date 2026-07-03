@@ -157,15 +157,15 @@ function ImportFromContacts({ open, onClose, onImport, }) {
             render: (_, __, index) => (page - 1) * pageSize + index + 1,
         },
         {
-            title: "Name",
+            title: t("name", { defaultValue: "Name" }),
             dataIndex: "name",
         },
         {
-            title: "Phone",
+            title: t("phone_number", { defaultValue: "Phone Number" }),
             dataIndex: "phonenumber",
         },
         {
-            title: "Email",
+            title: t("email", { defaultValue: "Email" }),
             dataIndex: "email",
         },
         {
@@ -191,7 +191,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                 )),
         },
         {
-            title: "Blocked",
+            title: t("blocked", { defaultValue: "Blocked" }),
             dataIndex: "blocked",
             key: "blocked",
             render: (blocked, record) => (
@@ -215,7 +215,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
             onCancel={onClose}
             footer={[
                 <Button key="cancel" onClick={onClose}>
-                    Cancel
+                    {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
 
                 <Button
@@ -223,7 +223,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                     type="primary"
                     onClick={handleImport}
                 >
-                    Import
+                    {t("import", { defaultValue: "Import" })}
                 </Button>,
             ]}
         >
@@ -231,7 +231,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                 <Row justify="space-between" align="middle" gutter={[16, 16]}>
                     <Input.Search
                         style={{ width: 350 }}
-                        placeholder="Search Contact"
+                        placeholder={t("search_contacts", { defaultValue: "Search Contacts" })}
                         enterButton={<SearchOutlined />}
                         allowClear
                         value={search}
@@ -253,7 +253,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                                 setGroupIds(value);
                                 setPage(1);
                             }}
-                            placeholder="Filter by Groups"
+                            placeholder={t("filter_by_groups", { defaultValue: "Filter by Groups" })}
                             options={groups.map((group) => ({
                                 label: group.name,
                                 value: group._id,

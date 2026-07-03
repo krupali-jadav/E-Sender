@@ -1,5 +1,5 @@
 import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Flex, Input, Popover, Row, Space, Table, Typography, } from "antd";
+import { Button, Card, Col, Flex, Input, message, Popover, Row, Space, Table, Typography, } from "antd";
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import PhonePreview from "./PhonePreview";
@@ -146,7 +146,7 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
               <Col xs={24} md={16}>
                 <Flex justify="end" gap={10} wrap="wrap">
                   <Input.Search
-                    placeholder="Search Template"
+                    placeholder={t("search_templates", { defaultValue: "Search Templates" })}
                     allowClear
                     enterButton={<SearchOutlined />}
                     value={search}
@@ -196,7 +196,19 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
               {t("previous", { defaultValue: "Previous", })}
             </Button>
 
-            <Button type="primary" onClick={() => setCurrent(2)}>
+            <Button type="primary" onClick={() => setCurrent(2)}
+              onClick={async () => {
+                try {
+                  if (!campaignData.template) {
+                    message.error("Please select a template");
+                    return;
+                  }
+                  setCurrent(2);
+                } catch (error) {
+                  message.error("Please select a template");
+                }
+              }}
+            >
               {t("next", { defaultValue: "Next", })}
             </Button>
           </Flex>

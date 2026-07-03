@@ -233,24 +233,24 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
 
   const columns = [
     {
-      title: "SN",
+      title: t("sn", { defaultValue: "SN" }),
       dataIndex: "sn",
       key: "sn",
       width: 80,
       render: (_, __, index) => index + 1,
     },
     {
-      title: "Name",
+      title: t("name", { defaultValue: "Name" }),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Phone Number",
+      title: t("phone_number", { defaultValue: "Phone Number" }),
       dataIndex: "phonenumber",
       key: "phonenumber",
     },
     {
-      title: "Email",
+      title: t("email", { defaultValue: "Email" }),
       dataIndex: "email",
     },
     {
@@ -276,7 +276,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
         )),
     },
     {
-      title: "Blocked",
+      title: t("blocked", { defaultValue: "Blocked" }),
       dataIndex: "blocked",
       key: "blocked",
       render: (blocked) =>
