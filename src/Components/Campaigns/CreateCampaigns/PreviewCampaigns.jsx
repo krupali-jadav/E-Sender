@@ -147,7 +147,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
             <div
               style={{
                 padding: 24,
-                flex: 1,
+                height: 620,
                 overflowY: "auto",
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
