@@ -155,7 +155,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                 form.setFieldsValue({
                     name: editData.name,
                     email: editData.email,
-                    phonenumber: editData.phonenumber,
+                    phone: editData.phonenumber,
                     groups: editData.groups?.map((g) => g._id),
                 });
 

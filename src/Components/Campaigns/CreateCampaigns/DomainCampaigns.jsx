@@ -154,13 +154,19 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                       options={tagOptions}
                       onChange={(value) => {
                         setSelectedTags(value);
+
+                        setCampaignData((prev) => ({
+                          ...prev,
+                          tags: value,
+                        }));
+
                         const updatedOptions = [
                           ...tagOptions,
                           ...value
-                            .filter(tag => !tagOptions.some(opt => opt.value === tag))
-                            .map(tag => ({
+                            .filter((tag) => !tagOptions.some((opt) => opt.value === tag))
+                            .map((tag) => ({
                               label: tag,
-                              value: tag, 
+                              value: tag,
                             })),
                         ];
 
@@ -219,12 +225,12 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                 try {
                   await form.validateFields();
                   if (!campaignData.domain) {
-                    message.error("Please select a domain");
+                    message.warning("Please select a domain");
                     return;
                   }
                   setCurrent(1);
                 } catch (error) {
-                  message.error("Please enter Campaigns Name");
+                  message.warning("Please enter Campaigns Name");
                 }
               }}
             >

@@ -1,6 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Steps } from "antd";
-import {  useState } from "react";
+import { useState } from "react";
 
 import TemplateCampaigns from "./TemplateCampaigns";
 import DomainCampaigns from "./DomainCampaigns";
@@ -14,6 +14,7 @@ function CreateCampaigns() {
     template: null,
     templateKey: null,
     contacts: [],
+    tags: [],
   });
 
   const renderStepContent = () => {
@@ -46,7 +47,7 @@ function CreateCampaigns() {
         );
 
       case 3:
-        return <PreviewCampaigns setCurrent={setCurrent} campaignData={campaignData}  domainName={campaignData?.domain}/>;
+        return <PreviewCampaigns setCurrent={setCurrent} campaignData={campaignData} domainName={campaignData?.domain} />;
     }
   };
 
@@ -54,7 +55,7 @@ function CreateCampaigns() {
     <PageContainer>
       <Steps
         current={current}
-        onChange={setCurrent} 
+        onChange={setCurrent}
         items={[
           { title: "Domain" },
           { title: "Template" },

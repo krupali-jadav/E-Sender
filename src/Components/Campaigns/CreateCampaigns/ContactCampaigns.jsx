@@ -149,9 +149,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       switch (type) {
 
         case "clear":
-          contacts = contacts.filter(
-            (item) => !selectedRowKeys.includes(item._id)
-          );
+          contacts = [];
           setSelectedRowKeys([]);
           break;
 
@@ -214,6 +212,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
   const hasDuplicate =
     campaignData.contacts.length !==
     new Set(campaignData.contacts.map((c) => c.email)).size;
+  const hasContacts = campaignData.contacts.length > 0;
 
   // This is for counting
   const totalCount = campaignData.contacts.length;
@@ -457,7 +456,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
                 >
                   <Button
                     size="small"
-                    disabled={selectedRowKeys.length === 0}
+                    disabled={!hasContacts}
                   >
                     {t("clear.all", { defaultValue: "Clear All" })}
                   </Button>
@@ -572,12 +571,12 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
         <Button type="primary" onClick={async () => {
           try {
             if (!campaignData.contacts || campaignData.contacts.length === 0) {
-              message.error("Add at least 1 Contact");
+              message.warning("Add at least 1 Contact");
               return;
             }
             setCurrent(3);
           } catch (error) {
-            message.error("Please select a template");
+            message.warning("Add at least 1 Contact");
           }
         }}>{t("next", { defaultValue: "Next" })}</Button>
       </Flex>

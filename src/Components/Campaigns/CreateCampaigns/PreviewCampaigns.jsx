@@ -11,6 +11,7 @@ import {
   Radio,
   Row,
   Space,
+  Tag,
   Typography,
 } from "antd";
 import { t } from "i18next";
@@ -31,7 +32,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
 
           <div
             style={{
-              height: 610,
+              maxHeight: 620,
               maxWidth: 800,
               background: theme ? "#333333" : "#ffff",
               borderRadius: 8,
@@ -65,7 +66,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                     {campaignData?.domain || "-"}
                   </Text>
                   <br />
-                  <Row 
+                  <Row
                     onClick={() => setOpen(!open)}
                     style={{
                       cursor: "pointer",
@@ -160,7 +161,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                 <Flex
                   justify="center"
                   align="center"
-                  style={{ height: 400 }}
+                  style={{ height: 620 }}
                 >
                   <Text type="secondary">
                     No Template Selected
@@ -176,12 +177,23 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
           <Row gutter={[16, 16]}>
             <Col xs={24} md={24}>
               <Card>
-                <Space direction="vertical" size="large">
+                <Space direction="vertical" size="middle">
                   <Text>{t("campaign.name", { defaultValue: "Campaign Name" })}:<Text strong> {campaignData?.domain || "-"}</Text></Text>
                   <Text>{t("selected.template", { defaultValue: "Selected Template" })}: <Text strong>{campaignData?.template?.name || "-"}</Text></Text>
                   <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: <Text strong>{campaignData?.contacts?.length || 0}</Text></Text>
                   <Text>{t("domain", { defaultValue: "Domain" })}: <Text strong>{campaignData?.domain || "-"}</Text></Text>
-                  {/* <Text>domain://</Text> */}
+                  <Flex wrap>
+                    <Text>{t("tags", { defaultValue: "Tags" })}:</Text>
+                    {campaignData?.tags?.length ? (
+                      campaignData.tags.map((tag) => (
+                        <Tag key={tag} style={{ marginLeft: 5, fontWeight: 500 }}>
+                          {tag}
+                        </Tag>
+                      ))
+                    ) : (
+                      <Text>-</Text>
+                    )}
+                  </Flex>
                 </Space>
               </Card>
             </Col>
