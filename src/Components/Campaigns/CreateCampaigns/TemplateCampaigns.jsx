@@ -1,19 +1,25 @@
 import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Flex, Input, message, Popover, Row, Space, Table, Typography, } from "antd";
+import { Button, Card, Col, Flex, Input, message, Popover, Row, Select, Space, Table, Typography, } from "antd";
 import { t } from "i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import PhonePreview from "./PhonePreview";
 import { useEffect, useState } from "react";
 import { getTemplatesByProject } from "../../Templates/TemplatesApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../../util/axiosInstance";
+import { setSelectedProject } from "../../../redux/reducers/reducer.app";
 
 const { Text } = Typography;
 
 function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
+  const dispatch = useDispatch();
+
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [search, setSearch] = useState("");
   const selectedProject = useSelector((state) => state.app.selectedProject);
+
   const getProjectTemplates = async (projectId) => {
     setLoading(true);
 
@@ -36,10 +42,25 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
     }
   }, [selectedProject]);
 
+  const getProjects = async () => {
+    try {
+      const response = await axiosInstance.get("/api/projects");
+
+      if (response.data?.success) {
+        setProjects(response.data.projects || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
   const tableData = (templates || [])
     .filter((item) =>
-      item.JSON?.templateName
-        ?.toLowerCase()
+      item.JSON?.templateName?.toLowerCase()
         .includes(search.toLowerCase())
     )
     .map((item, index) => ({
@@ -48,6 +69,7 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
       name: item.JSON?.templateName,
       html: item.HTML,
       createdAt: item.createdAt?.split("T")[0],
+      projectName: item.projectName || "-",
     }));
 
   const TemplatePreview = ({ html }) => (
@@ -113,11 +135,9 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
       key: "createdAt",
     },
     {
-      title: t("actions", { defaultValue: "Actions" }),
-      key: "actions",
-      render: () => (
-        <MoreOutlined />
-      ),
+      title: t("project.name", { defaultValue: "Project Name" }),
+      key: "projectName",
+      render: (_, record) => record.projectName || "-",
     },
   ];
 
@@ -145,6 +165,21 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
 
               <Col xs={24} md={16}>
                 <Flex justify="end" gap={10} wrap="wrap">
+                  <Select
+                    placeholder={t("select.project", { defaultValue: "Select Project" })}
+                    value={selectedProject?._id || selectedProject?.projectId}
+                    style={{ width: 250 }}
+                    onChange={(value) => {
+                      const project = projects.find(
+                        (p) => (p._id || p.projectId) === value
+                      );
+                      dispatch(setSelectedProject(project));
+                    }}
+                    options={projects.map((project) => ({
+                      label: project.name,
+                      value: project._id || project.projectId,
+                    }))}
+                  />
                   <Input.Search
                     placeholder={t("search_templates", { defaultValue: "Search Templates" })}
                     allowClear
@@ -222,6 +257,7 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
           />
         </Col>
       </Row>
+
     </Space>
   );
 }

@@ -6,6 +6,7 @@ import { t } from "i18next";
 import { addContact, saveContact } from "./ContactsApi";
 import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
+import { isValidPhoneNumber } from "../../../util/commom.utils";
 const { Text } = Typography;
 
 function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups }) {
@@ -18,12 +19,11 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
     const [fieldValues, setFieldValues] = useState({});
 
     const handlePhoneChange = (value) => {
-        if (value && value.valid && value.valid()) {
-            const fullPhoneNumber = `+${value?.countryCode ?? ""}${value?.areaCode ?? ""}${value?.phoneNumber ?? ""}`;
-            setPhone(fullPhoneNumber);
-        } else {
-            setPhone("");
-        }
+        const fullPhoneNumber = `+${value?.countryCode ?? ""}${value?.areaCode ?? ""}${value?.phoneNumber ?? ""}`;
+
+        setPhone(fullPhoneNumber);
+
+        form.validateFields(["phone"]);
     };
 
     const fetchCustomFields = async () => {
@@ -87,6 +87,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                 name: values.name,
                 email: values.email,
                 groups: values.groups || [],
+                phonenumber: phone,
                 fields: customFields
                     .filter((field) => {
                         const value = fieldValues[field._id];
@@ -252,6 +253,25 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                         <Form.Item
                             label={t("phone.number", { defaultValue: "Phone Number" })}
                             name="phone"
+                            rules={[
+                                {
+                                    validator: (_, value) => {
+                                        if (!phone) {
+                                            return Promise.reject(
+                                                new Error("Please enter phone number")
+                                            );
+                                        }
+
+                                        if (!isValidPhoneNumber(phone)) {
+                                            return Promise.reject(
+                                                new Error("Please enter a valid phone number")
+                                            );
+                                        }
+
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
                         >
                             <PhoneInput
                                 enableSearch

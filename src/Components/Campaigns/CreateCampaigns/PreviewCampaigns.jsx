@@ -60,11 +60,13 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                     .toUpperCase()}
                 </Avatar>
 
-                <div>
-                  <Text strong>
+                <div >
+                  <Flex gap={5} >
+                  <Text strong >Demo</Text>
+                  <Text type="secondary" strong>
                     {campaignData?.domain || "-"}
                   </Text>
-                  <br />
+                  </Flex>
                   <Row 
                     onClick={() => setOpen(!open)}
                     style={{
