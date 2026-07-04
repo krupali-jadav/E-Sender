@@ -56,7 +56,7 @@ function PhonePreview({ template, page, domainName }) {
             <Col>4:43</Col>
 
             <Col>
-              <Image src={Island} alt="Dynamic Island" style={{ width: 78, height: 26 }} preview={true} />
+              <Image src={Island} alt="Dynamic Island" style={{ width: 78, height: 26 }} preview={false} />
             </Col>
 
             <Col><GiNetworkBars /> <FaWifi /> <RiBattery2ChargeFill /></Col>
