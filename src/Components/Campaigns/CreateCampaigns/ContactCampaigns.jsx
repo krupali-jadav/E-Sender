@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Divider, Flex, Input, message, Popconfirm, Row, Space, Switch, Table, Tag, Typography, } from "antd";
+import { Button, Card, Col, Divider, Flex, Input, message, Popconfirm, Row, Space, Table, Tag, Typography, } from "antd";
 import { PlusCircleOutlined, SearchOutlined, UploadOutlined, ExportOutlined, EditOutlined, DeleteOutlined, } from "@ant-design/icons";
 import { t } from "i18next";
 import ManualImport from "../../Contact/Contacts/ManualImport";

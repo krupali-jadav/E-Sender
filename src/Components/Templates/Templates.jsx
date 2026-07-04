@@ -21,16 +21,13 @@ function Templates() {
   const [projects, setProjects] = useState([]);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [editProject, setEditProject] = useState(null);
-  const selectedProject = useSelector(
-    (state) => state.app.selectedProject
-  );
+  const selectedProject = useSelector((state) => state.app.selectedProject);
 
   const getProjectTemplates = async (projectId) => {
     try {
       setLoading(true);
 
       const data = await getTemplatesByProject(projectId);
-
       if (data?.success) {
         setTemplates(data.templates || []);
       }

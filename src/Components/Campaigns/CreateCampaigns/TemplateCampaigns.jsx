@@ -1,7 +1,7 @@
-import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Flex, Input, message, Popover, Row, Select, Space, Table, Typography, } from "antd";
 import { t } from "i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PhonePreview from "./PhonePreview";
 import { useEffect, useState } from "react";
 import { getTemplatesByProject } from "../../Templates/TemplatesApi";
@@ -25,7 +25,6 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
 
     try {
       const response = await getTemplatesByProject(projectId);
-      console.log("API Response:", response);
       if (response?.success) {
         setTemplates(response.templates || []);
       }

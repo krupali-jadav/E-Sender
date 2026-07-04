@@ -3,10 +3,10 @@ import {
   Col,
   Row,
   Typography,
-  Segmented,
   Progress,
   Space,
   Button,
+  Grid,
 } from "antd";
 import {
   UsergroupAddOutlined,
@@ -30,10 +30,16 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { useSelector } from "react-redux";
+const { useBreakpoint } = Grid;
 
 const { Title, Text } = Typography;
 
+
 export default function Dashboard() {
+  const screens = useBreakpoint();
+  const theme = useSelector((state) => state?.app?.theme);
+
   const stats = [
     {
       title: "TOTAL CONTACTS",
@@ -70,6 +76,45 @@ export default function Dashboard() {
       value: "324k",
       change: "-2.1%",
       icon: <InboxOutlined />,
+    },
+  ];
+
+  const events = [
+    {
+      title: "1212 Shopee selling event",
+      top: "10%",
+      left: "13%",
+      width: "48%",
+      color: theme ? "#000" : "#FFF7E6",
+      bg: "#FFF3CD",
+      dot: "#B26A00",
+    },
+    {
+      title: "Lazada merchant powered event",
+      top: "28%",
+      left: "38%",
+      width: "50%",
+      color: theme ? "#000" : "#E8F4FC",
+      bg: "#E0F2FE",
+      dot: "#0284C7",
+    },
+    {
+      title: "Tokopedia haul event",
+      top: "46%",
+      left: "10%",
+      width: "45%",
+      color: theme ? "#000" : "#FDF2F8",
+      bg: "#FCE7F3",
+      dot: "#7A1E67",
+    },
+    {
+      title: "Bibi merchant powered event",
+      top: "64%",
+      left: "48%",
+      width: "45%",
+      color: theme ? "#000" : "#DCFCE7",
+      bg: "#DCFCE7",
+      dot: "#16A34A",
     },
   ];
 
@@ -159,10 +204,10 @@ export default function Dashboard() {
           </Col>
         ))}
       </Row>
-
+        
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         {/* Email Volume */}
-        <Col xs={24} lg={15}>
+        <Col xs={24} lg={24} xxl={15}>
           <Card
             style={{
               borderRadius: 16,
@@ -264,7 +309,7 @@ export default function Dashboard() {
         </Col>
 
         {/* Campaign Activity */}
-        <Col xs={24} lg={9}>
+        <Col xs={24} lg={24} xxl={9}>
           <Card
             style={{
               borderRadius: 16,
@@ -354,118 +399,50 @@ export default function Dashboard() {
               <div
                 style={{
                   position: "absolute",
-                  left: 70,
-                  right: 0,
-                  top: 0,
+                  inset: 0,
                 }}
               >
-                {/* Shopee */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 52,
-                    left: "2%",
-                    background: "#FFF3CD",
-                    borderRadius: 999,
-                    padding: "0 16px",
-                    height: 38,
-                    width: 210,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
+                {events.map((event) => (
                   <div
+                    key={event.title}
                     style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: "#B26A00",
+                      position: "absolute",
+                      top: event.top,
+                      left: event.left,
+                      width: event.width,
+                      background: event.bg,
+                      color: event.color,
+                      borderRadius: 30,
+                      height: 32,
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "0 10px",
+                      gap: 6,
+                      overflow: "hidden",
                     }}
-                  />
-                  <span>1212 Shopee selling event</span>
-                </div>
+                  >
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: event.dot,
+                        flexShrink: 0,
+                      }}
+                    />
 
-                {/* Lazada */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 112,
-                    left: "43%",
-                    background: "#E0F2FE",
-                    borderRadius: 999,
-                    padding: "0 16px",
-                    height: 38,
-                    width: 245,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: "#0284C7",
-                    }}
-                  />
-                  <span>Lazada merchant powered event</span>
-                </div>
-
-                {/* Tokopedia */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 172,
-                    left: "12%",
-                    background: "#FCE7F3",
-                    borderRadius: 999,
-                    padding: "0 16px",
-                    height: 38,
-                    width: 180,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: "#7A1E67",
-                    }}
-                  />
-                  <span>Tokopedia haul event</span>
-                </div>
-
-                {/* Bibi */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 232,
-                    left: "55%",
-                    background: "#DCFCE7",
-                    borderRadius: 999,
-                    padding: "0 16px",
-                    height: 38,
-                    width: 220,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      background: "#16A34A",
-                    }}
-                  />
-                  <span>Bibi merchant powered event</span>
-                </div>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {event.title}
+                    </span>
+                  </div>
+                ))}
               </div>
 
               {/* Time Labels */}
@@ -473,7 +450,7 @@ export default function Dashboard() {
                 justify="space-between"
                 style={{
                   position: "absolute",
-                  bottom: -25,
+                  bottom: 2,
                   left: 70,
                   right: 20,
                 }}
@@ -495,7 +472,7 @@ export default function Dashboard() {
       {/* Bottom Cards */}
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         {/* Donut */}
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={12} >
           <Card
             style={{
               borderRadius: 20,
@@ -511,25 +488,34 @@ export default function Dashboard() {
             </Text>
 
             <Row align="middle">
-              <Col span={12}>
-                <PieChart width={220} height={220}>
-                  <Pie
-                    data={pieData}
-                    innerRadius={60}
-                    outerRadius={90}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell
-                        key={index}
-                        fill={entry.color}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
+              <Col xs={24} md={12}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}>
+                <ResponsiveContainer
+                  width="100%"
+                  height={screens.xs ? 180 : 220}
+                >
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      dataKey="value"
+                      innerRadius={screens.xs ? 45 : 60}
+                      outerRadius={screens.xs ? 70 : 90}
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell
+                          key={index}
+                          fill={entry.color}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
               </Col>
 
-              <Col span={12}>
+              <Col span={12} >
                 {pieData.map((item) => (
                   <Row
                     key={item.name}
@@ -548,7 +534,13 @@ export default function Dashboard() {
                         }}
                       />
 
-                      <Text>{item.name}</Text>
+                      <Text
+                        style={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {item.name}
+                      </Text>
                     </Space>
 
                     <Text strong>{item.value}%</Text>

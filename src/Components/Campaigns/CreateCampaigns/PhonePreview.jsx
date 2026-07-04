@@ -16,8 +16,8 @@ function PhonePreview({ template, page, domainName }) {
   const [open, setOpen] = useState(false);
   const theme = useSelector((state) => state?.app?.theme);
   return (
-    <Flex xs={24} lg={8} >
-      <Col
+    <Col xs={24} lg={8} >
+      <Flex
         style={{
           width: 300,
           height: 550,
@@ -181,7 +181,7 @@ function PhonePreview({ template, page, domainName }) {
                   </div>
                 ) : (
                   <Flex justify="center" align="center" style={{ height: "100%" }}>
-                    <Text Text type="secondary" >
+                    <Text type="secondary" >
                       {page === "DomainCampaign"
                         ? "No Template"
                         : "Select a Template"}
@@ -214,8 +214,8 @@ function PhonePreview({ template, page, domainName }) {
             </Flex>
           </Col>
         </Col>
-      </Col>
-    </Flex>
+      </Flex>
+    </Col>
   )
 }
 
