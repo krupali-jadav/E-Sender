@@ -235,12 +235,12 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
               onClick={async () => {
                 try {
                   if (!campaignData.template) {
-                    message.error("Please select a template");
+                    message.warning("Please select a template");
                     return;
                   }
                   setCurrent(2);
                 } catch (error) {
-                  message.error("Please select a template");
+                  message.warning("Please select a template");
                 }
               }}
             >
