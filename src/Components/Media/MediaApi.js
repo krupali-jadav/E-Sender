@@ -80,3 +80,18 @@ export const addMultipleMedia = async (files, type) => {
         message.error("Failed to upload media");
     }
 };
+
+export const deleteMultipleMedia = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/api/media/delete-multiple", payload);
+
+        if (response.data?.status) {
+            return response.data;
+        } else {
+            message.error(response.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        message.error("Failed to delete media");
+    }
+};

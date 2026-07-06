@@ -127,7 +127,7 @@ function Contacts({ showGroups }) {
         Modal.confirm({
             title: ids.length > 1 ? "Delete Contacts" : "Delete Contact",
             content:
-                ids.length > 0
+                ids.length > 1
                     ? `Are you sure you want to delete ${ids.length} contacts?`
                     : `Are you sure you want to delete "${name}"?`,
             okText: "Delete",

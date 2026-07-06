@@ -256,18 +256,15 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                             rules={[
                                 {
                                     validator: (_, value) => {
-                                        if (!phone) {
-                                            return Promise.reject(
-                                                new Error("Please enter phone number")
-                                            );
+                                        // Optional field
+                                        if (!phone || phone.trim() === "") {
+                                            return Promise.resolve();
                                         }
-
                                         if (!isValidPhoneNumber(phone)) {
                                             return Promise.reject(
-                                                new Error("Please enter a valid phone number")
+                                                new Error("Please enter a valid 10 digit phone number")
                                             );
                                         }
-
                                         return Promise.resolve();
                                     },
                                 },
@@ -281,7 +278,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                                 placeholder={t("phone.number", { defaultValue: "Enter Phone Number", })}
                             />
                         </Form.Item>
-
+                            
                         {showGroups && (
                             <Form.Item
                                 name="groups"
