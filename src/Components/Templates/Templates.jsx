@@ -111,7 +111,7 @@ function Templates() {
             </div>
           ) : templates.length === 0 ? (
             <Empty
-              description="No Templates Available"
+              description={t("no.templates.available", { defaultValue: "No Templates Available" })}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             >
               <Button
@@ -119,7 +119,7 @@ function Templates() {
                 onClick={() => navigate("/templates/create-template")}
                 icon={<PlusOutlined />}
               >
-                Create Template
+               {t("create.template", { defaultValue: "Create Template" })}
               </Button>
             </Empty>
           ) : (

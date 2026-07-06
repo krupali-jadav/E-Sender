@@ -60,7 +60,7 @@ function Campaigns() {
       key: "name",
     },
     {
-      title: t("totalContacts", { defaultValue: "Total Contacts" }),
+      title: t("total.Contacts", { defaultValue: "Total Contacts" }),
       dataIndex: "totalContacts",
       key: "totalContacts",
     },
