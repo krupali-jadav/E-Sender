@@ -31,6 +31,7 @@ import {
   Cell,
 } from "recharts";
 import { useSelector } from "react-redux";
+import { PageContainer } from "@ant-design/pro-components";
 const { useBreakpoint } = Grid;
 
 const { Title, Text } = Typography;
@@ -138,24 +139,12 @@ export default function Dashboard() {
 
   return (
 
-    <div style={{ padding: 24 }}>
-      {/* Header */}
-      <Row justify="space-between" align="middle">
-        <Col>
-          <Title level={2} style={{ marginBottom: 0 }}>
-            Dashboard
-          </Title>
-
-          <Text type="secondary">
-            Real-time performance metrics and email campaign analytics across all connected domains
-          </Text>
-        </Col>
-      </Row>
+    <PageContainer>
 
       {/* Stats Cards */}
-      <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
+      <Row gutter={[16, 16]} >
         {stats.map((item) => (
-          <Col xs={24} sm={12} md={8} lg={4} key={item.title}>
+          <Col xs={24} sm={12} md={8} lg={8} xxl={4} key={item.title}>
             <Card
               styles={{
                 body: {
@@ -164,7 +153,8 @@ export default function Dashboard() {
               }}
               style={{
                 borderRadius: 16,
-                height: 120,
+                height: 120,  
+                minWidth: 200,
               }}
             >
               <Row justify="space-between">
@@ -207,7 +197,7 @@ export default function Dashboard() {
         
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         {/* Email Volume */}
-        <Col xs={24} lg={24} xxl={15}>
+        <Col xs={24} lg={10} xxl={15}>
           <Card
             style={{
               borderRadius: 16,
@@ -309,7 +299,7 @@ export default function Dashboard() {
         </Col>
 
         {/* Campaign Activity */}
-        <Col xs={24} lg={24} xxl={9}>
+        <Col xs={24} lg={14 } xxl={9}>
           <Card
             style={{
               borderRadius: 16,
@@ -466,9 +456,7 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
-
-
-
+      
       {/* Bottom Cards */}
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         {/* Donut */}
@@ -595,6 +583,6 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </PageContainer>
   );
 }

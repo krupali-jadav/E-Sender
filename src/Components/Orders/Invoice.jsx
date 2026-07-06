@@ -40,6 +40,7 @@ const Invoice = ({ isEdit = false }) => {
   const theme = useSelector((state) => state?.app?.theme);
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState(null);
+  const [payment, setPayment] = useState(null);
   const isFetchingOrderRef = useRef(false);
   const lastFetchedOrderIdRef = useRef(null);
   const packs = useSelector((state) => state?.app?.packs);
@@ -405,12 +406,15 @@ const Invoice = ({ isEdit = false }) => {
                   ? formatDate(order.createdAt)
                   : "N/A"}
               </Text>
-              <Text copyable
-              type="secondary">
-                {t("orderid", {
-                  defaultValue: "Order ID",
-                })}
-                : {order?._id || "N/A"}
+              <Text type="secondary">
+                {t("orderid", { defaultValue: "Order ID" })}:{" "}
+                <Text
+                  copyable={{
+                    text: order?._id || "",
+                  }}
+                >
+                  {order?._id || "N/A"}
+                </Text>
               </Text>
               <Text type="secondary">
                 {t("date", { defaultValue: "Date" })}{" "}:{order?.createdAt ? formatDate(order.createdAt) : "N/A"}
@@ -599,7 +603,7 @@ const Invoice = ({ isEdit = false }) => {
               </Col>
             </Row>
 
-            <Divider style={{ borderTop: "1px solid black", marginBottom: 10, marginTop: 10 }} />
+            <Divider style={{ borderTop: "1px solid #d9d9d9", marginBottom: 10, marginTop: 10 }} />
 
             <Row >
               <Col span={12}>
@@ -626,12 +630,14 @@ const Invoice = ({ isEdit = false }) => {
                 defaultValue: "Payment Info",
               })}
             </Title>
-            <Text copyable>
-              {t("paymentid", {
-                defaultValue: "Payment ID",
-              })}{" "}
-              : {order?.paymentId?._id || "N/A"}
+            <Text>
+              {t("paymentid", { defaultValue: "Payment ID", })}:{" "}
+              <Text copyable={{ text: payment?.paymentId?._id || "" }} >
+
+                {payment?.paymentId?._id || "N/A"}
+              </Text>
             </Text>
+
             <br />
             <Row align="middle" gutter={8}>
               <Col>
@@ -643,13 +649,13 @@ const Invoice = ({ isEdit = false }) => {
                 </Text>
               </Col>
               <Col>
-                {order?.paymentId?.gateway ? (
+                {payment?.paymentId?.gateway ? (
                   <Image
                     src={getMediaPath(
-                      `/media/payment-gateway/${order?.paymentId?.gateway}.png`,
+                      `/media/payment-gateway/${payment?.paymentId?.gateway}.png`,
                     )}
                     preview={false}
-                    alt={order?.paymentId?.gateway}
+                    alt={payment?.paymentId?.gateway}
                     width={60}
                   />
                 ) : (
@@ -686,6 +692,7 @@ const Invoice = ({ isEdit = false }) => {
         </Row>
 
         <Divider />
+
         <Row justify="space-between" style={{ textAlign: "Left" }}>
           <Col>
             <Space

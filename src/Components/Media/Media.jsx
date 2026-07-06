@@ -45,7 +45,7 @@ function Media() {
                 setTotal(data.total || 0);
             }
         } catch (error) {
-            console.log(error);
+            message.error(error?.message || "Failed to fetch media");
         } finally {
             setLoading(false);
         }
@@ -83,11 +83,11 @@ function Media() {
                     if (data?.status) {
                         message.success(data?.message || "Media deleted successfully");
                         setSelectedMedia([]);
-                        fetchMedia();   
+                        fetchMedia();
                     }
                 } catch (error) {
                     console.log(error);
-                    message.error(data?.message || "Failed to delete media");
+                    message.error(error?.message || "Failed to delete media");
                 }
             },
         });
@@ -115,16 +115,6 @@ function Media() {
             label: "Other",
         },
     ];
-
-    const handleAddMedia = (newMedia) => {
-        setMediaList((prev) => [
-            ...prev,
-            {
-                id: Date.now(),
-                ...newMedia,
-            },
-        ]);
-    };
 
     return (
         <PageContainer
@@ -192,119 +182,118 @@ function Media() {
                     <Row gutter={[14, 14]}>
                         {mediaList.map((item) => (
                             <Col key={item._id}>
-                                <div
-                                    onMouseEnter={() => setHoveredId(item._id)}
-                                    onMouseLeave={() => setHoveredId(null)}
-                                    style={{
-                                        position: "relative",
-                                        width: 220,
-                                    }}
-                                >
-                                    <Card xs={24} sm={12} md={8} lg={4} 
-                                        hoverable
-                                        style={{
-                                            placeItems: "center",
-                                            height: 220,
+
+                                <Card styles={{ body: { padding: 0 } }}>
+                                    <Checkbox
+                                        checked={selectedMedia.includes(item._id)}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedMedia((prev) => [...prev, item._id]);
+                                            } else {
+                                                setSelectedMedia((prev) =>
+                                                    prev.filter((id) => id !== item._id)
+                                                );
+                                            }
                                         }}
-                                        cover={
-                                            item.type?.startsWith("image/") ? (
-                                                <img
-                                                    alt={item.name}
-                                                    src={item.url}
-                                                    style={{
-                                                        height: 220,
-                                                        width: "100%",
-                                                        objectFit: "contain",
-                                                    }}
-                                                />
-                                            ) : item.type?.startsWith("video/") ? (
-                                                <video
-                                                    controls
-                                                    style={{
-                                                        height: 220,
-                                                        width: "100%",
-                                                        objectFit: "contain",
-                                                    }}
-                                                >
-                                                    <source src={item.url} type={item.type} />
-                                                </video>
-                                            ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                                                <div
-                                                    style={{
-                                                        height: 220,
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        justifyContent: "center",
-                                                        alignItems: "center",
-                                                        objectFit: "contain",
-                                                        gap: 10,
-                                                    }}
-                                                >
-                                                    {item.type === "application/pdf" ? (
-                                                        <FilePdfOutlined style={{ fontSize: 50, color: "red" }} />
-                                                    ) : (
-                                                        <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
-                                                    )}
-                                                    <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    style={{
-                                                        height: 220,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                    }}
-                                                >
-                                                    {item.name}
-                                                </div>
-                                            )
-                                        }
+                                        style={{
+                                            padding: 8,
+                                            height: 30,
+                                        }}
+                                    />
+                                    <div
+                                        onMouseEnter={() => setHoveredId(item._id)}
+                                        onMouseLeave={() => setHoveredId(null)}
+                                        style={{
+                                            position: "relative",
+                                            width: 220,
+                                        }}
                                     >
-                                    </Card>
-
-                                    {hoveredId === item._id && (
-                                        <Flex
-                                            justify="center"
-                                            align="center"
+                                        <Card xs={24} sm={12} md={8} lg={4}
                                             style={{
-                                                position: "absolute",
-                                                inset: 0,
-                                                background: "rgba(0,0,0,0.4)",
+                                                placeItems: "center",
+                                                height: 220,
+                                                borderRadius: 8,
                                             }}
+                                            cover={
+                                                item.type?.startsWith("image/") ? (
+                                                    <img
+                                                        alt={item.name}
+                                                        src={item.url}
+                                                        style={{
+                                                            height: 220,
+                                                            width: "100%",
+                                                            objectFit: "contain",
+                                                        }}
+                                                    />
+                                                ) : item.type?.startsWith("video/") ? (
+                                                    <video
+                                                        controls
+                                                        style={{
+                                                            height: 220,
+                                                            width: "100%",
+                                                            objectFit: "contain",
+                                                        }}
+                                                    >
+                                                        <source src={item.url} type={item.type} />
+                                                    </video>
+                                                ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                                                    <div
+                                                        style={{
+                                                            height: 220,
+                                                            display: "flex",
+                                                            flexDirection: "column",
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                            objectFit: "contain",
+                                                            gap: 10,
+                                                        }}
+                                                    >
+                                                        {item.type === "application/pdf" ? (
+                                                            <FilePdfOutlined style={{ fontSize: 50, color: "red" }} />
+                                                        ) : (
+                                                            <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
+                                                        )}
+                                                        <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        style={{
+                                                            height: 220,
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        {item.name}
+                                                    </div>
+                                                )
+                                            }
                                         >
-                                            <Space size={16}>
-                                                <Checkbox
-                                                    checked={selectedMedia.includes(item._id)}
-                                                    onChange={(e) => {
-                                                        if (e.target.checked) {
-                                                            setSelectedMedia((prev) => [...prev, item._id]);
-                                                        } else {
-                                                            setSelectedMedia((prev) =>
-                                                                prev.filter((id) => id !== item._id)
-                                                            );
-                                                        }
-                                                    }}
-                                                    style={{
-                                                        background: "#fff",
-                                                        padding: 8,
-                                                        height: 30,
-                                                        width: 32,
-                                                        borderRadius: 6,
-                                                    }}
-                                                />
+                                        </Card>
+                                        {hoveredId === item._id && (
+                                            <Flex
+                                                justify="center"
+                                                align="center"
+                                                style={{
+                                                    position: "absolute",
+                                                    inset: 0,
+                                                    background: "rgba(0,0,0,0.4)",
+                                                }}
+                                            >
+                                                <Space size={16}>
+                                                    <Button
+                                                        danger
+                                                        shape="circle"
+                                                        onClick={() => handleDeleteMedia(item)}
+                                                    >
+                                                        <DeleteOutlined />
+                                                    </Button>
+                                                </Space>
+                                            </Flex>
+                                        )}
+                                    </div>
+                                </Card>
 
-                                                <Button
-                                                    danger
-                                                    shape="circle"
-                                                    onClick={() => handleDeleteMedia(item)}
-                                                >
-                                                    <DeleteOutlined />
-                                                </Button>
-                                            </Space>
-                                        </Flex>
-                                    )}
-                                </div>
                                 <Text
                                     ellipsis={{ tooltip: item.name }}
                                     style={{

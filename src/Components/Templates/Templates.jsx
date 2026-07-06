@@ -134,7 +134,7 @@ function Templates() {
                       style={{ width: 380 }}
 
                     >
-                      <Card style={{ height: 380, overflow: "auto" }}>
+                      <Card style={{ height: 380, overflow: "auto", scrollbarWidth: "none", msOverflowStyle: "none", }}>
                         <div
                           dangerouslySetInnerHTML={{
                             __html: item.HTML || "<p>No preview available</p>",
