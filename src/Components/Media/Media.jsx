@@ -179,7 +179,7 @@ function Media() {
                 </Empty>
             ) : (
                 <>
-                    <Row gutter={[14, 14]}>
+                    <Row gutter={[10, 10]}>
                         {mediaList.map((item) => (
                             <Col key={item._id}>
 
@@ -212,7 +212,7 @@ function Media() {
                                             style={{
                                                 placeItems: "center",
                                                 height: 220,
-                                                borderRadius: 8,
+                                                borderRadius: 0,
                                             }}
                                             cover={
                                                 item.type?.startsWith("image/") ? (
@@ -223,6 +223,7 @@ function Media() {
                                                             height: 220,
                                                             width: "100%",
                                                             objectFit: "contain",
+                                                            borderRadius: 0,
                                                         }}
                                                     />
                                                 ) : item.type?.startsWith("video/") ? (
