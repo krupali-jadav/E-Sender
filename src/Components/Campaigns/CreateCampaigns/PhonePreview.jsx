@@ -119,7 +119,7 @@ function PhonePreview({ template, page, domainName }) {
                     left: 10,
                     zIndex: 1000,
                     width: 250,
-                    backgroundColor: theme ? "#4d4d4d" : "#f7f7f7",
+                    backgroundColor: theme ? "#424040" : "#f7f7f7",
                     borderRadius: 12,
                   }}
                 >
@@ -205,11 +205,11 @@ function PhonePreview({ template, page, domainName }) {
               }}
             >
               <Button icon={<LuReply />} shape="round">
-                Reply
+                {t("reply", { defaultValue: "Reply" })}
               </Button>
 
               <Button icon={<LuForward />} shape="round">
-                Forward
+                {t("forward", { defaultValue: "Forward" })}
               </Button>
             </Flex>
           </Col>

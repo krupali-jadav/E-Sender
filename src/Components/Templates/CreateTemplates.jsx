@@ -168,7 +168,7 @@ function CreateTemplates() {
                     editProject={editProject}
                 />
             }>
-                <Space direction="vertical" s ize="large" style={{ width: "100%" }}>
+                <Space direction="vertical" size="large" style={{ width: "100%" }}>
                     <Card styles={{ body: { padding: "8px 12px", marginBottom: 0 } }}
                     >
                         <Form
@@ -189,7 +189,7 @@ function CreateTemplates() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please enter template name",
+                                                message: t("please.enter.template.name", { defaultValue: "Please enter template name" }),
                                             },
                                         ]}
                                     >
@@ -206,7 +206,7 @@ function CreateTemplates() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please enter subject",
+                                                message: t("please.enter.subject", { defaultValue: "Please enter subject" }),
                                             },
                                         ]}
                                     >

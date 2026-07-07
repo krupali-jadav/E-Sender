@@ -180,7 +180,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
             <Space direction="vertical" size="large" style={{ width: "100%" }}>
               <Row gutter={[16, 16]} align="middle" justify="space-between">
                 <Col>
-                  <Text strong style={{ fontSize: 18 }}>Select Domain</Text>
+                  <Text strong style={{ fontSize: 18 }}>{t("select.domain", { defaultValue: "Select Domain" })}</Text>
                 </Col>
                 <Col xs={24} sm={24} md={26} lg={24} xl={15} xxl={10}>
                   <Flex gap={6}>
@@ -194,7 +194,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                       icon={<PlusOutlined />}
                       onClick={() => navigate("/domains/add")}
                     >
-                      Add Domain
+                      {t("add.domain", { defaultValue: "Add Domain" })}
                     </Button>
                   </Flex>
                 </Col>

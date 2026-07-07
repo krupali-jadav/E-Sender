@@ -209,7 +209,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
 
     return (
         <Modal
-            title="Import Contacts"
+            title={t("import.contacts", { defaultValue: "Import Contacts" })}
             open={open}
             width={900}
             onCancel={onClose}

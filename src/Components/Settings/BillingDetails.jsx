@@ -151,12 +151,12 @@ function BillingDetails() {
 
                 <Row gutter={[24, 16]} justify="space-between" align="middle">
                     <Col xs={24} sm={24} md={12} lg={12}>
-                        <span>Last Update: </span>
+                        <span>{t("last.update", { defaultValue: "Last Update:" })} </span>
                     </Col>
 
                     <Col>
                         <Button type="primary" htmlType='submit' loading={loading}>
-                            Save
+                            {t("save", { defaultValue: "Save" })}
                         </Button>
                     </Col>
                 </Row>

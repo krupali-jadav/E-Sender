@@ -69,33 +69,32 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
 
   const confirmMessages = {
     clear: {
-      title: "Clear All Contacts",
-      description: "Are you sure you want to clear all contacts?",
+      title: t("clear.all.contacts", { defaultValue: "Clear All Contacts" }),
+      description: t("are.you.sure.you.want.to.clear.all.contacts", { defaultValue: "Are you sure you want to clear all contacts?" }),
     },
     duplicate: {
-      title: "Remove Duplicate Contacts",
-      description: "Are you sure you want to remove duplicate contacts?",
+      title: t("remove.duplicate.contacts", { defaultValue: "Remove Duplicate Contacts" }),
+      description: t("are.you.sure.you.want.to.remove.duplicate.contacts", { defaultValue: "Are you sure you want to remove duplicate contacts?" }),
     },
     invalid: {
-      title: "Remove Invalid Contacts",
-      description: "Are you sure you want to remove invalid contacts?",
+      title: t("remove.invalid.contacts", { defaultValue: "Remove Invalid Contacts" }),
+      description: t("are.you.sure.you.want.to.remove.invalid.contacts", { defaultValue: "Are you sure you want to remove invalid contacts?" }),
     },
     unsubscribe: {
-      title: "Remove Unsubscribed Contacts",
-      description: "Are you sure you want to remove unsubscribed contacts?",
+      title: t("remove.unsubscribed.contacts", { defaultValue: "Remove Unsubscribed Contacts" }),
+      description: t("are.you.sure.you.want.to.remove.unsubscribed.contacts", { defaultValue: "Are you sure you want to remove unsubscribed contacts?" }),
     },
     spam: {
-      title: "Remove Spam Contacts",
-      description: "Are you sure you want to remove spam contacts?",
+      title: t("remove.spam.contacts", { defaultValue: "Remove Spam Contacts" }),
+      description: t("are.you.sure.you.want.to.remove.spam.contacts", { defaultValue: "Are you sure you want to remove spam contacts?" }),
     },
     blocked: {
-      title: "Remove Blocked Contacts",
-      description: "Are you sure you want to remove blocked contacts?",
+      title: t("remove.blocked.contacts", { defaultValue: "Remove Blocked Contacts" }),
+      description: t("are.you.sure.you.want.to.remove.blocked.contacts", { defaultValue: "Are you sure you want to remove blocked contacts?" }),
     },
     delete: {
-      title: "Delete Contacts",
-      description:
-        "Are you sure you want to delete the selected contacts?",
+      title: t("delete.contacts", { defaultValue: "Delete Contacts" }),
+      description: t("are.you.sure.you.want.to.delete.contacts", { defaultValue: "Are you sure you want to delete the selected contacts?" }),
     },
   };
 
@@ -287,7 +286,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
     },
     ...customFieldColumns,
     {
-      title: "Actions",
+      title: t("actions", { defaultValue: "Actions" }),
       key: "actions",
       width: 120,
       fixed: "right",
@@ -303,10 +302,10 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
           />
 
           <Popconfirm
-            title="Delete Contact"
-            description="Are you sure you want to delete this contact?"
-            okText="Yes"
-            cancelText="No"
+            title={t("delete.contact", { defaultValue: "Delete Contact" })}
+            description={t("are.you.sure.you.want.to.delete.this.contact?", { defaultValue: "Are you sure you want to delete this contact?" })}
+            okText={t("yes", { defaultValue: "Yes" })}
+            cancelText={t("no", { defaultValue: "No" })}
             placement="top"
             onConfirm={() => handleDelete(record)}
           >

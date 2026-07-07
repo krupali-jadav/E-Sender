@@ -12,7 +12,7 @@ export const addContact = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to add contact");
+        message.error(error?.message || "Failed to add contact");
     }
 };
 
@@ -27,7 +27,7 @@ export const getAllContacts = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to fetch contacts");
+        message.error(error?.message || "Failed to fetch contacts");
     }
 };
 
@@ -42,7 +42,7 @@ export const saveContact = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to update contact");
+        message.error(error?.message || "Failed to update contact");
     }
 };
 
@@ -57,7 +57,7 @@ export const deleteContact = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete contact");
+        message.error(error?.message || "Failed to delete contact");
     }
 };
 
@@ -72,7 +72,7 @@ export const changeContactBlockStatus = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to update block status");
+        message.error(error?.message || "Failed to update block status");
     }
 };
 
@@ -87,7 +87,7 @@ export const deleteMultipleContacts = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete contacts");
+        message.error(error?.message || "Failed to delete contacts");
     }
 };
 
@@ -99,6 +99,6 @@ export const bulkAddContacts = async (payload) => {
 
     } catch (error) {
         console.log(error);
-        message.error("Failed to import contacts");
+        message.error(error?.message || "Failed to import contacts");
     }
 };

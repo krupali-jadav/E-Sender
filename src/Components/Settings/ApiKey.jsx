@@ -1,8 +1,9 @@
-import { Button, Card, Input, message, Typography } from "antd";
+import { Button, Card, Col, Input, message, Typography } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { generateApiKey } from "./SettingApi";
+import { t } from "i18next";
 const { Text } = Typography;
 function ApiKey() {
   const theme = useSelector((state) => state?.app?.theme);
@@ -41,42 +42,43 @@ function ApiKey() {
   };
 
   return (
-    <Card
-      style={{
-        borderRadius: 0,
-        borderColor: theme ? "transparent" : "#fff",
-        width: "50%"
-      }} >
-      <div style={{ marginBottom: 8 }}>
-        Your API Key
-      </div>
+    <Col xs={24} sm={24} md={20} lg={18} xl={16} xxl={10}>
+      <Card
+        style={{
+          borderRadius: 0,
+          borderColor: theme ? "transparent" : "#fff",
+        }}>
+        <div style={{ marginBottom: 8 }}>
+          {t("your.api.key", { defaultValue: "Your API Key" })}
+        </div>
 
-      <Input.Group compact>
-        <Input.Password
-          value={apiKey}
-          readOnly
-          visibilityToggle={{
-            visible,
-            onVisibleChange: setVisible,
-          }}
-          suffix={
-            <Typography.Text
-              copyable={{
-                text: apiKey,
-              }}
-            />
-          }
-          style={{width:"82%"}}
-        />
-        <Button
-          type="primary"
-          loading={loading}
-          onClick={handleGenerate}
-        >
-          Generate
-        </Button>
-      </Input.Group>
-    </Card>
+        <Input.Group compact>
+          <Input.Password
+            value={apiKey}
+            readOnly
+            visibilityToggle={{
+              visible,
+              onVisibleChange: setVisible,
+            }}
+            suffix={
+              <Typography.Text
+                copyable={{
+                  text: apiKey,
+                }}
+              />
+            }
+            style={{ width: "82%" }}
+          />
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={handleGenerate}
+          >
+            {t("generate", { defaultValue: "Generate" })}
+          </Button>
+        </Input.Group>
+      </Card>
+    </Col>
   );
 }
 export default ApiKey;

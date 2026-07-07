@@ -7,6 +7,7 @@ import BillingDetails from "./BillingDetails";
 import Support from "./Support";
 import SocialMedia from "./SocialMedia";
 import ApiKey from "./ApiKey";
+import { t } from "i18next";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("basic");
@@ -14,23 +15,23 @@ const Settings = () => {
   const tabItems = [
     {
       key: "basic",
-      label: "Basic Information",
+      label: t("basic.information", { defaultValue: "Basic Information" }),
     },
     {
       key: "billing",
-      label: "Billing Details",
+      label: t("billing.details", { defaultValue: "Billing Details" }),
     },
     {
       key: "support",
-      label: "Support",
+      label: t("support", { defaultValue: "Support" }),
     },
     {
       key: "social",
-      label: "Social Media",
+      label: t("social.media", { defaultValue: "Social Media" }),
     },
     {
       key: "api",
-      label: "API Key",
+      label: t("api.key", { defaultValue: "API Key" }),
     },
   ];
 

@@ -307,7 +307,7 @@ function CustomFields() {
             disabled={selectedRowKeys.length === 0}
             onClick={() => handleDeleteFields(selectedRowKeys)}
           >
-            Delete Selected
+            {t("delete.selected", { defaultValue: "Delete Selected" })}
           </Button>
         </Flex>
       }
@@ -368,7 +368,7 @@ function CustomFields() {
         >
           <Form layout="vertical" form={filterForm}>
             <Form.Item
-              label="Filter By Date"
+              label={t("filter.by.date", { defaultValue: "Filter By Date" })}
             >
               <RangePicker
                 style={{ width: "100%" }}

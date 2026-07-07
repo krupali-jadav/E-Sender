@@ -12,6 +12,7 @@ import {
     message,
 } from "antd";
 import { createProject, getProjects } from "./TemplatesApi";
+import { t } from "i18next";
 
 const { Text } = Typography;
 
@@ -62,7 +63,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
             open={open}
             onCancel={onCancel}
             footer={null}
-            title={editProject ? "Edit Project" : "Create New Project"}
+            title={editProject ? t("edit.project", { defaultValue: "Edit Project" }) : t("create.project", { defaultValue: "Create Project" })}
             centered
             width={600}
         >
@@ -72,21 +73,21 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
                 onFinish={handleSave}
             >
                 <Form.Item
-                    label="Project Name"
+                    label={t("project.name", { defaultValue: "Project Name" })}
                     name="projectName"
                     rules={[
                         {
                             required: true,
-                            message: "Please enter project name",
+                            message: t("please.enter.project.name", { defaultValue: "Please enter project name" }),
                         },
                     ]}
                 >
-                    <Input placeholder="Enter project name" />
+                    <Input placeholder={t("enter.project.name", { defaultValue: "Enter project name" })} />
                 </Form.Item>
 
                 <Flex justify="end" gap={8}>
                     <Button onClick={onCancel}>
-                        Cancel
+                        {t("cancel", { defaultValue: "Cancel" })}
                     </Button>
 
                     <Button
@@ -94,7 +95,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
                         htmlType="submit"
                         loading={loading}
                     >
-                        {editProject ? "Save Project" : "Create Project"}
+                        {editProject ? t("save.project", { defaultValue: "Save Project" }) : t("create.project", { defaultValue: "Create Project" })}
                     </Button>
                 </Flex>
             </Form>
@@ -104,7 +105,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
                 maxHeight: "250px",
                 overflowY: "scroll",
             }}>
-                <Text strong>Projects</Text>
+                <Text strong>{t("projects", { defaultValue: "Projects" })}</Text>
                 {projects.length > 0 ? (
                     <List
                         style={{ marginTop: 12 }}

@@ -274,7 +274,7 @@ function Groups() {
             disabled={selectedRowKeys.length === 0}
             onClick={() => handleDeleteGroups(selectedRowKeys)}
           >
-            Delete Selected
+            {t("delete.selected", { defaultValue: "Delete Selected" })}
           </Button>
         </Space>
       }
@@ -333,7 +333,7 @@ function Groups() {
         >
           <Form layout="vertical" form={filterForm}>
             <Form.Item
-              label="Filter By Date"
+              label={t("filter.by.date", { defaultValue: "Filter By Date" })}
             >
               <RangePicker
                 style={{ width: "100%" }}

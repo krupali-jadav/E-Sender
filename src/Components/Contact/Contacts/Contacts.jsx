@@ -262,7 +262,7 @@ function Contacts({ showGroups }) {
             dataIndex: "phonenumber",
             key: "phonenumber",
         },
-        
+
         {
             title: t("groups", { defaultValue: "Groups" }),
             dataIndex: "groups",
@@ -322,7 +322,7 @@ function Contacts({ showGroups }) {
                 )),
         },
         {
-            title: "Blocked",
+            title: t("blocked", { defaultValue: "Blocked" }),
             dataIndex: "blocked",
             key: "blocked",
             render: (blocked, record) => (
@@ -432,7 +432,7 @@ function Contacts({ showGroups }) {
                                 setAddContactOpen(true);
                             }}
                         >
-                            Add Contact
+                            {t("add.contact", { defaultValue: "Add Contact" })}
                         </Button>
 
                         <AddContact
@@ -450,7 +450,7 @@ function Contacts({ showGroups }) {
                             disabled={selectedRowKeys.length === 0}
                             onClick={() => handleDeleteContacts(selectedRowKeys)}
                         >
-                            Delete Selected
+                            {t("delete.selected", { defaultValue: "Delete Selected" })}
                         </Button>
                     </Flex>
                 }
@@ -513,7 +513,7 @@ function Contacts({ showGroups }) {
                     >
                         <Form layout="vertical" form={filterForm}>
                             <Form.Item
-                                label="Filter By Date"
+                                label={t("filter.by.date", { defaultValue: "Filter By Date" })}
                             >
                                 <RangePicker
                                     style={{ width: "100%" }}

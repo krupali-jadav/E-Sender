@@ -41,7 +41,7 @@ function SwitchProjectModal({
             icon={<PlusOutlined />}
             onClick={onCreateProject}
           >
-            Create Project
+            {t("create.project", { defaultValue: "Create Project" })}
           </Button>
         </Col>
       }
@@ -90,7 +90,7 @@ function SwitchProjectModal({
                       onEditProject(project);
                     }}
                   >
-                    Edit
+                    {t("edit", { defaultValue: "Edit" })}
                   </Button>
                 </Space>
               }

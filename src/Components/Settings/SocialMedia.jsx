@@ -105,7 +105,7 @@ function SocialMedia() {
             Last Updated:
           </Col>
           <Col >
-            <Button type="primary" htmlType="submit" loading={loading}>Save</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>{t("save", { defaultValue: "Save" })}</Button>
           </Col>
         </Row>
       </Form>

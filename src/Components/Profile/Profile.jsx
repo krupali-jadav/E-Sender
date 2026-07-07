@@ -1,5 +1,5 @@
 
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Row, Col, Input, Button, Avatar, Upload, Flex, Select, message, Card, } from "antd";
 import PhoneInput from "antd-phone-input";
 import { PageContainer } from "@ant-design/pro-components";
@@ -8,6 +8,7 @@ import countryList from "../../util/countryList.json";
 import axiosInstance from "../../util/axiosInstance";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getMediaPath } from "../../util/getMediaPath";
+import { t } from "i18next";
 
 
 const Profile = () => {
@@ -156,14 +157,14 @@ const Profile = () => {
                       },
                     ]}
                   >
-                    <Input placeholder="Enter Name" />
+                    <Input placeholder={t("enter.name", { defaultValue: "Enter Name" })} />
                   </Form.Item>
                 </Col>
 
                 {/* Phone */}
                 <Col md={12} sm={12} xl={12} xs={24}>
                   <Form.Item
-                    label="Phone"
+                    label={t("phone", { defaultValue: "Phone" })}
                     name="phone"
                   >
                     <PhoneInput
@@ -180,18 +181,18 @@ const Profile = () => {
                 {/* Email */}
                 <Col md={24} sm={24} xl={24} xs={24}>
                   <Form.Item
-                    label="Email Address"
+                    label={t("email.address", { defaultValue: "Email Address" })}
                     name="email"
                     rules={[
                       {
                         required: true,
-                        message: "Please enter email",
+                        message: t("please.enter.email", { defaultValue: "Please enter email" }),
                       },
                     ]}
                   >
                     <Input
                       type="email"
-                      placeholder="Enter Email"
+                      placeholder={t("enter.email", { defaultValue: "Enter Email" })}
                     />
                   </Form.Item>
                 </Col>
@@ -206,70 +207,70 @@ const Profile = () => {
             {/* Address 1 */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="Address Line 1"
+                label={t("address.line1", { defaultValue: "Address Line 1" })}
                 name="addressLine1"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter address",
+                    message: t("please.enter.address", { defaultValue: "Please enter address" }),
                   },
                 ]}
               >
-                <Input placeholder="Address Line 1" />
+                <Input placeholder={t("enter.address.line1", { defaultValue: "Enter Address Line 1" })} />
               </Form.Item>
             </Col>
 
             {/* Address 2 */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="Address Line 2"
+                label={t("address.line2", { defaultValue: "Address Line 2" })}
                 name="addressLine2"
               >
-                <Input placeholder="Address Line 2" />
+                <Input placeholder={t("enter.address.line2", { defaultValue: "Enter Address Line 2" })} />
               </Form.Item>
             </Col>
 
             {/* City */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="City"
+                label={t("city", { defaultValue: "City" })}
                 name="city"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter city",
+                    message: t("please.enter.city", { defaultValue: "Please Enter City" }),
                   },
                 ]}
               >
-                <Input placeholder="Enter City" />
+                <Input placeholder={t("enter.city", { defaultValue: "Enter City" })} />
               </Form.Item>
             </Col>
 
             {/* State */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="State"
+                label={t("state", { defaultValue: "State" })}
                 name="state"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter state",
+                    message: t("please.enter.state", { defaultValue: "Please enter state" }),
                   },
                 ]}
               >
-                <Input placeholder="Enter State" />
+                <Input placeholder={t("enter.state", { defaultValue: "Enter State" })} />
               </Form.Item>
             </Col>
 
             {/* Country */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="Country"
+                label={t("country", { defaultValue: "Country" })}
                 name="country"
               >
                 <Select
                   showSearch
-                  placeholder="Select Country"
+                  placeholder={t("select.country", { defaultValue: "Select Country" })}
                   options={countryList.map((c) => ({
                     value: c.countryCode,
                     label: c.countryNameEn,
@@ -281,10 +282,10 @@ const Profile = () => {
             {/* Zip */}
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item
-                label="Zip Code"
+                label={t("zip.code", { defaultValue: "Zip Code" })}
                 name="zip"
               >
-                <Input placeholder="Enter Zip Code" />
+                <Input placeholder={t("enter.zip.code", { defaultValue: "Enter Zip Code" })} />
               </Form.Item>
             </Col>
           </Row>
@@ -296,7 +297,7 @@ const Profile = () => {
               htmlType="submit"
               loading={loading}
             >
-              Save
+              {t("save", { defaultValue: "Save" })}
             </Button>
           </Flex>
 

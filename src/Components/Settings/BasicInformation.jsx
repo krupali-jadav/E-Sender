@@ -192,7 +192,7 @@ function BasicInformation() {
 
           <Col>
             <Button type="primary" htmlType='submit' loading={loading}>
-              Save
+              {t("save", { defaultValue: "Save" })}
             </Button>
           </Col>
         </Row>

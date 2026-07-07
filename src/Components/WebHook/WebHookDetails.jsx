@@ -11,22 +11,22 @@ function WebHookDetails() {
         {
             key: "edit",
             icon: <EditOutlined />,
-            label: "Edit endpoint",
+            label: t("edit.endpoint", { defaultValue: "Edit endpoint" }),
         },
         {
             key: "disable",
             icon: <StopOutlined />,
-            label: "Disable endpoint",
+            label: t("disable.endpoint", { defaultValue: "Disable endpoint" }),
         },
         {
             key: "rotate",
             icon: <SyncOutlined />,
-            label: "Rotate signing secret",
+            label: t("rotate.signing.secret", { defaultValue: "Rotate signing secret" }),
         },
         {
             key: "duplicate",
             icon: <CopyOutlined />,
-            label: "Duplicate webhook",
+            label: t("duplicate.webhook", { defaultValue: "Duplicate webhook" }),
         },
         {
             type: "divider",
@@ -34,7 +34,7 @@ function WebHookDetails() {
         {
             key: "delete",
             icon: <DeleteOutlined />,
-            label: "Delete webhook",
+            label: t("delete.webhook", { defaultValue: "Delete webhook" }),
             danger: true,
         },
     ];
@@ -85,7 +85,7 @@ function WebHookDetails() {
                         <Col>
                             <Space direction="vertical" size={0}>
                                 <Typography.Text type="secondary">
-                                    WebHook
+                                    {t("webhook", { defaultValue: "WebHook" })}
                                 </Typography.Text>
 
                                 <Typography.Title level={4}>
@@ -108,7 +108,7 @@ function WebHookDetails() {
                         <Col flex={0.6}>
                             <Space direction='vertical' size={0} >
                                 <Typography.Text type="secondary">
-                                    Listening For
+                                    {t("listening.for", { defaultValue: "Listening For" })}
                                 </Typography.Text>
                                 <Flex gap={5}>
                                     {events.slice(0, 2).map((event) => (
@@ -139,11 +139,11 @@ function WebHookDetails() {
                         <Col flex={0.6}>
                             <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
-                                    Status
+                                    {t("status", { defaultValue: "Status" })}
                                 </Typography.Text>
 
                                 <Tag color="green">
-                                    Enable
+                                    {t("enabled", { defaultValue: "Enabled" })}
                                 </Tag>
                             </Space>
                         </Col>
@@ -151,7 +151,7 @@ function WebHookDetails() {
                         <Col flex={0.6}>
                             <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
-                                    Created At
+                                    {t("created.at", { defaultValue: "Created At" })}
                                 </Typography.Text>
 
                                 <Typography.Text>
@@ -163,7 +163,7 @@ function WebHookDetails() {
                         <Col flex="auto"    >
                             <Space direction="vertical" size={4}>
                                 <Typography.Text type="secondary">
-                                    Signing Secret
+                                    {t("signing.secret", { defaultValue: "Signing Secret" })}
                                 </Typography.Text>
 
                                 <Space.Compact>

@@ -145,6 +145,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to add contact");
         } finally {
             setLoading(false);
         }
@@ -205,7 +206,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
 
     return (
         <Modal
-            title={editData ? "Edit Contact" : "Add Contact"}
+            title={editData ? t("edit.contact", { defaultValue: "Edit Contact" }) : t("add.contact", { defaultValue: "Add Contact" })}
             open={open}
             onCancel={onClose}
             width={800}
@@ -215,7 +216,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                     {t("cancel", { defaultValue: "Cancel" })}
                 </Button>,
                 <Button key="add" type="primary" loading={loading} onClick={() => form.submit()} >
-                    {editData ? "Save Changes" : "Add"}
+                    {editData ? t("update", { defaultValue: "Update" }) : t("add", { defaultValue: "Add" })}
                 </Button>
             ]}
         >
@@ -227,7 +228,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                             name="name"
                         >
                             <Input
-                                placeholder={t("name", { defaultValue: "Enter Name", })} />
+                                placeholder={t("enter.name", { defaultValue: "Enter Name", })} />
                         </Form.Item>
 
                         <Form.Item
@@ -236,16 +237,16 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                             rules={[
                                 {
                                     type: "email",
-                                    message: "Please enter valid email",
+                                    message: t("enter.valid.email", { defaultValue: "Please enter valid email" }),
                                 },
                                 {
                                     required: true,
-                                    message: "Please enter email",
+                                    message: t("enter.email", { defaultValue: "Please enter email" }),
                                 },
                             ]}
                         >
                             <Input
-                                placeholder={t("email", { defaultValue: "Enter Email", })} />
+                                placeholder={t("enter.email", { defaultValue: "Enter Email", })} />
                         </Form.Item>
                     </Col>
 
@@ -278,7 +279,6 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                                 placeholder={t("phone.number", { defaultValue: "Enter Phone Number", })}
                             />
                         </Form.Item>
-                            
                         {showGroups && (
                             <Form.Item
                                 name="groups"
@@ -317,7 +317,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                                                     icon={<PlusOutlined />}
                                                     onClick={handleAddGroup}
                                                 >
-                                                    Add Group
+                                                    {t("add.group", { defaultValue: "Add Group" })}
                                                 </Button>
                                             </Space.Compact>
                                         </>

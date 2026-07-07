@@ -96,23 +96,23 @@ function Media() {
     const tabItems = [
         {
             key: "all",
-            label: "All",
+            label: t("all", { defaultValue: "All" }),
         },
         {
             key: "images",
-            label: "Images",
+            label: t("images", { defaultValue: "Images" }),
         },
         {
             key: "videos",
-            label: "Videos",
+            label: t("videos", { defaultValue: "Videos" }),
         },
         {
             key: "documents",
-            label: "Documents",
+            label: t("documents", { defaultValue: "Documents" }),
         },
         {
             key: "other",
-            label: "Other",
+            label: t("other", { defaultValue: "Other" }),
         },
     ];
 
@@ -125,7 +125,7 @@ function Media() {
                         icon={<PlusOutlined />}
                         onClick={() => setAddMediaOpen(true)}
                     >
-                        {t("create.webhook", { defaultValue: "Add Media", })}
+                        {t("add.media", { defaultValue: "Add Media", })}
                     </Button>
 
                     <AddMedia
@@ -138,7 +138,7 @@ function Media() {
                         disabled={!selectedMedia.length}
                         onClick={() => handleDeleteMedia()}
                     >
-                        Delete Selected
+                        {t("delete.selected", { defaultValue: "Delete Selected" })}
                     </Button>
                 </Flex>
             }
@@ -174,7 +174,7 @@ function Media() {
                         onClick={() => setAddMediaOpen(true)}
                         icon={<PlusOutlined />}
                     >
-                        Add Media
+                        {t("add.media", { defaultValue: "Add Media" })}
                     </Button>
                 </Empty>
             ) : (

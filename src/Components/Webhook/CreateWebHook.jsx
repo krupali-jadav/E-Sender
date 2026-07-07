@@ -64,7 +64,7 @@ function CreateWebHook({ open, onClose }) {
   ];
   return (
     <Modal
-      title="Create WebHook"
+      title={t("create.webhook", { defaultValue: "Create WebHook" })}
       open={open}
       onCancel={onClose}
       footer={
@@ -88,7 +88,7 @@ function CreateWebHook({ open, onClose }) {
               rules={[
                 {
                   required: true,
-                  message: "Please enter endpoint URL",
+                  message: t("please.enter.endpoint.url", { defaultValue: "Please enter endpoint URL" }),
                 },
               ]}
             >
@@ -102,14 +102,14 @@ function CreateWebHook({ open, onClose }) {
               rules={[
                 {
                   required: true,
-                  message: "Please select events to listen",
+                  message: t("please.select.events", { defaultValue: "Please select events to listen" }),
                 },
               ]}
             >
               <Select
                 mode="multiple"
                 showSearch
-                placeholder="Search events..."
+                placeholder={t("search.events", { defaultValue: "Search events..." })}
                 style={{ width: "100%" }}
                 options={options}
                 optionFilterProp="value"
