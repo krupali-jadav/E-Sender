@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select, Button, Row, Col, Space, message, Typograph
 import { PlusOutlined } from "@ant-design/icons";
 import PhoneInput from "antd-phone-input";
 import { t } from "i18next";
-import { addContact, saveContact } from "./ContactsApi";
+import { addContact, saveContact, getAllContacts } from "./ContactsApi";
 import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 import { isValidPhoneNumber } from "../../../util/commom.utils";
@@ -83,6 +83,33 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
+
+            const response = await getAllContacts({
+                page: 0,
+                limit: 20,
+                search: "",
+            });
+
+            if (response?.status) {
+                const email = values.email.trim().toLowerCase();
+
+                const isDuplicate = response.contacts.some((contact) => {
+                    if (editData && contact._id === editData._id) {
+                        return false;
+                    }
+
+                    return (
+                        contact.email &&
+                        contact.email.trim().toLowerCase() === email
+                    );
+                });
+
+                if (isDuplicate) {
+                    message.error("This email already exists.");
+                    setLoading(false);
+                    return;
+                }
+            }
             const payload = {
                 name: values.name,
                 email: values.email,

@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
@@ -61,6 +63,12 @@ function App() {
   const token = useSelector((state) => state?.user?.token);
   const darkMode = useSelector((state) => state?.app?.theme);
   const isAuthenticated = !!token;
+  const lang = useSelector((state) => state.app.lang);
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang, i18n]);
 
   const routes = [
     { path: "/dashboard", component: Dashboard },
