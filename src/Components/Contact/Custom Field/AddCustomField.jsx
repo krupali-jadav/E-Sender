@@ -81,10 +81,11 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
             form.setFieldsValue({
                 name: editData.name || "",
                 type: typeValue,
-
                 fallbackValue:
-                    typeValue === "date" && editData.fallbackValue
-                        ? dayjs(editData.fallbackValue)
+                    typeValue === "date"
+                        ? (editData.fallbackValue
+                            ? dayjs(editData.fallbackValue)
+                            : null)
                         : editData.fallbackValue,
             });
         } else {
@@ -147,32 +148,19 @@ function AddCustomField({ open, onClose, onSuccess, editData }) {
                 >
                     <Select
                         placeholder={t("select.type", { defaultValue: "Select Type" })}
-                        onChange={(value) => setSelectedType(value)}
+                        onChange={(value) => {
+                            setSelectedType(value);
+
+                            form.setFieldsValue({
+                                type: value,
+                                fallbackValue: undefined,
+                            });
+                        }}
                         options={[
-                            {
-                                label: t("text", {
-                                    defaultValue: "Text",
-                                }),
-                                value: "text",
-                            },
-                            {
-                                label: t("number", {
-                                    defaultValue: "number",
-                                }),
-                                value: "number",
-                            },
-                            {
-                                label: t("boolean", {
-                                    defaultValue: "boolean",
-                                }),
-                                value: "boolean",
-                            },
-                            {
-                                label: t("date", {
-                                    defaultValue: "date",
-                                }),
-                                value: "date",
-                            },
+                            { label: "Text", value: "text" },
+                            { label: "Number", value: "number" },
+                            { label: "Boolean", value: "boolean" },
+                            { label: "Date", value: "date" },
                         ]}
                     />
                 </Form.Item>

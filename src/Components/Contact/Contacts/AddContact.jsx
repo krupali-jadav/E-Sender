@@ -8,6 +8,7 @@ import { addGroup, getAllGroups } from "../Group/GroupApi";
 import { getAllCustomFields } from "../Custom Field/CustomeFieldApi";
 import { isValidPhoneNumber } from "../../../util/commom.utils";
 const { Text } = Typography;
+import dayjs from "dayjs";
 
 function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups }) {
     const [groupName, setGroupName] = useState("");
@@ -190,8 +191,14 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
 
                 const customFieldData = {};
 
-                editData.fields?.forEach((field) => {
-                    customFieldData[field.fieldId?._id || field.fieldId] = field.value;
+                editData.fields?.forEach((item) => {
+                    const fieldId = item.fieldId?._id || item.fieldId;
+                    const fieldType = item.fieldId?.type;
+
+                    customFieldData[fieldId] =
+                        fieldType === 3 && item.value
+                            ? dayjs(item.value)
+                            : item.value;
                 });
 
                 setFieldValues(customFieldData);
@@ -366,7 +373,11 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                                     <DatePicker
                                         style={{ width: "100%" }}
                                         placeholder={`Select ${field.name}`}
-                                        value={fieldValues[field._id]}
+                                        value={
+                                            dayjs.isDayjs(fieldValues[field._id])
+                                                ? fieldValues[field._id]
+                                                : null
+                                        }
                                         onChange={(date) =>
                                             setFieldValues((prev) => ({
                                                 ...prev,
