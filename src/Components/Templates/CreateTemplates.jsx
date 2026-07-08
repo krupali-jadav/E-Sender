@@ -65,6 +65,7 @@ function CreateTemplates() {
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to fetch projects");
         }
     };
 

@@ -20,6 +20,8 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [exporting, setExporting] = useState(false);
   const [editContact, setEditContact] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [contacts, setContacts] = useState([]);
 
   const handleSave = (contact) => {
     setCampaignData((prev) => {
@@ -46,6 +48,27 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
         (item) => item._id !== record._id
       ),
     }));
+  };
+
+  //This is for Data pass with local state
+  useEffect(() => {
+    setContacts(campaignData.contacts);
+  }, [campaignData.contacts]);
+
+  const handleSearch = (value) => {
+    setSearchText(value);
+
+    if (!value.trim()) {
+      setContacts(campaignData.contacts);
+      return;
+    }
+
+    const filtered = campaignData.contacts.filter((contact) =>
+      contact.name?.toLowerCase().includes(value.toLowerCase()) ||
+      contact.email?.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setContacts(filtered);
   };
 
   const fetchCustomFields = async () => {
@@ -115,11 +138,6 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
       setExporting(true);
 
       const contacts = campaignData.contacts || [];
-
-      if (contacts.length === 0) {
-        message.warning("There are no contacts to export.");
-        return;
-      }
 
       setExporting(true);
 
@@ -438,9 +456,10 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
           <Row justify="space-between" align="middle" gutter={[16, 16]}>
             <Col xs={24} md={6}>
               <Input.Search
-                placeholder={t("search", { defaultValue: "Search", })}
-                enterButton={<SearchOutlined />}
+                placeholder="Search...."
                 allowClear
+                enterButton={<SearchOutlined />}
+                onChange={(e) => handleSearch(e.target.value)}
               />
             </Col>
 
@@ -544,7 +563,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
 
           <Table
             columns={columns}
-            dataSource={campaignData.contacts}
+            dataSource={contacts}
             rowKey="_id"
             pagination={false}
             scroll={{ x: "max-content", y: 320 }}

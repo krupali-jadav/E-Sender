@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button, Switch, Space, Spin, Empty } from "antd";
+import { Row, Col, Card, Button, Switch, Space, Spin, Empty, message } from "antd";
 import { PlusCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,7 @@ function Templates() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message || "Failed to fetch templates");
     } finally {
       setLoading(false);
     }
@@ -52,6 +53,7 @@ function Templates() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message || "Failed to fetch projects");
     }
   };
 

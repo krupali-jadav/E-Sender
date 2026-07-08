@@ -36,7 +36,7 @@ function BasicInformation() {
       }
     } catch (error) {
       console.log(error);
-      message.error("Failed to save basic information");
+      message.error(error?.message || "Failed to save basic information");
     } finally {
       setLoading(false);
     }

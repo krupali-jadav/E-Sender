@@ -31,7 +31,7 @@ function SocialMedia() {
       }
     } catch (error) {
       console.log(error);
-      message.error("Failed to save social media details");
+      message.error(error?.message || "Failed to save social media details");
     } finally {
       setLoading(false);
     }

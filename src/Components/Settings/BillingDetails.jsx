@@ -36,7 +36,7 @@ function BillingDetails() {
             }
         } catch (error) {
             console.log(error);
-            message.error("Failed to save billing details");
+            message.error(error?.message || "Failed to save billing details");
         } finally {
             setLoading(true);
         }

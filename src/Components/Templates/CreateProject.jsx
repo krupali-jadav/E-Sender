@@ -53,6 +53,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
             }
         } catch (error) {
             console.log(error);
+            message.error(error?.message || "Failed to create project");
         } finally {
             setLoading(false);
         }

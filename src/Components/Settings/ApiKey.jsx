@@ -36,6 +36,7 @@ function ApiKey() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message || "Failed to generate API key");
     } finally {
       setLoading(false);
     }

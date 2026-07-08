@@ -22,6 +22,7 @@ function Support() {
       }
     } catch (error) {
       console.log(error);
+      message.error(error?.message || "Failed to get support list");
     } finally {
       setLoading(false);
     }
@@ -55,10 +56,11 @@ function Support() {
               data?.message || "Support deleted successfully"
             );
 
-            getSupportList(); // table refresh
+            getSupportList();
           }
         } catch (error) {
           console.log(error);
+          message.error(error?.message || "Failed to delete support");
         }
       },
     });
