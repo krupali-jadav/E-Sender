@@ -234,7 +234,7 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
                 }
               }}
             >
-              Next
+              {t("next", { defaultValue: "Next" })}
             </Button>
           </Flex>
         </Col >

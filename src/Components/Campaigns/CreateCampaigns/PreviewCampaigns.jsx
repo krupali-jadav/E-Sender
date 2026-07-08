@@ -63,12 +63,12 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
 
                 <div >
                   <Flex gap={5} >
-                  <Text strong >Demo</Text>
-                  <Text type="secondary" strong>
-                    {campaignData?.domain || "-"}
-                  </Text>
+                    <Text strong >Demo</Text>
+                    <Text type="secondary" strong>
+                      {campaignData?.domain || "-"}
+                    </Text>
                   </Flex>
-                  <Row 
+                  <Row
                     onClick={() => setOpen(!open)}
                     style={{
                       cursor: "pointer",

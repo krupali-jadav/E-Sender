@@ -15,7 +15,7 @@ export const saveBasicInfo = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to save basic information");
+        message.error(error?.message || "Failed to save basic information");
     }
 };
 export const saveBillingDetails = async (payload) => {
@@ -32,7 +32,7 @@ export const saveBillingDetails = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to save billing details");
+        message.error(error?.message || "Failed to save billing details");
     }
 };
 export const getUserSetting = async (payload) => {
@@ -49,7 +49,7 @@ export const getUserSetting = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to get user setting");
+        message.error(error?.message || "Failed to get user setting");
     }
 };
 export const addSupport = async (payload) => {
@@ -66,7 +66,7 @@ export const addSupport = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to save support details");
+        message.error(error?.message || "Failed to save support details");
     }
 }
 export const updateSupport = async (payload) => {
@@ -83,7 +83,7 @@ export const updateSupport = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to save support details");
+        message.error(error?.message || "Failed to save support details");
     }
 }
 export const deleteSupport = async (payload) => {
@@ -100,7 +100,7 @@ export const deleteSupport = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete support");
+        message.error(error?.message || "Failed to delete support");
     }
 };
 export const saveSocialMedia = async (payload) => {
@@ -117,22 +117,22 @@ export const saveSocialMedia = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to save social media details");
+        message.error(error?.message || "Failed to save social media details");
     }
 };
 export const generateApiKey = async () => {
-  try {
-    const response = await axiosInstance.post(
-      "/api/user-setting/generate-api-key"
-    );
+    try {
+        const response = await axiosInstance.post(
+            "/api/user-setting/generate-api-key"
+        );
 
-    if (response.data?.status) {
-      return response.data;
-    } else {
-      message.error(response.data?.message);
+        if (response.data?.status) {
+            return response.data;
+        } else {
+            message.error(response.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        message.error(error?.message || "Failed to generate API key");
     }
-  } catch (error) {
-    console.log(error);
-    message.error("Failed to generate API key");
-  }
-};  
+};

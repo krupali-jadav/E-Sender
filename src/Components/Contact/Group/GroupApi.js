@@ -12,7 +12,7 @@ export const addGroup = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Something went wrong");
+        message.error(error?.message || "Failed to add group");
     }
 };
 
@@ -27,7 +27,7 @@ export const getAllGroups = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to fetch groups");
+        message.error(error?.message || "Failed to fetch groups");
     }
 };
 
@@ -42,7 +42,7 @@ export const saveGroup = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to update group");
+        message.error(error?.message || "Failed to update group");
     }
 };
 
@@ -57,7 +57,7 @@ export const deleteGroup = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete group");
+        message.error(error?.message || "Failed to delete group");
     }
 }
 
@@ -72,6 +72,6 @@ export const deleteMultipleGroups = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete groups");
+        message.error(error?.message || "Failed to delete groups");
     }
 };

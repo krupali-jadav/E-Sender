@@ -15,6 +15,7 @@ export const addCustomField = async (payload) => {
         }
     } catch (error) {
         console.log(error);
+        message.error(error?.message || "Failed to add custom field");
     }
 };
 
@@ -32,6 +33,7 @@ export const getAllCustomFields = async (payload) => {
         }
     } catch (error) {
         console.log(error);
+        message.error(error?.message || "Failed to fetch custom fields");
     }
 };
 export const updateCustomField = async (payload) => {
@@ -48,6 +50,7 @@ export const updateCustomField = async (payload) => {
         }
     } catch (error) {
         console.log(error);
+        message.error(error?.message || "Failed to update custom field");
     }
 };
 export const deleteCustomField = async (payload) => {
@@ -64,6 +67,7 @@ export const deleteCustomField = async (payload) => {
         }
     } catch (error) {
         console.log(error);
+        message.error(error?.message || "Failed to delete custom field");
     }
 };
 
@@ -78,6 +82,6 @@ export const deleteMultipleFields = async (payload) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to delete contacts");
+        message.error(error?.message || "Failed to delete contacts");
     }
 };

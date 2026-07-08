@@ -15,7 +15,7 @@ export const createProject = async (payload) => {
         message.error(response.data?.message);
     } catch (error) {
         console.log(error);
-        message.error("Failed to create project");
+        message.error(error?.message || "Failed to create project");
     }
 };
 
@@ -30,7 +30,7 @@ export const getProjects = async () => {
         message.error(response.data?.message);
     } catch (error) {
         console.log(error);
-        message.error("Failed to fetch projects");
+        message.error(error?.message || "Failed to fetch projects");
     }
 };
 export const createTemplate = async (payload) => {
@@ -47,7 +47,7 @@ export const createTemplate = async (payload) => {
         message.error(response.data?.message);
     } catch (error) {
         console.log(error);
-        message.error("Failed to create template");
+        message.error(error?.message || "Failed to create template");
     }
 };
 
@@ -64,7 +64,7 @@ export const getTemplatesByProject = async (projectId) => {
         }
     } catch (error) {
         console.log(error);
-        message.error("Failed to fetch templates");
+        message.error(error?.message || "Failed to fetch templates");
     }
 };
 export const updateTemplate = async (templateId, payload) => {
@@ -81,19 +81,21 @@ export const updateTemplate = async (templateId, payload) => {
         message.error(response.data?.message);
     } catch (error) {
         console.log(error);
-        message.error("Failed to update template");
+        message.error(error?.message || "Failed to update template");
     }
 };
-    
+
 export const getTemplateById = async (templateId) => {
     try {
         const response = await axiosInstance.get(
             `/api/templates/${templateId}`
         );
 
-        return response.data;
+        if (response.data?.success) {
+            return response.data;
+        }
     } catch (error) {
         console.log(error);
-        throw error;
+        message.error(error?.message || "Failed to fetch template");
     }
 };
