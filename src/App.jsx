@@ -19,7 +19,6 @@ import Templates from "./Components/Templates/Templates";
 import Campaigns from "./Components/Campaigns/Campaigns";
 import Domains from "./Components/Domains/Domains";
 import AddDomain from "./Components/Domains/AddDomain";
-import Documentation from "./Components/Documentation/Documentation";
 import Logs from "./Components/Log/Logs";
 import Settings from "./Components/Settings/Settings";
 import { ConfigProvider, theme as antdTheme } from "antd";
@@ -28,11 +27,17 @@ import CreateCampaigns from "./Components/Campaigns/CreateCampaigns/CreateCampai
 import WebHook from "./Components/WebHook/WebHook";
 import Media from "./Components/Media/Media";
 import WebHookDetails from "./Components/WebHook/WebHookDetails";
+import DocumentationProLayout from "./Components/Documentation/DocumentationLayout ";
+import ApiRefrennce from "./Components/Documentation/ApiRefrennce";
+import Introduction from "./Components/Documentation/Introduction";
+import GenerateApiKeyDocs from "./Components/Documentation/GenerateApiKeyDocs";
+import AddDomainDocs from "./Components/Documentation/AddDomainDocs";
 
 const ProtectedRoute = ({
   component: Component,
   publicRoute,
   isPolicyRoute,
+  isDocumentationRoute,
   isAuthenticated,
   props,
 }) => {
@@ -45,6 +50,13 @@ const ProtectedRoute = ({
       <PolicyProLayout>
         <Component {...props} />
       </PolicyProLayout>
+    );
+  }
+  if (isDocumentationRoute) {
+    return (
+      <DocumentationProLayout>
+        <Component {...props} />
+      </DocumentationProLayout>
     );
   }
 
@@ -91,7 +103,6 @@ function App() {
     { path: "/webhook-details", component: WebHookDetails },
     { path: "/settings", component: Settings },
     { path: "/media", component: Media },
-    { path: "/documentation", component: Documentation },
     {
       path: "/privacy-policy",
       component: PolicyPage,
@@ -112,6 +123,26 @@ function App() {
       publicRoute: true,
       isPolicyRoute: true,
       props: { type: "refundPolicy" },
+    },
+    {
+      path: "/documentation/Introduction",
+      component: Introduction,
+      isDocumentationRoute: true,
+    },
+    {
+      path: "/documentation/generate-apikey",
+      component: GenerateApiKeyDocs,
+      isDocumentationRoute: true,
+    },
+    {
+      path: "/documentation/adddomain",
+      component: AddDomainDocs,
+      isDocumentationRoute: true,
+    },
+    {
+      path: "/documentation/api-reference",
+      component: ApiRefrennce,
+      isDocumentationRoute: true,
     },
   ];
 
@@ -163,6 +194,7 @@ function App() {
                       component={route.component}
                       publicRoute={route.publicRoute}
                       isPolicyRoute={route.isPolicyRoute}
+                      isDocumentationRoute={route.isDocumentationRoute}
                       isAuthenticated={isAuthenticated}
                       props={route.props}
                     />

@@ -171,7 +171,7 @@ const ProLayouts = ({ children }) => {
         icon: <IoSettingsOutline />,
       },
       {
-        path: "/documentation",
+        path: "/documentation/introduction",
         name: t("documentation", { defaultValue: "Documentation" }),
         icon: <FileTextOutlined />,
       },
@@ -403,6 +403,7 @@ const ProLayouts = ({ children }) => {
           "/privacy-policy",
           "/terms-and-conditions",
           "/refund-policy",
+          "/documentation",
         ];
 
         if (externalPages.includes(item.path)) {
