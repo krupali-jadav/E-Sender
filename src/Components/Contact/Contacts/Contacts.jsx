@@ -422,6 +422,7 @@ function Contacts({ showGroups }) {
                         <ExcelImport
                             open={excelOpen}
                             onClose={() => setExcelOpen(false)}
+                            fetchContacts={fetchContacts}
                         />
 
                         <Button

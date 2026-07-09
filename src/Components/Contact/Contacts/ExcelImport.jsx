@@ -6,7 +6,7 @@ import { bulkAddContacts } from "./ContactsApi";
 import { getAllCustomFields } from "../../Contact/Custom Field/CustomeFieldApi";
 import { t } from "i18next";
 
-function ExcelImport({ open, onClose, onSubmit}) {
+function ExcelImport({ open, onClose, onSubmit, fetchContacts }) {
     const [submitting, setSubmitting] = useState(false);
     const [customFields, setCustomFields] = useState([]);
     const [loadingFields, setLoadingFields] = useState(false);
@@ -115,7 +115,7 @@ function ExcelImport({ open, onClose, onSubmit}) {
                 message.success(
                     result?.message || "Bulk contacts added successfully"
                 );
-
+                fetchContacts?.();
                 onClose();
             }
         } finally {
