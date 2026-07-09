@@ -10,18 +10,7 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import {
-  SiNodedotjs,
-  SiNextdotjs,
-  SiPhp,
-  SiLaravel,
-  SiPython,
-  SiRuby,
-  SiRubyonrails,
-  SiGo,
-  SiRust,
-  SiElixir,
-  SiOpenjdk,
-  SiDotnet,
+  SiNodedotjs, SiNextdotjs, SiPhp, SiLaravel, SiPython, SiRuby, SiRubyonrails, SiGo, SiRust, SiElixir, SiOpenjdk, SiDotnet,
 } from "react-icons/si";
 import { TbTerminal2 } from "react-icons/tb";
 
@@ -93,7 +82,6 @@ const Introduction = () => {
                 </Title>
               </Col>
 
-              
             </Row>
 
             <Paragraph
@@ -213,8 +201,6 @@ const Introduction = () => {
                 </Col>
               ))}
             </Row>
-
-         
           </div>
         </Space>
       </Col>
