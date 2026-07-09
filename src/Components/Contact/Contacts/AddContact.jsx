@@ -291,7 +291,6 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                             rules={[
                                 {
                                     validator: (_, value) => {
-                                        // Optional field
                                         if (!phone || phone.trim() === "") {
                                             return Promise.resolve();
                                         }
