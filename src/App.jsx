@@ -27,17 +27,16 @@ import CreateCampaigns from "./Components/Campaigns/CreateCampaigns/CreateCampai
 import WebHook from "./Components/WebHook/WebHook";
 import Media from "./Components/Media/Media";
 import WebHookDetails from "./Components/WebHook/WebHookDetails";
-import DocumentationProLayout from "./Components/Documentation/DocumentationLayout ";
 import ApiRefrennce from "./Components/Documentation/ApiRefrennce";
 import Introduction from "./Components/Documentation/Introduction";
 import GenerateApiKeyDocs from "./Components/Documentation/GenerateApiKeyDocs";
 import AddDomainDocs from "./Components/Documentation/AddDomainDocs";
+import DocumentationLayout from "./Components/Documentation/DocumentationLayout ";
 
 const ProtectedRoute = ({
   component: Component,
   publicRoute,
   isPolicyRoute,
-  isDocumentationRoute,
   isAuthenticated,
   props,
 }) => {
@@ -50,13 +49,6 @@ const ProtectedRoute = ({
       <PolicyProLayout>
         <Component {...props} />
       </PolicyProLayout>
-    );
-  }
-  if (isDocumentationRoute) {
-    return (
-      <DocumentationProLayout>
-        <Component {...props} />
-      </DocumentationProLayout>
     );
   }
 
@@ -124,26 +116,7 @@ function App() {
       isPolicyRoute: true,
       props: { type: "refundPolicy" },
     },
-    {
-      path: "/documentation/Introduction",
-      component: Introduction,
-      isDocumentationRoute: true,
-    },
-    {
-      path: "/documentation/generate-apikey",
-      component: GenerateApiKeyDocs,
-      isDocumentationRoute: true,
-    },
-    {
-      path: "/documentation/adddomain",
-      component: AddDomainDocs,
-      isDocumentationRoute: true,
-    },
-    {
-      path: "/documentation/api-reference",
-      component: ApiRefrennce,
-      isDocumentationRoute: true,
-    },
+
   ];
 
   return (
@@ -201,13 +174,26 @@ function App() {
                   }
                 />
               ))}
+              <Route
+                path="/documentation"
+                element={
+                  <ProLayouts>
+                    <DocumentationLayout />
+                  </ProLayouts>
+                }
+              >
+                <Route index element={<Navigate to="introduction" replace />} />
+                <Route path="introduction" element={<Introduction />} />
+                <Route path="generate-apikey" element={<GenerateApiKeyDocs />} />
+                <Route path="adddomain" element={<AddDomainDocs />} />
+              </Route>
 
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </>
           )}
-        </Routes>
-      </BrowserRouter>
-    </ConfigProvider>
+      </Routes>
+    </BrowserRouter>
+    </ConfigProvider >
   );
 }
 

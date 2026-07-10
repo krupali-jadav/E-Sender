@@ -1,5 +1,5 @@
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Breadcrumb,Grid, Dropdown, Select, Typography } from "antd";
+import { Avatar, Breadcrumb, Grid, Dropdown, Select, Typography } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { LuLogs } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineCampaign, MdOutlinePermMedia, MdWebhook } from "react-icons/md";
 import { formatDate } from "../../util/commom.utils";
+import { useEffect, useState } from "react";
 
 const { Title, Text } = Typography;
 
@@ -26,6 +27,15 @@ const ProLayouts = ({ children }) => {
   const language = useSelector((state) => state?.app?.lang);
   const theme = useSelector((state) => state?.app?.theme);
   const CompanyName = t("esender.web", { defaultValue: "E-Sender Web" });
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/documentation")) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  }, [location.pathname]);
 
   const toggleTheme = () => {
     const newTheme = !theme;
@@ -39,7 +49,7 @@ const ProLayouts = ({ children }) => {
           theme: {
             algorithm: newTheme ? "dark" : "light",
             token: {
-              colorPrimary: "#1890ff",
+              colorPrimary: "#1890FF",
               borderRadius: 16,
             },
           },
@@ -125,7 +135,7 @@ const ProLayouts = ({ children }) => {
       },
       {
         path: "/contact",
-        name:t("contacts", { defaultValue: "Contacts" }),
+        name: t("contacts", { defaultValue: "Contacts" }),
         icon: <TeamOutlined />,
         routes: [
           {
@@ -199,6 +209,8 @@ const ProLayouts = ({ children }) => {
       breadcrumbRender={(routers = []) => routers}
       headerContentRender={() => <BreadcrumbCustom />}
       route={menuRoutes}
+      collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
       location={{
         pathname: location.pathname,
       }}
@@ -403,7 +415,6 @@ const ProLayouts = ({ children }) => {
           "/privacy-policy",
           "/terms-and-conditions",
           "/refund-policy",
-          "/documentation",
         ];
 
         if (externalPages.includes(item.path)) {
@@ -412,12 +423,21 @@ const ProLayouts = ({ children }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                window.open(item.path, "_blank", "noopener,noreferrer");
+              }}
+            >
+              {dom}
+            </div>
+          );
+        }
 
-                window.open(
-                  item.path,
-                  "_blank",
-                  "noopener,noreferrer"
-                );
+        if (item.path === "/documentation/introduction") {
+          return (
+            <div
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate("/documentation/introduction");
               }}
             >
               {dom}
