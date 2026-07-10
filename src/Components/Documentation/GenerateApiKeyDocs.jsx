@@ -1,6 +1,7 @@
 import { CopyOutlined } from "@ant-design/icons";
-import { Avatar, Button, Flex, Space, Typography, } from "antd";
-const { Title, Text, Paragraph, Link } = Typography;
+import { Avatar, Button, Flex, message, Space, Typography, } from "antd";
+import { useSelector } from "react-redux";
+const { Title, Text, Paragraph } = Typography;
 
 const steps = [
   {
@@ -66,6 +67,7 @@ const codeSteps = [
 ];
 
 function GenerateApiKeyDocs() {
+  const theme = useSelector((state) => state?.app?.theme);
   return (
     <div
       style={{
@@ -134,8 +136,8 @@ function GenerateApiKeyDocs() {
                       width: 34,
                       height: 34,
                       borderRadius: "50%",
-                      background: "#262626",
-                      color: "#fff",
+                      background: theme ? "#1A1A1A" : "#c9c9c9",
+                      color: theme ? "#fff" : "#000",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -206,7 +208,8 @@ function GenerateApiKeyDocs() {
                 >
                   <Avatar
                     style={{
-                      background: "#262626",
+                      background: theme ? "#1A1A1A" : "#e7e7e7",
+                      color: theme ? "#fff" : "#000",
                     }}
                   >
                     {index + 1}

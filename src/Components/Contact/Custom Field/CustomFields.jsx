@@ -1,6 +1,6 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Row, Select, Space, Table, Typography } from 'antd'
+import { Button, Card, DatePicker, Dropdown, Flex, Form, message, Modal, Select, Space, Table, Typography } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import AddCustomField from '../../Contact/Custom Field/AddCustomField';
@@ -55,14 +55,6 @@ function CustomFields() {
     setSelectedField(record);
     setEditModalOpen(true);
   };
-
-  const OrderStatuses = [
-    t("text", { defaultValue: "Text" }),
-    t("number", { defaultValue: "Number" }),
-    t("boolean", { defaultValue: "Boolean" }),
-    t("date", { defaultValue: "Date" }),
-  ];
-
   const getAllFields = async () => {
     try {
       setLoading(true);
