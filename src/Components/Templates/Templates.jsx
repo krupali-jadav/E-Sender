@@ -108,7 +108,7 @@ function Templates() {
 
           {/* Template Cards */}
           {loading ? (
-            <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
+            <div align="center" style={{ marginTop: 100 }}>
               <Spin size="middle" />
             </div>
           ) : templates.length === 0 ? (
@@ -136,7 +136,7 @@ function Templates() {
                       style={{ width: 380 }}
 
                     >
-                      <Card style={{ height: 380, overflow: "auto", scrollbarWidth: "none", msOverflowStyle: "none", }}>
+                      <Card style={{ height: 380, overflow: "auto", scrollbarWidth: "none", msOverflowStyle: "none", marginBottom: 16 }}>
                         <div
                           dangerouslySetInnerHTML={{
                             __html: item.HTML || "<p>No preview available</p>",
@@ -144,7 +144,7 @@ function Templates() {
                         />
                       </Card>
 
-                      <Row gutter={12} style={{ marginTop: 16 }}>
+                      <Row gutter={12} >
                         <Col span={12}>
                           <Button
                             type="primary"

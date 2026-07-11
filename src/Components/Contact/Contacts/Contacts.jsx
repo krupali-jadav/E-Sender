@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Select, Space, Switch, Table, Tag } from 'antd'
+import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Popover, Select, Space, Switch, Table, Tag } from 'antd'
 import { ImportOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import { t } from 'i18next'
 import { formatDate, getCurrentTime } from '../../../util/commom.utils';
@@ -375,15 +375,11 @@ function Contacts({ showGroups }) {
                     trigger={["click"]}
                     placement="bottomRight"
                 >
-                    <MoreOutlined
-                        style={{
-                            fontSize: "15px",
-                            cursor: "pointer",
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                    />
+                    <Col display="flex" align="middle">
+                        <MoreOutlined
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </Col>
                 </Dropdown>
             ),
         },
@@ -479,7 +475,6 @@ function Contacts({ showGroups }) {
 
                     <Card styles={{ body: { padding: 0 } }}>
                         <Table
-                            style={{ padding: 0 }}
                             rowKey="_id"
                             columns={columns}
                             dataSource={data}

@@ -107,7 +107,7 @@ function GenerateApiKeyDocs() {
             API keys are secret tokens used to authenticate your requests.They are unique to your account and must be kept confidential.
           </Paragraph>
 
-          <Paragraph style={{ fontSize: 1, color: "#8c8c8c" }}>
+          <Paragraph style={{ fontSize: 15, color: "#8c8c8c" }}>
             You must create at least one API key to use the platform through SDKs, API integrations, or other supported services.
           </Paragraph>
         </div>

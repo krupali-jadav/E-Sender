@@ -15,6 +15,7 @@ import {
   Image,
   Tag,
   Flex,
+  Card,
 } from "antd";
 import {
   CloudDownloadOutlined,
@@ -355,12 +356,7 @@ const Invoice = ({ isEdit = false }) => {
   }, [order_id]);
   return (
     <>
-      <Row
-        style={{
-          gap: "5px",
-          flexDirection: "row-reverse",
-          marginBottom: "13px",
-        }}
+      <Row direction="row" justify="end" align="middle"
       >
         <Button
           style={{
@@ -374,357 +370,327 @@ const Invoice = ({ isEdit = false }) => {
         </Button>
       </Row>
 
-      <div
-        id="master_order_invoice"
-        style={{
-          maxWidth: "700px",
-          width: "100%",
-          margin: "auto",
-          background: theme ? "#333333" : "#ffff",
-          borderRadius: "12px",
-          padding: "30px",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-        }}
-      >
-        {/* HEADER */}
-        <Row justify="space-between" align="middle">
-          <Col>
-            <Title
-              level={3}
-              style={{
-                margin: 0,
-                fontWeight: 600,
-                letterSpacing: "1px",
-              }}
-            >
-              INVOICE
-            </Title>
-            <Flex vertical>
-              <Text type="secondary">
-                {t("issued", { defaultValue: "Issued" })}:{" "}:
-                {order?.createdAt
-                  ? formatDate(order.createdAt)
-                  : "N/A"}
-              </Text>
-              <Text type="secondary">
-                {t("orderid", { defaultValue: "Order ID" })}:{" "}
-                <Text
-                  copyable={{
-                    text: order?._id || "",
-                  }}
-                >
-                  {order?._id || "N/A"}
-                </Text>
-              </Text>
-              <Text type="secondary">
-                {t("date", { defaultValue: "Date" })}{" "}:{order?.createdAt ? formatDate(order.createdAt) : "N/A"}
-              </Text>
-              <Text type="secondary">
-                {t("order.status", {
-                  defaultValue: "Order Status",
-                })}{" "}
-                : {t(order?.status) || "N/A"}
-              </Text>
-            </Flex>
-          </Col>
-
-          <Col>
-            <Image
-              preview={false}
-              width={70}
-              src={getMediaPath(order?.panelId?.billing?.logo)}
-            />
-          </Col>
-        </Row>
-
-        <Divider />
-
-        {/* TOP INFO */}
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <Row
-            style={{
-              border: "1px solid #ececec",
-            }}
-          >
-            <Col
-              span={12}
-              style={{
-                padding: "20px",
-                borderLeft: "1px solid #ececec",
-              }}
-            >
-              <Title level={5}>
-                {t("invoiceto", {
-                  defaultValue: "Invoice To",
-                })}{" "}
-                :
-              </Title>
-              <Flex vertical>
-                <Text strong>{panel?.billing?.name || "Company"}</Text>
-                <Text>
-                  <EnvironmentOutlined /> {panel?.billing?.address || "Office"}
-                </Text>
-                <Text>
-                  <PhoneOutlined /> {panel?.billing?.phone || "Phone"}
-                </Text>
-                <Text>
-                  <MailOutlined /> {panel?.billing?.email || "Email"}
-                </Text>
-              </Flex>
-            </Col>
-
-            <Col
-              span={12}
-              style={{
-                padding: "20px",
-                borderLeft: "1px solid #ececec",
-              }}
-            >
-              <Title level={5}>
-                {t("payto", {
-                  defaultValue: "Pay To",
-                })}{" "}
-                :
-              </Title>
-              <Flex vertical>
-                <Text strong>{order?.name || "Username"}</Text>
-                <Text>
-                  <EnvironmentOutlined /> {renderAddress(order?.userId?.address)}
-                </Text>
-                <Text>
-                  <PhoneOutlined /> {order?.phone || "Phone"}
-                </Text>
-                <Text>
-                  <MailOutlined /> {order?.email || "Email"}
-                </Text>
-              </Flex>
-            </Col>
-          </Row>
-
-          <Row
-            style={{
-              background: theme ? "#686767" : "#d8d8d8",
-              padding: "12px 15px",
-              fontWeight: 600,
-              borderBottom: "1px solid #ececec",
-            }}
-          >
-            {columns.map((col, index) => {
-              const spans = [4, 9, 4, 5, 2];
-
-              return (
-                <Col key={col.key || index} span={spans[index]}>
-                  {col.title}
-                </Col>
-              );
-            })}
-          </Row>
-
-          <Row
-            style={{
-              padding: "5px 15px",
-              borderBottom: "1px solid #ececec",
-            }}
-          >
-            <Col span={4}>1</Col>
-            <Col span={9}>Demo</Col>
-            <Col span={4}>$100</Col>
-            <Col span={5}>2</Col>
-            <Col span={2}>$200</Col>
-          </Row>
-          {(order?.items || []).map((item, index) => (
-            <Row
-              key={index}
-              style={{
-                padding: "15px",
-                borderBottom: "1px solid #f3f3f3",
-              }}
-            >
-              <Col span={12}>
-                <Text strong>
-                  {order?.type === "pack"
-                    ? itemName(item)
-                    : productName(item)}
-                </Text>
-              </Col>
-
-              <Col span={4}>
-                {item?.quantity || 0}
-              </Col>
-
-              <Col span={4}>
-                {CURRENCIES_SYMBOL[
-                  order?.paymentId?.currency
-                ] || "$"}
-                {Number(item?.amount || 0).toFixed(2)}
-              </Col>
-
-              <Col
-                span={4}
-                style={{
-                  textAlign: "right",
-                }}
+      <Col justify="center" align="middle" style={{ width: "100%" }}>
+        <Card
+          id="master_order_invoice"
+          style={{
+            maxWidth: 700,
+            background: theme ? "#1f1f1f" : "#fff",
+          }}
+        >
+          {/* HEADER */}
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Title align="left"
+                level={3}
               >
-                {CURRENCIES_SYMBOL[
-                  order?.paymentId?.currency
-                ] || "$"}
-                {(
-                  (item?.amount || 0) *
-                  (item?.quantity || 0)
-                ).toFixed(2)}
-              </Col>
-            </Row>
-          ))}
-          {/* </div> */}
-        </Space>
-
-        {/* TOTALS */}
-        <Row justify="end" style={{ marginTop: 30 }}>
-          <Col span={8}>
-            <Row>
-              <Col span={12}>Subtotal</Col>
-
-              <Col span={12} style={{ textAlign: "right" }}>
-                {CURRENCIES_SYMBOL[
-                  order?.paymentId?.currency
-                ] || "$0"}
-                {order?.subTotal?.toFixed(2)}
-              </Col>
-            </Row>
-
-            <Row style={{ marginTop: 10 }}>
-              <Col span={12}>Handling Fee</Col>
-
-              <Col span={12} style={{ textAlign: "right" }}>
-                {CURRENCIES_SYMBOL[
-                  order?.paymentId?.currency
-                ] || "$0"}
-                {order?.handlingFee?.toFixed(2)}
-              </Col>
-            </Row>
-
-            <Divider style={{ borderTop: "1px solid #d9d9d9", marginBottom: 10, marginTop: 10 }} />
-
-            <Row >
-              <Col span={12}>
-                <Text strong>{t("grand.total", { defaultValue: "Grand Total" })}</Text>
-              </Col>
-
-              <Col span={12} style={{ textAlign: "right" }}>
-                <Text strong>
-                  {CURRENCIES_SYMBOL[
-                    order?.paymentId?.currency
-                  ] || "$0"}
-                  {order?.total?.toFixed(2)}
+                INVOICE
+              </Title>
+              <Flex vertical align="start" >
+                <Text type="secondary">
+                  {t("issued", { defaultValue: "Issued" })}:{" "}:
+                  {order?.createdAt
+                    ? formatDate(order.createdAt)
+                    : "N/A"}
                 </Text>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-
-        {/* PAYMENT INFO */}
-        <Row style={{ marginTop: 40 }}>
-          <Col span={12}>
-            <Title level={5}>
-              {t("paymentinfo", {
-                defaultValue: "Payment Info",
-              })}
-            </Title>
-            <Text>
-              {t("paymentid", { defaultValue: "Payment ID", })}:{" "}
-              <Text copyable={{ text: payment?.paymentId?._id || "" }} >
-
-                {payment?.paymentId?._id || "N/A"}
-              </Text>
-            </Text>
-
-            <br />
-            <Row align="middle" gutter={8}>
-              <Col>
-                <Text>
-                  {t("payment.gateway", {
-                    defaultValue: "Payment Gateway",
+                <Text type="secondary">
+                  {t("orderid", { defaultValue: "Order ID" })}:{" "}
+                  <Text
+                    copyable={{
+                      text: order?._id || "",
+                    }}
+                  >
+                    {order?._id || "N/A"}
+                  </Text>
+                </Text>
+                <Text type="secondary">
+                  {t("date", { defaultValue: "Date" })}{" "}:{order?.createdAt ? formatDate(order.createdAt) : "N/A"}
+                </Text>
+                <Text type="secondary">
+                  {t("order.status", {
+                    defaultValue: "Order Status",
                   })}{" "}
-                  :
+                  : {t(order?.status) || "N/A"}
                 </Text>
-              </Col>
-              <Col>
-                {payment?.paymentId?.gateway ? (
-                  <Image
-                    src={getMediaPath(
-                      `/media/payment-gateway/${payment?.paymentId?.gateway}.png`,
-                    )}
-                    preview={false}
-                    alt={payment?.paymentId?.gateway}
-                    width={60}
-                  />
-                ) : (
-                  <Text>N/A</Text>
-                )}
-              </Col>
-            </Row>
-            <Text>
-              {t("status", {
-                defaultValue: "Status",
-              })}{" "}
-              :{" "}
-              {order?.paymentId?.status === "paid" ? (
-                <Tag color="#87d068">
-                  {t("paid", {
-                    defaultValue: "Paid",
-                  })}
-                </Tag>
-              ) : (
-                <Tag
-                  style={{
-                    marginRight: 10,
-                    backgroundColor: "#f50",
-                    color: "#fff"
-                  }}
-                >
-                  {t("unpaid", {
-                    defaultValue: "Unpaid",
-                  })}
-                </Tag>
-              )}
-            </Text>
-          </Col>
-        </Row>
+              </Flex>
+            </Col>
 
-        <Divider />
-
-        <Row justify="space-between" style={{ textAlign: "Left" }}>
-          <Col>
-            <Space
-              direction="vertical"
-              style={{
-                textAlign: "left",
-                marginBottom: "10px",
-              }}
-            >
-              {" "}
+            <Col>
               <Image
                 preview={false}
-                src={getMediaPath(panel?.billing?.logo)}
-                width={100}
-                alt="INVOICE LTD"
-                loading="lazy"
+                width={70}
+                src={getMediaPath(order?.panelId?.billing?.logo)}
               />
-            </Space>
-            <Paragraph
+            </Col>
+          </Row>
+
+          <Divider />
+
+          {/* TOP INFO */}
+          <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <Row style={{ border: "1px solid #ececec" }}
+            >
+              <Col align="left" span={12} style={{ padding: "20px", }} >
+                <Title level={5}>
+                  {t("invoiceto", {
+                    defaultValue: "Invoice To",
+                  })}{" "}
+                  :
+                </Title>
+                <Flex vertical>
+                  <Text strong>{panel?.billing?.name || "Company"}</Text>
+                  <Text>
+                    <EnvironmentOutlined /> {panel?.billing?.address || "Office"}
+                  </Text>
+                  <Text>
+                    <PhoneOutlined /> {panel?.billing?.phone || "Phone"}
+                  </Text>
+                  <Text>
+                    <MailOutlined /> {panel?.billing?.email || "Email"}
+                  </Text>
+                </Flex>
+              </Col>
+
+              <Col align="left" span={12} style={{ padding: "20px", borderLeft: "1px solid #ececec", }} >
+                <Title level={5}>
+                  {t("payto", {
+                    defaultValue: "Pay To",
+                  })}{" "}
+                  :
+                </Title>
+                <Flex vertical>
+                  <Text strong>{order?.name || "Username"}</Text>
+                  <Text>
+                    <EnvironmentOutlined /> {renderAddress(order?.userId?.address)}
+                  </Text>
+                  <Text>
+                    <PhoneOutlined /> {order?.phone || "Phone"}
+                  </Text>
+                  <Text>
+                    <MailOutlined /> {order?.email || "Email"}
+                  </Text>
+                </Flex>
+              </Col>
+            </Row>
+
+            <Row
               style={{
-                textAlign: "left",
+                background: theme ? "#686767" : "#d8d8d8",
+                padding: "12px 15px",
+                fontWeight: 600,
+                borderBottom: "1px solid #ececec",
               }}
             >
-              {t("invoice.footer", {
-                companyName: panel?.billing?.name,
-                defaultValue:
-                  "Thank You For Your Interest In {{companyName}} Products. Your Order Has Been Received And Will Be Processed Once Payment Has Been Confirmed.",
+              {columns.map((col, index) => {
+                const spans = [4, 9, 4, 5, 2];
+
+                return (
+                  <Col key={col.key || index} span={spans[index]}>
+                    {col.title}
+                  </Col>
+                );
               })}
-            </Paragraph>
-          </Col>
-        </Row>
-      </div>
+            </Row>
+
+            <Row
+              style={{
+                padding: "5px 15px",
+                borderBottom: "1px solid #ececec",
+              }}
+            >
+              <Col span={4}>1</Col>
+              <Col span={9}>Demo</Col>
+              <Col span={4}>$100</Col>
+              <Col span={5}>2</Col>
+              <Col span={2}>$200</Col>
+            </Row>
+            {(order?.items || []).map((item, index) => (
+              <Row
+                key={index}
+                style={{
+                  padding: "15px",
+                  borderBottom: "1px solid #f3f3f3",
+                }}
+              >
+                <Col span={12}>
+                  <Text strong>
+                    {order?.type === "pack"
+                      ? itemName(item)
+                      : productName(item)}
+                  </Text>
+                </Col>
+
+                <Col span={4}>
+                  {item?.quantity || 0}
+                </Col>
+
+                <Col span={4}>
+                  {CURRENCIES_SYMBOL[
+                    order?.paymentId?.currency
+                  ] || "$"}
+                  {Number(item?.amount || 0).toFixed(2)}
+                </Col>
+
+                <Col
+                  span={4} 
+                  style={{
+                    textAlign: "right",
+                  }}
+                >
+                  {CURRENCIES_SYMBOL[
+                    order?.paymentId?.currency
+                  ] || "$"}
+                  {(
+                    (item?.amount || 0) *
+                    (item?.quantity || 0)
+                  ).toFixed(2)}
+                </Col>
+              </Row>
+            ))}
+            {/* </div> */}
+          </Space>
+
+          <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            {/* TOTALS */}
+            <Row justify="end" style={{ marginTop: 30 }}>
+              <Col span={8} align="left">
+                <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                  <Row>
+                    <Col span={12}>Subtotal</Col>
+
+                    <Col span={12} align="right">
+                      {CURRENCIES_SYMBOL[
+                        order?.paymentId?.currency
+                      ] || "$0"}
+                      {order?.subTotal?.toFixed(2)}
+                    </Col>
+                  </Row>
+
+                  <Row >
+                    <Col span={12}>Handling Fee</Col>
+
+                    <Col span={12} align="right">
+                      {CURRENCIES_SYMBOL[
+                        order?.paymentId?.currency
+                      ] || "$0"}
+                      {order?.handlingFee?.toFixed(2)}
+                    </Col>
+                  </Row>
+                </Space>
+
+                <Divider style={{ borderTop: "1px solid #d9d9d9", marginBottom: 10, marginTop: 10 }} />
+
+                <Row >
+                  <Col span={12}>
+                    <Text strong>{t("grand.total", { defaultValue: "Grand Total" })}</Text>
+                  </Col>
+
+                  <Col span={12} align="right">
+                    <Text strong>
+                      {CURRENCIES_SYMBOL[
+                        order?.paymentId?.currency
+                      ] || "$0"}
+                      {order?.total?.toFixed(2)}
+                    </Text>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+
+            {/* PAYMENT INFO */}
+            <Row>
+              <Col span={12} align="left" >
+                <Title level={5} >
+                  {t("paymentinfo", {
+                    defaultValue: "Payment Info",
+                  })}
+                </Title>
+                <Text>
+                  {t("paymentid", { defaultValue: "Payment ID", })}:{" "}
+                  <Text copyable={{ text: payment?.paymentId?._id || "" }} >
+
+                    {payment?.paymentId?._id || "N/A"}
+                  </Text>
+                </Text>
+
+                <br />
+                <Row align="middle" gutter={8}>
+                  <Col>
+                    <Text>
+                      {t("payment.gateway", {
+                        defaultValue: "Payment Gateway",
+                      })}{" "}
+                      :
+                    </Text>
+                  </Col>
+                  <Col>
+                    {payment?.paymentId?.gateway ? (
+                      <Image
+                        src={getMediaPath(
+                          `/media/payment-gateway/${payment?.paymentId?.gateway}.png`,
+                        )}
+                        preview={false}
+                        alt={payment?.paymentId?.gateway}
+                        width={60}
+                      />
+                    ) : (
+                      <Text>N/A</Text>
+                    )}
+                  </Col>
+                </Row>
+                <Text>
+                  {t("status", {
+                    defaultValue: "Status",
+                  })}{" "}
+                  :{" "}
+                  {order?.paymentId?.status === "paid" ? (
+                    <Tag color="#87d068">
+                      {t("paid", {
+                        defaultValue: "Paid",
+                      })}
+                    </Tag>
+                  ) : (
+                    <Tag
+                      style={{
+                        backgroundColor: "#f50",
+                        color: "#fff"
+                      }}
+                    >
+                      {t("unpaid", {
+                        defaultValue: "Unpaid",
+                      })}
+                    </Tag>
+                  )}
+                </Text>
+              </Col>
+            </Row>
+          </Space>
+          <Divider />
+
+          <Row justify="space-between" >
+            <Col align="left">
+              <Space direction="vertical">
+                {" "}
+                <Image
+                  preview={false}
+                  src={getMediaPath(panel?.billing?.logo)}
+                  width={100}
+                  alt="INVOICE LTD"
+                  loading="lazy"
+                />
+
+                <Paragraph >
+                  {t("invoice.footer", {
+                    companyName: panel?.billing?.name,
+                    defaultValue:
+                      "Thank You For Your Interest In {{companyName}} Products. Your Order Has Been Received And Will Be Processed Once Payment Has Been Confirmed.",
+                  })}
+                </Paragraph>
+              </Space>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
     </>
   );
 };

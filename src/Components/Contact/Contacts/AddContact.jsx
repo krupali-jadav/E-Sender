@@ -333,9 +333,6 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
 
                                             <Space.Compact
                                                 block
-                                                style={{
-                                                    padding: 8,
-                                                }}
                                             >
                                                 <Input
                                                     placeholder="Enter Group Name"
@@ -361,7 +358,8 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                     </Col>
 
                 </Row>
-                <div style={{ marginBottom: 12 }}>
+                <Space direction="vertical" size="middle"   >
+                <div >
                     <Text strong>Custom Fields :</Text>
                 </div>
                 <Row gutter={16}>
@@ -401,6 +399,7 @@ function AddContact({ open, onClose, editData, fetchContacts, onSave, showGroups
                         </Col>
                     ))}
                 </Row>
+                </Space>
             </Form>
         </Modal >
     );

@@ -56,21 +56,13 @@ function Orders() {
 
     const OrderStatuses = [
         t("processing", { defaultValue: "Processing" }),
-        // "Processing",
-        // t("pending", { defaultValue: "Pending" }),
-        "Pending",
-        // t("failed", { defaultValue: "Failed" }),
-        'Failed',
-        // t("on.hold", { defaultValue: "On Hold" }),
-        "On Hold",
-        // t("completed", { defaultValue: "Completed" }),
-        "Completed",
-        // t("cancelled", { defaultValue: "Cancelled" }),
-        "Cancelled",
-        // t("refunded", { defaultValue: "Refunded" }),
-        "Refunded",
-        // t("draft", { defaultValue: "Draft" }),
-        "Draft",
+        t("pending", { defaultValue: "Pending" }),
+        t("failed", { defaultValue: "Failed" }),
+        t("on.hold", { defaultValue: "On Hold" }),
+        t("completed", { defaultValue: "Completed" }),
+        t("cancelled", { defaultValue: "Cancelled" }),
+        t("refunded", { defaultValue: "Refunded" }),
+        t("draft", { defaultValue: "Draft" }),
     ]
 
     const getAllOrders = async () => {

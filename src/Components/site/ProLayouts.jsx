@@ -181,9 +181,23 @@ const ProLayouts = ({ children }) => {
         icon: <IoSettingsOutline />,
       },
       {
-        path: "/documentation/introduction",
+        path: "/documentation",
         name: t("documentation", { defaultValue: "Documentation" }),
         icon: <FileTextOutlined />,
+        routes: [
+          {
+            path: "/documentation/introduction",
+            name: "Documentation",
+          },
+          {
+            path: "/documentation/api-reference",
+            name: "API Reference",
+          },
+          {
+            path: "/documentation/package-doc",
+            name: "Package Doc",
+          },
+        ],
       },
       {
         path: "/privacy-policy",
@@ -434,10 +448,10 @@ const ProLayouts = ({ children }) => {
         if (item.path === "/documentation/introduction") {
           return (
             <div
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                navigate("/documentation/introduction");
+              onClick={() => {
+                if (item.path) {
+                  navigate(item.path);
+                }
               }}
             >
               {dom}

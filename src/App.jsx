@@ -31,7 +31,7 @@ import ApiRefrennce from "./Components/Documentation/ApiRefrennce";
 import Introduction from "./Components/Documentation/Introduction";
 import GenerateApiKeyDocs from "./Components/Documentation/GenerateApiKeyDocs";
 import AddDomainDocs from "./Components/Documentation/AddDomainDocs";
-import DocumentationLayout from "./Components/Documentation/DocumentationLayout ";
+import DocumentationLayout from "./Components/Documentation/DocumentationLayout";
 
 const ProtectedRoute = ({
   component: Component,
@@ -175,11 +175,9 @@ function App() {
                 />
               ))}
               <Route
-                path="/documentation"
+                path="/documentation/*"
                 element={
-                  <ProLayouts>
-                    <DocumentationLayout />
-                  </ProLayouts>
+                  <DocumentationLayout />
                 }
               >
                 <Route index element={<Navigate to="introduction" replace />} />
@@ -188,11 +186,11 @@ function App() {
                 <Route path="adddomain" element={<AddDomainDocs />} />
               </Route>
 
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </>
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </>
           )}
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
     </ConfigProvider >
   );
 }

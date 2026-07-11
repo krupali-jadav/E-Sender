@@ -1,6 +1,6 @@
 import SearchHeader from '../../Search Header/SearchHeader'
 import { PageContainer } from '@ant-design/pro-components'
-import { Button, Card, DatePicker, Dropdown, Flex, Form, message, Modal, Select, Space, Table, Typography } from 'antd'
+import { Button, Card, Col, DatePicker, Dropdown, Flex, Form, message, Modal, Select, Space, Table, Typography } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import AddCustomField from '../../Contact/Custom Field/AddCustomField';
@@ -255,15 +255,11 @@ function CustomFields() {
           trigger={["click"]}
           placement="bottomRight"
         >
-          <MoreOutlined
-            style={{
-              fontSize: "15px",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-            }}
+          <Col display="flex" align="middle">
+          <MoreOutlined 
             onClick={(e) => e.stopPropagation()}
           />
+          </Col>
         </Dropdown>
       ),
     },
