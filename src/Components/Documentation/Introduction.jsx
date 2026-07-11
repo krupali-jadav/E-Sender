@@ -131,13 +131,6 @@ const Introduction = () => {
                 >
                   <Card
                     hoverable
-                    bodyStyle={{
-                      padding: 22,
-                      minHeight: 120,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
                     style={{
                       borderRadius: 16,
                     }}
@@ -162,10 +155,11 @@ const Introduction = () => {
             </Row>
           </div>
 
-          <div id="explore" style={{ marginTop: 80 }}>
+          <div id="explore" >
             <Typography.Title level={2}>
               Explore
             </Typography.Title>
+            
 
             <Typography.Paragraph
               type="secondary"

@@ -218,7 +218,7 @@ function GenerateApiKeyDocs() {
                   {index !== codeSteps.length - 1 && (
                     <div
                       style={{
-                        width: 2,
+                        width: 1,
                         flex: 1,
                         minHeight: 280,
                         background: "#303030",

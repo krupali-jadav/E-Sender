@@ -1,18 +1,42 @@
 import { ProLayout } from "@ant-design/pro-components";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ProLayouts from "../site/ProLayouts";
-
-const docRoute = {
+const documentationRoute = {
     path: "/documentation",
     routes: [
         {
-            path: "/documentation",
-            name: "Documentation",
-            routes: [
-                { path: "/documentation/introduction", name: "Introduction" },
-                { path: "/documentation/generate-apikey", name: "Generate API Key" },
-                { path: "/documentation/adddomain", name: "Add Domain" },
-            ],
+            path: "/documentation/introduction",
+            name: "Introduction",
+        },
+        {
+            path: "/documentation/generate-apikey",
+            name: "Generate API Key",
+        },
+        {
+            path: "/documentation/adddomain",
+            name: "Add Domain",
+        },
+    ],
+};
+
+const apiReferenceRoute = {
+    path: "/documentation/api-reference",
+    routes: [
+        {
+            path: "/documentation/api-reference/send-email",
+            name: "Send Email",
+        },
+        {
+            path: "/documentation/api-reference/send-batch-email",
+            name: "Send Batch Email",
+        },
+        {
+            path: "/documentation/api-reference/get-email",
+            name: "Get Email",
+        },
+        {
+            path: "/documentation/api-reference/cancel-email",
+            name: "Cancel Email",
         },
     ],
 };
@@ -20,12 +44,15 @@ const docRoute = {
 export default function DocumentationLayout() {
     const navigate = useNavigate();
     const location = useLocation();
+   const currentRoute = location.pathname.startsWith("/documentation/api-reference")
+        ? apiReferenceRoute
+        : documentationRoute;
 
     return (
         <ProLayouts>
             <div style={{ height: "calc(100vh - 64px)", margin: "-28px", overflow: "hidden" }}>
                 <ProLayout
-                    route={docRoute}
+                    route={currentRoute}
                     location={{ pathname: location.pathname }}
                     layout="side"
                     siderWidth={220}
@@ -51,10 +78,10 @@ export default function DocumentationLayout() {
                     }}
                     contentStyle={{
                         padding: 0,
-                        
+
                     }}
                 >
-                    <div style={{ height: "calc(100vh - 64px)", overflow: "auto", scrollbarWidth: "none",  }}>
+                    <div style={{ height: "calc(100vh - 64px)", overflow: "auto", scrollbarWidth: "none", }}>
                         <Outlet />
                     </div>
                 </ProLayout>

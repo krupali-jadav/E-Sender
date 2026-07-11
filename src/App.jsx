@@ -32,6 +32,7 @@ import Introduction from "./Components/Documentation/Introduction";
 import GenerateApiKeyDocs from "./Components/Documentation/GenerateApiKeyDocs";
 import AddDomainDocs from "./Components/Documentation/AddDomainDocs";
 import DocumentationLayout from "./Components/Documentation/DocumentationLayout";
+import SendEmail from "./Components/Documentation/APi Refrence/SendEmail";
 
 const ProtectedRoute = ({
   component: Component,
@@ -174,18 +175,25 @@ function App() {
                   }
                 />
               ))}
-              <Route
-                path="/documentation/*"
-                element={
-                  <DocumentationLayout />
-                }
-              >
+              <Route path="/documentation/*" element={<DocumentationLayout />}>
                 <Route index element={<Navigate to="introduction" replace />} />
+
                 <Route path="introduction" element={<Introduction />} />
                 <Route path="generate-apikey" element={<GenerateApiKeyDocs />} />
                 <Route path="adddomain" element={<AddDomainDocs />} />
-              </Route>
 
+                <Route path="api-reference">
+                  <Route
+                    index
+                    element={<Navigate to="send-email" replace />}
+                  />
+
+                  <Route path="send-email" element={<SendEmail />} />
+                  {/* <Route path="send-batch-email" element={<SendBatchEmail />} />
+                  <Route path="get-email" element={<GetEmail />} />
+                  <Route path="cancel-email" element={<CancelEmail />} /> */}
+                </Route>
+              </Route>
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </>
           )}
