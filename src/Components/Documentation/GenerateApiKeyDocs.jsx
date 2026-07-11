@@ -1,5 +1,5 @@
 import { CopyOutlined } from "@ant-design/icons";
-import { Avatar, Button, Flex, message, Space, Typography, } from "antd";
+import { Avatar, Button, Flex, message, Space, Steps, Typography, } from "antd";
 import { useSelector } from "react-redux";
 const { Title, Text, Paragraph } = Typography;
 
@@ -76,24 +76,17 @@ function GenerateApiKeyDocs() {
         padding: "48px 32px 80px",
       }}
     >
-      <Text type="secondary" style={{ fontSize: 14 }}>
+      <Text type="secondary">
         Get started
       </Text>
 
       <Flex
         justify="space-between"
         align="flex-start"
-        style={{ marginTop: 12 }}
       >
         <div>
           <Title level={3}>Generate an API Key</Title>
-          <Paragraph
-            style={{
-              marginTop: 12,
-              fontSize: 15,
-              color: "#8c8c8c",
-            }}
-          >
+          <Paragraph style={{ fontSize: 15, color: "#8c8c8c", }}>
             Get started sending emails by generating an API key.
           </Paragraph>
         </div>
@@ -118,69 +111,40 @@ function GenerateApiKeyDocs() {
           <Paragraph style={{ fontSize: 16, color: "#8c8c8c" }}>
             Follow the steps below to generate your API key:
           </Paragraph>
-
-          <div style={{ marginTop: 40 }}>
-            {steps.map((step, index) => (
-              <Flex key={index} align="flex-start">
-                {/* Timeline */}
-                <div
-                  style={{
-                    width: 60,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
+          <Steps
+            direction="vertical"
+            items={steps.map((step, index) => ({
+              title: (
+                <Typography.Text
+                  strong
+                  style={{ color: theme ? "#c9c9c9" : "#1A1A1A", fontSize: 16, }}
                 >
-                  <div
-                    style={{
-                      width: 34,
-                      height: 34,
-                      borderRadius: "50%",
-                      background: theme ? "#1A1A1A" : "#c9c9c9",
-                      color: theme ? "#fff" : "#000",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {index + 1}
-                  </div>
-
-                  {index !== steps.length - 1 && (
-                    <div
-                      style={{
-                        width: 1,
-                        flex: 1,
-                        minHeight: 70,
-                        background: "#434343",
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div
-                  style={{
-                    paddingBottom: 35,
-                    flex: 1,
-                  }}
-                >
-                  <Title level={5} style={{ marginBottom: 8 }}>
-                    {step.title}
-                  </Title>
-
-                  <Paragraph
-                    style={{
-                      color: "#8c8c8c",
-                      marginBottom: 0,
-                    }}
+                  {step.title}
+                </Typography.Text>
+              ),
+              description: (
+                <div style={{ marginBottom: 20 }}>
+                  <Typography.Text
+                    style={{ color: theme ? "#8c8c8c" : "#1A1A1A", }}
                   >
                     {step.description}
-                  </Paragraph>
+                  </Typography.Text>
                 </div>
-              </Flex>
-            ))}
-          </div>
+              ),
+              icon: (
+                <Avatar
+                  size={32}
+                  style={{
+                    background: theme ? "#1A1A1A" : "#c9c9c9",
+                    color: theme ? "#fff" : "#000",
+                    fontSize: 14,
+                  }}
+                >
+                  {index + 1}
+                </Avatar>
+              ),
+            }))}
+          />
         </div>
 
         <div>
@@ -194,58 +158,30 @@ function GenerateApiKeyDocs() {
             Store your API key securely and never expose it in your frontend source code.
           </Paragraph>
 
-          <div style={{ marginTop: 40 }}>
-            {codeSteps.map((step, index) => (
-              <Flex key={index} align="flex-start">
-                {/* Timeline */}
-                <div
-                  style={{
-                    width: 60,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
+          <Steps
+            direction="vertical"
+            items={codeSteps.map((step, index) => ({
+              style: { marginBottom: 20, },
+              title: (
+                <Typography.Text
+                  strong
+                  style={{ color: theme ? "#c9c9c9" : "#1A1A1A", fontSize: 16, }}
                 >
-                  <Avatar
-                    style={{
-                      background: theme ? "#1A1A1A" : "#e7e7e7",
-                      color: theme ? "#fff" : "#000",
-                    }}
-                  >
-                    {index + 1}
-                  </Avatar>
-
-                  {index !== codeSteps.length - 1 && (
-                    <div
-                      style={{
-                        width: 2,
-                        flex: 1,
-                        minHeight: 280,
-                        background: "#303030",
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div
-                  style={{
-                    flex: 1,
-                    paddingLeft: 24,
-                    paddingBottom: 30,
-                  }}
-                >
-                  <Title level={4}>{step.title}</Title>
-
+                  {step.title}
+                </Typography.Text>
+              ),
+              description: (
+                <>
                   {step.description}
 
                   <div
                     style={{
                       background: "#141414",
-                      border: "1px solid #303030",
+                      border: "1px solid #a3a3a3",
                       borderRadius: 16,
                       overflow: "hidden",
                       marginTop: 20,
+                      marginBottom: 20,
                     }}
                   >
                     <Flex
@@ -254,37 +190,43 @@ function GenerateApiKeyDocs() {
                       style={{
                         padding: "12px 16px",
                         borderBottom: "1px solid #303030",
+                        background: theme ? "#1A1A1A" : "#dddddd",
+                        color: theme ? "#fff" : "#000",
                       }}
                     >
-                      <Text style={{ color: "#BFBFBF" }}>
+                      <Text>
                         {step.fileName}
                       </Text>
 
-                      <Button
-                        type="text"
-                        icon={<CopyOutlined />}
-                        onClick={() => {
-                          navigator.clipboard.writeText(step.code);
-                          message.success("Copied!");
-                        }}
-                      />
+                      <Text copyable></Text>
                     </Flex>
 
                     <div
                       style={{
                         padding: 20,
-                        background: "#111",
-                        fontFamily: "monospace",
-                        whiteSpace: "pre-wrap",
+                        background: theme ? "#1A1A1A" : "#fff",
+                        color: theme ? "#fff" : "#000",
                       }}
                     >
                       {step.code}
                     </div>
                   </div>
-                </div>
-              </Flex>
-            ))}
-          </div>
+                </>
+              ),
+              icon: (
+                <Avatar
+                  size={32}
+                  style={{
+                    background: theme ? "#1A1A1A" : "#c9c9c9",
+                    color: theme ? "#fff" : "#000",
+                    fontSize: 14,
+                  }}
+                >
+                  {index + 1}
+                </Avatar>
+              ),
+            }))}
+          />
         </div>
       </Space>
     </div>
