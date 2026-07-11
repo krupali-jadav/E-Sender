@@ -12,6 +12,7 @@ import {
     Flex,
     Row,
     message,
+    Col,
 } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
@@ -227,10 +228,10 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                 </Button>,
             ]}
         >
-            <Space direction="vertical" style={{ width: "100%" }}>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
                 <Row justify="space-between" align="middle" gutter={[16, 16]}>
+                    <Col span={10}>
                     <Input.Search
-                        style={{ width: 350 }}
                         placeholder={t("search_contacts", { defaultValue: "Search Contacts" })}
                         enterButton={<SearchOutlined />}
                         allowClear
@@ -241,12 +242,13 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                             setPage(1);
                         }}
                     />
-
-                    <Form.Item label={t("filter_by_groups", { defaultValue: "Filter by Groups" })} style={{ marginBottom: 0 }} >
+                    </Col>
+                    
+                <Col span={10}>
+                    <Form.Item label={t("filter_by_groups", { defaultValue: "Filter by Groups" })} >
                         <Select
                             mode="multiple"
                             showSearch
-                            style={{ width: 300 }}
                             optionFilterProp="label"
                             value={groupIds}
                             onChange={(value) => {
@@ -260,6 +262,7 @@ function ImportFromContacts({ open, onClose, onImport, }) {
                             }))}
                         />
                     </Form.Item>
+                    </Col>
                 </Row>
 
                 <Table

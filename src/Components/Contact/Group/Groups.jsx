@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components'
 import SearchHeader from '../../../Components/Search Header/SearchHeader'
-import { Button, Card, DatePicker, Dropdown, Form, message, Modal, Space, Table } from 'antd'
+import { Button, Card, Col, DatePicker, Dropdown, Form, message, Modal, Space, Table } from 'antd'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons'
 import AddGroup from './AddGroup';
 import { formatDate, getCurrentTime } from '../../../util/commom.utils'
@@ -230,15 +230,11 @@ function Groups() {
           trigger={["click"]}
           placement="bottomRight"
         >
-          <MoreOutlined
-            style={{
-              fontSize: "15px",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          />
+          <Col display="flex" align="middle">
+            <MoreOutlined 
+              onClick={(e) => e.stopPropagation()}
+            />
+          </Col>
         </Dropdown>
       ),
     },

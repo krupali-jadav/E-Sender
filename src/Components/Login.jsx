@@ -136,13 +136,12 @@ function Login() {
 
     return (
         <React.Fragment>
-            <Layout style={{ minHeight: "100vh", }}>
+            <Layout>
                 <Flex justify="end" align="center">
                     <Form
                         layout="inline"
                         style={{
                             padding: "15px",
-                            alignItems: "center",
                         }}
                     >
                         <Form.Item noStyle>
@@ -170,7 +169,6 @@ function Login() {
                             label={t("select.language", {
                                 defaultValue: "Select Language",
                             })}
-                            style={{ marginLeft: 10 }}
                         >
                             <Select
                                 value={language ?? "en"}
@@ -195,7 +193,7 @@ function Login() {
                     </Form>
                 </Flex>
                 <Content>
-                    <Row justify="center" align="middle" style={{ minHeight: "100vh" }}>
+                    <Row justify="center" align="middle" style={{ minHeight: "93.4vh" }}>
                         {isLoginPage ? (
                             <Col xs={18} sm={15} md={10} lg={8} xl={7} xxl={5}>
                                 <Card>

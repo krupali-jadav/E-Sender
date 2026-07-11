@@ -110,7 +110,6 @@ function CreateWebHook({ open, onClose }) {
                 mode="multiple"
                 showSearch
                 placeholder={t("search.events", { defaultValue: "Search events..." })}
-                style={{ width: "100%" }}
                 options={options}
                 optionFilterProp="value"
               />
