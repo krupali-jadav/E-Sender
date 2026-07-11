@@ -345,7 +345,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
           {/* Header */}
           <Row justify="space-between" gutter={[16, 16]}>
             <Col>
-              <Title level={5} style={{ margin: 0 }}>
+              <Title level={5}>
                 {t("select.audience", { defaultValue: "Select Audience" })}
               </Title>
             </Col>
@@ -572,7 +572,7 @@ function ContactCampaigns({ campaignData, setCampaignData, setCurrent, showGroup
               onChange: (keys) => setSelectedRowKeys(keys),
             }}
           />
-          <Flex wrap="wrap" gap={16} style={{ padding: "12px 4px" }}>
+          <Flex wrap="wrap" gap={16}>
             <Text strong>Total: {totalCount}</Text>
             <Text strong>Selected: {selectedCount}</Text>
             <Text strong>Duplicates: {duplicateCount}</Text>

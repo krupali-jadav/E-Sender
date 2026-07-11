@@ -1,5 +1,5 @@
 import { ProLayout, } from "@ant-design/pro-components";
-import { Avatar, Breadcrumb, Grid, Dropdown, Select, Typography } from "antd";
+import { Avatar, Breadcrumb, Grid, Dropdown, Select, Typography, Flex } from "antd";
 import { UserOutlined, LogoutOutlined, LaptopOutlined, HomeOutlined, TeamOutlined, DatabaseOutlined, SafetyCertificateOutlined, FileTextOutlined, ReadOutlined, ShoppingCartOutlined, MoonOutlined, SunOutlined, ContainerOutlined, GlobalOutlined, } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,7 +90,6 @@ const ProLayouts = ({ children }) => {
         title: (
           <HomeOutlined
             onClick={() => navigate("/")}
-            style={{ cursor: "pointer" }}
           />
         ),
       },
@@ -309,19 +308,16 @@ const ProLayouts = ({ children }) => {
               <MoonOutlined
                 key="MoonOutlined"
                 onClick={toggleTheme}
-                style={{ marginRight: 20 }}
               />
             ) : (
               <SunOutlined
                 key="SunOutlined"
                 onClick={toggleTheme}
-                style={{ marginRight: 20 }}
               />
             ),
 
             <Select
               value={language ?? "en"}
-              listHeight={200}
               showSearch
               style={{
                 height: 45,
@@ -345,19 +341,16 @@ const ProLayouts = ({ children }) => {
             <MoonOutlined
               key="MoonOutlined"
               onClick={toggleTheme}
-              style={{ marginRight: 10 }}
             />
           ) : (
             <SunOutlined
               key="SunOutlined"
               onClick={toggleTheme}
-              style={{ marginRight: 10 }}
             />
           ),
           <>
             <Select
               value={language ?? "en"}
-              listHeight={200}
               showSearch
               style={{
                 height: 35,
@@ -390,23 +383,18 @@ const ProLayouts = ({ children }) => {
         if (props?.collapsed) return undefined;
         return (
           <>
-            <div
-              style={{
-                textAlign: "center",
-                paddingBlockStart: 12,
-              }}
-            >
+            <Flex vertical align="center">
               <div>
                 © {formatDate(new Date(), "YYYY")}{" "}
                 {t("designed_&_developed", {
                   defaultValue: "Designed & Developed",
                 })}
               </div>
-              {t("by", { defaultValue: "By" })}{" "}
               <small>
+                {t("by", { defaultValue: "By" })}{" "}
                 <strong>{CompanyName}</strong>
               </small>
-            </div>
+            </Flex>
           </>
         );
       }}

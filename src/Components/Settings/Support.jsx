@@ -1,5 +1,5 @@
 import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Dropdown, Flex, message, Modal, Table } from "antd";
+import { Button, Card, Col, Dropdown, Flex, message, Modal, Table } from "antd";
 import { t } from "i18next";
 import AddSupport from "./AddSupport";
 import { useEffect, useState } from "react";
@@ -103,12 +103,9 @@ function Support() {
           }}
           trigger={["click"]}
         >
-          <MoreOutlined
-            style={{
-              cursor: "pointer",
-              fontSize: 15,
-            }}
-          />
+          <Col align="center">
+            <MoreOutlined />
+          </Col>
         </Dropdown>
       ),
     }

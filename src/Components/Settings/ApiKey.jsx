@@ -1,4 +1,4 @@
-import { Button, Card, Col, Input, message, Typography } from "antd";
+import { Button, Card, Col, Input, message, Space, Typography } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -49,35 +49,37 @@ function ApiKey() {
           borderRadius: 0,
           borderColor: theme ? "transparent" : "#fff",
         }}>
-        <div style={{ marginBottom: 8 }}>
-          {t("your.api.key", { defaultValue: "Your API Key" })}
-        </div>
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Text>
+            {t("your.api.key", { defaultValue: "Your API Key" })}
+          </Text>
 
-        <Input.Group compact>
-          <Input.Password
-            value={apiKey}
-            readOnly
-            visibilityToggle={{
-              visible,
-              onVisibleChange: setVisible,
-            }}
-            suffix={
-              <Typography.Text
-                copyable={{
-                  text: apiKey,
-                }}
-              />
-            }
-            style={{ width: "82%" }}
-          />
-          <Button
-            type="primary"
-            loading={loading}
-            onClick={handleGenerate}
-          >
-            {t("generate", { defaultValue: "Generate" })}
-          </Button>
-        </Input.Group>
+          <Input.Group compact>
+            <Input.Password
+              value={apiKey}
+              readOnly
+              visibilityToggle={{
+                visible,
+                onVisibleChange: setVisible,
+              }}
+              suffix={
+                <Typography.Text
+                  copyable={{
+                    text: apiKey,
+                  }}
+                />
+              }
+              style={{ width: "82%" }}
+            />
+            <Button
+              type="primary"
+              loading={loading}
+              onClick={handleGenerate}
+            >
+              {t("generate", { defaultValue: "Generate" })}
+            </Button>
+          </Input.Group>
+        </Space>
       </Card>
     </Col>
   );

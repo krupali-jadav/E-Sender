@@ -5,7 +5,7 @@ import { MoreOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import PhonePreview from "./PhonePreview";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
   const [loading, setLoading] = useState(false);
@@ -50,7 +50,6 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
               domainKey: record.key,
             }));
           }}
-          style={{ padding: 0 }}
         >
           {text}
         </Button>
@@ -108,135 +107,136 @@ function DomainCampaigns({ campaignData, setCampaignData, setCurrent }) {
     <Space direction="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]}>
         <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
-          <Card>
-            <Form
-              form={form}
-              layout="vertical"
-              initialValues={{ name: campaignData?.name }}
-              onValuesChange={(changedValues) => {
-                if (changedValues.name !== undefined) {
-                  form.setFieldsValue({
-                    name: changedValues.name,
-                  });
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Card>
+              <Form
+                form={form}
+                layout="vertical"
+                initialValues={{ name: campaignData?.name }}
+                onValuesChange={(changedValues) => {
+                  if (changedValues.name !== undefined) {
+                    form.setFieldsValue({
+                      name: changedValues.name,
+                    });
 
-                  setCampaignData((prev) => ({
-                    ...prev,
-                    name: changedValues.name,
-                  }));
-                }
-              }}
-            >
-              <Row gutter={16} align="middle">
-                <Col span={12}>
-                  <Form.Item
-                    label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
-                    name="name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please enter Campaigns Name",
-                      },
-                    ]}
-                  >
-                    <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Tags"
-                    name="tags"
-                  >
-                    <Select
-                      mode="tags"
-                      style={{ width: "100%" }}
-                      placeholder="Enter tags"
-                      value={selectedTags}
-                      options={tagOptions}
-                      onChange={(value) => {
-                        setSelectedTags(value);
-
-                        setCampaignData((prev) => ({
-                          ...prev,
-                          tags: value,
-                        }));
-
-                        const updatedOptions = [
-                          ...tagOptions,
-                          ...value
-                            .filter((tag) => !tagOptions.some((opt) => opt.value === tag))
-                            .map((tag) => ({
-                              label: tag,
-                              value: tag,
-                            })),
-                        ];
-
-                        setTagOptions(updatedOptions);
-                      }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-            <Space direction="vertical" size="large" style={{ width: "100%" }}>
-              <Row gutter={[16, 16]} align="middle" justify="space-between">
-                <Col>
-                  <Text strong style={{ fontSize: 18 }}>{t("select.domain", { defaultValue: "Select Domain" })}</Text>
-                </Col>
-                <Col xs={24} sm={24} md={26} lg={24} xl={15} xxl={10}>
-                  <Flex gap={6}>
-                    <Input.Search
-                      placeholder={t("search...", { defaultValue: "Search...", })}
-                      enterButton={<SearchOutlined />}
-                      allowClear
-                    />
-                    <Button
-                      type="primary"
-                      icon={<PlusOutlined />}
-                      onClick={() => navigate("/domains/add")}
-                    >
-                      {t("add.domain", { defaultValue: "Add Domain" })}
-                    </Button>
-                  </Flex>
-                </Col>
-              </Row>
-              <Table
-                scroll={{ x: "max-content" }}
-                columns={columns}
-                dataSource={data}
-                rowSelection={rowSelection}
-                onRow={(record) => ({
-                  onClick: () => {
                     setCampaignData((prev) => ({
                       ...prev,
-                      domain: record.name,
-                      domainKey: record.key,
+                      name: changedValues.name,
                     }));
                   }
-                })}
-              />
-            </Space>
+                }}
+              >
+                <Row gutter={16} align="middle">
+                  <Col span={12}>
+                    <Form.Item
+                      label={t("campaigns.name", { defaultValue: "Campaigns Name" })}
+                      name="name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter Campaigns Name",
+                        },
+                      ]}
+                    >
+                      <Input placeholder={t("enter.name", { defaultValue: "Enter Campaigns Name" })} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Tags"
+                      name="tags"
+                    >
+                      <Select
+                        mode="tags"
+                        placeholder="Enter tags"
+                        value={selectedTags}
+                        options={tagOptions}
+                        onChange={(value) => {
+                          setSelectedTags(value);
 
-          </Card>
-          <Flex justify="end" style={{ marginTop: 16 }} gap={6}>
-            <Button
-              type="primary"
-              loading={loading}
-              onClick={async () => {
-                try {
-                  await form.validateFields();
-                  if (!campaignData.domain) {
-                    message.warning("Please select a domain");
-                    return;
+                          setCampaignData((prev) => ({
+                            ...prev,
+                            tags: value,
+                          }));
+
+                          const updatedOptions = [
+                            ...tagOptions,
+                            ...value
+                              .filter((tag) => !tagOptions.some((opt) => opt.value === tag))
+                              .map((tag) => ({
+                                label: tag,
+                                value: tag,
+                              })),
+                          ];
+
+                          setTagOptions(updatedOptions);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+              <Space direction="vertical" size="large" style={{ width: "100%" }}>
+                <Row gutter={[16, 16]} align="middle" justify="space-between">
+                  <Col>
+                    <Title strong level={4}>{t("select.domain", { defaultValue: "Select Domain" })}</Title>
+                  </Col>
+                  <Col xs={24} sm={24} md={26} lg={24} xl={15} xxl={10}>
+                    <Flex gap={6}>
+                      <Input.Search
+                        placeholder={t("search...", { defaultValue: "Search...", })}
+                        enterButton={<SearchOutlined />}
+                        allowClear
+                      />
+                      <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => navigate("/domains/add")}
+                      >
+                        {t("add.domain", { defaultValue: "Add Domain" })}
+                      </Button>
+                    </Flex>
+                  </Col>
+                </Row>
+                <Table
+                  scroll={{ x: "max-content" }}
+                  columns={columns}
+                  dataSource={data}
+                  rowSelection={rowSelection}
+                  onRow={(record) => ({
+                    onClick: () => {
+                      setCampaignData((prev) => ({
+                        ...prev,
+                        domain: record.name,
+                        domainKey: record.key,
+                      }));
+                    }
+                  })}
+                />
+              </Space>
+
+            </Card>
+            <Flex justify="end" gap={6}>
+              <Button
+                type="primary"
+                loading={loading}
+                onClick={async () => {
+                  try {
+                    await form.validateFields();
+                    if (!campaignData.domain) {
+                      message.warning("Please select a domain");
+                      return;
+                    }
+                    setCurrent(1);
+                  } catch (error) {
+                    message.warning("Please enter Campaigns Name");
                   }
-                  setCurrent(1);
-                } catch (error) {
-                  message.warning("Please enter Campaigns Name");
-                }
-              }}
-            >
-              {t("next", { defaultValue: "Next" })}
-            </Button>
-          </Flex>
+                }}
+              >
+                {t("next", { defaultValue: "Next" })}
+              </Button>
+            </Flex>
+          </Space>
         </Col >
         {/* Right Side */}
         < Col xs={24} md={24} lg={10} xl={8} xxl={6} >

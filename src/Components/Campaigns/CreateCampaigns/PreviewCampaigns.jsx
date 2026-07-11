@@ -52,7 +52,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                 <Avatar
                   size={35}
                   style={{
-                    background: "#e6e6e6",
+                    background: "#E6E6E6",
                     color: "#666",
                   }}
                 >
@@ -96,7 +96,7 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
                     left: 50,
                     zIndex: 1000,
                     width: 250,
-                    backgroundColor: theme ? "#4d4d4d" : "#f7f7f7",
+                    backgroundColor: theme ? "#4D4D4D" : "#F7F7F7",
                     borderRadius: 12,
                   }}
                 >
@@ -176,86 +176,86 @@ const PreviewCampaign = ({ campaignData, setCurrent, domainName }) => {
 
         <Col xs={24} lg={12}>
           {/* <Card> */}
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={24}>
-              <Card>
-                <Space direction="vertical" size="middle">
-                  <Text>{t("campaign.name", { defaultValue: "Campaign Name" })}:<Text strong> {campaignData?.domain || "-"}</Text></Text>
-                  <Text>{t("selected.template", { defaultValue: "Selected Template" })}: <Text strong>{campaignData?.template?.name || "-"}</Text></Text>
-                  <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: <Text strong>{campaignData?.contacts?.length || 0}</Text></Text>
-                  <Text>{t("domain", { defaultValue: "Domain" })}: <Text strong>{campaignData?.domain || "-"}</Text></Text>
-                  <Flex wrap>
-                    <Text>{t("tags", { defaultValue: "Tags" })}:</Text>
-                    {campaignData?.tags?.length ? (
-                      campaignData.tags.map((tag) => (
-                        <Tag key={tag} style={{ marginLeft: 5, fontWeight: 500 }}>
-                          {tag}
-                        </Tag>
-                      ))
-                    ) : (
-                      <Text>-</Text>
-                    )}
-                  </Flex>
-                </Space>
-              </Card>
-            </Col>
-            <Col xs={24} md={24}>
-              <Card title={t("send.test.email", { defaultValue: "Send Test Email Message" })}>
-                <Text>{t("email", { defaultValue: "Email" })}</Text>
-
-                <Row gutter={[16, 16]} align="middle" justify="space-between" style={{ marginTop: 10 }}>
-                  <Col xs={24} sm={24} md={26} lg={24} xl={16} xxl={20} >
-                    <Input placeholder={t("enter.email", { defaultValue: "Enter Email" })} />
-                  </Col>
-                  <Col>
-                    <Button type="primary">{t("send.email", { defaultValue: "Send Email" })}</Button>
-                  </Col>
-                </Row>
-                <div style={{ height: 40 }} />
-              </Card>
-            </Col>
-
-            <Col xs={24} md={24}>
-              <Card title="Schedule Your Campaign">
-                <Radio.Group
-                  value={scheduleType}
-                  onChange={(e) => setScheduleType(e.target.value)}
-                >
-                  <Space direction="vertical" style={{ width: "100%" }}>
-                    <Radio value="now">
-                      {t("send.it.now", { defaultValue: "Send It Now" })}
-                    </Radio>
-
-                    <Space direction="horizontal" style={{ width: "100%" }} >
-                      <Radio value="schedule">
-                        {t("schedule.it.for.a.specific.time", {
-                          defaultValue: "Schedule It For A Specific Time",
-                        })}
-                      </Radio>
-
-                      {scheduleType === "schedule" && (
-                        <div
-                          style={{ marginTop: 8, marginLeft: 24, }}
-                        >
-                          <DatePicker
-                            showTime={{ use12Hours: true, format: "hh:mm A" }}
-                            format="DD-MM-YYYY hh:mm A"
-                            placeholder="Select Date & Time"
-                            style={{ width: 250 }}
-                          />
-                        </div>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} md={24}>
+                <Card>
+                  <Space direction="vertical" size="middle">
+                    <Text>{t("campaign.name", { defaultValue: "Campaign Name" })}:<Text strong> {campaignData?.domain || "-"}</Text></Text>
+                    <Text>{t("selected.template", { defaultValue: "Selected Template" })}: <Text strong>{campaignData?.template?.name || "-"}</Text></Text>
+                    <Text>{t("total.contacts", { defaultValue: "Total Contacts" })}: <Text strong>{campaignData?.contacts?.length || 0}</Text></Text>
+                    <Text>{t("domain", { defaultValue: "Domain" })}: <Text strong>{campaignData?.domain || "-"}</Text></Text>
+                    <Space size="small" wrap>
+                      <Text>{t("tags", { defaultValue: "Tags" })}:</Text>
+                      {campaignData?.tags?.length ? (
+                        campaignData.tags.map((tag) => (
+                          <Tag key={tag}>
+                            {tag}
+                          </Tag>
+                        ))
+                      ) : (
+                        <Text>-</Text>
                       )}
                     </Space>
                   </Space>
-                </Radio.Group>
-              </Card>
-            </Col>
-          </Row>
+                </Card>
+              </Col>
+              <Col xs={24} md={24}>
+                <Card title={t("send.test.email", { defaultValue: "Send Test Email Message" })}>
+                  <Space direction="vertical" style={{ width: "100%" }}>
+                    <Text>{t("email", { defaultValue: "Email" })}</Text>
 
-          <Flex justify="end" gap="small" style={{ marginTop: 8 }}>
-            <Button onClick={() => setCurrent(2)}>{t("previous", { defaultValue: "Previous" })}</Button>
-            <Button type="primary" loading={loading}>{t("send.now", { defaultValue: "Send Now" })}</Button>
-          </Flex>
+                    <Row gutter={[16, 16]} align="middle" justify="space-between">
+                      <Col xs={24} sm={24} md={26} lg={24} xl={16} xxl={20} >
+                        <Input placeholder={t("enter.email", { defaultValue: "Enter Email" })} />
+                      </Col>
+                      <Col>
+                        <Button type="primary">{t("send.email", { defaultValue: "Send Email" })}</Button>
+                      </Col>
+                    </Row>
+                  </Space>
+                </Card>
+              </Col>
+
+              <Col xs={24} md={24}>
+                <Card title="Schedule Your Campaign">
+                  <Radio.Group
+                    value={scheduleType}
+                    onChange={(e) => setScheduleType(e.target.value)}
+                  >
+                    <Space direction="vertical" style={{ width: "100%" }}>
+                      <Radio value="now">
+                        {t("send.it.now", { defaultValue: "Send It Now" })}
+                      </Radio>
+
+                      <Space direction="horizontal" style={{ width: "100%" }} >
+                        <Radio value="schedule">
+                          {t("schedule.it.for.a.specific.time", {
+                            defaultValue: "Schedule It For A Specific Time",
+                          })}
+                        </Radio>
+
+                        {scheduleType === "schedule" && (
+                          <div>
+                            <DatePicker
+                              showTime={{ use12Hours: true, format: "hh:mm A" }}
+                              format="DD-MM-YYYY hh:mm A"
+                              placeholder="Select Date & Time"
+                            />
+                          </div>
+                        )}
+                      </Space>
+                    </Space>
+                  </Radio.Group>
+                </Card>
+              </Col>
+            </Row>
+
+            <Flex justify="end" gap="small">
+              <Button onClick={() => setCurrent(2)}>{t("previous", { defaultValue: "Previous" })}</Button>
+              <Button type="primary" loading={loading}>{t("send.now", { defaultValue: "Send Now" })}</Button>
+            </Flex>
+          </Space>
         </Col>
       </Row>
     </>

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../../util/axiosInstance";
 import { setSelectedProject } from "../../../redux/reducers/reducer.app";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
   const dispatch = useDispatch();
@@ -144,108 +144,110 @@ function TemplateCampaigns({ campaignData, setCampaignData, setCurrent }) {
     <Space direction="vertical" style={{ width: "100%" }}>
       <Row gutter={[16, 16]} >
         <Col xs={24} md={24} lg={14} xl={16} xxl={18}>
-          <Card>
-            <Row gutter={[16, 16]} align="middle">
-              <Col xs={24} md={8}>
-                <Text strong style={{ fontSize: 15 }}>
-                  Choose Template
-                  {campaignData?.template && (
-                    <span
-                      style={{
-                        color: "#1677ff",
-                        marginLeft: 8,
+          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+            <Card>
+              <Row gutter={[16, 16]} align="middle">
+                <Col xs={24} md={8}>
+                  <Title level={5} strong>
+                    Choose Template
+                    {campaignData?.template && (
+                      <span
+                        style={{
+                          color: "#1677ff",
+                          marginLeft: 8,
+                        }}
+                      >
+                        ({campaignData.template.name})
+                      </span>
+                    )}
+                  </Title>
+                </Col>
+
+                <Col xs={24} md={16}>
+                  <Flex justify="end" gap={10} wrap="wrap">
+                    <Select
+                      style={{ width: 200 }}
+                      placeholder={t("select.project", { defaultValue: "Select Project" })}
+                      value={selectedProject?._id || selectedProject?.projectId}
+                      onChange={(value) => {
+                        const project = projects.find(
+                          (p) => (p._id || p.projectId) === value
+                        );
+                        dispatch(setSelectedProject(project));
                       }}
+                      options={projects.map((project) => ({
+                        label: project.name,
+                        value: project._id || project.projectId,
+                      }))}
+                    />
+                    <Input.Search
+                      placeholder={t("search_templates", { defaultValue: "Search Templates" })}
+                      allowClear
+                      enterButton={<SearchOutlined />}
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      style={{ width: 350 }}
+                    />
+
+                    <Button
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() => navigate('/templates/create-template')}
                     >
-                      ({campaignData.template.name})
-                    </span>
-                  )}
-                </Text>
-              </Col>
+                      {t("add", { defaultValue: "Add" })}
+                    </Button>
 
-              <Col xs={24} md={16}>
-                <Flex justify="end" gap={10} wrap="wrap">
-                  <Select
-                    placeholder={t("select.project", { defaultValue: "Select Project" })}
-                    value={selectedProject?._id || selectedProject?.projectId}
-                    style={{ width: 250 }}
-                    onChange={(value) => {
-                      const project = projects.find(
-                        (p) => (p._id || p.projectId) === value
-                      );
-                      dispatch(setSelectedProject(project));
-                    }}
-                    options={projects.map((project) => ({
-                      label: project.name,
-                      value: project._id || project.projectId,
-                    }))}
-                  />
-                  <Input.Search
-                    placeholder={t("search_templates", { defaultValue: "Search Templates" })}
-                    allowClear
-                    enterButton={<SearchOutlined />}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    style={{ width: 350 }}
-                  />
+                  </Flex>
+                </Col>
+              </Row>
+            </Card>
 
-                  <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() => navigate('/templates/create-template')}
-                  >
-                    {t("add", { defaultValue: "Add" })}
-                  </Button>
-
-                </Flex>
-              </Col>
-            </Row>
-          </Card>
-
-          <Card styles={{ body: { padding: 0 } }} style={{ marginTop: 16 }}>
-            <Table
-              loading={loading}
-              columns={columns}
-              pagination={false}
-              dataSource={tableData}
-              scroll={{ x: 700 }}
-              rowSelection={rowSelection}
-              onRow={(record) => ({
-                onClick: () => {
-                  setCampaignData(prev => ({
-                    ...prev,
-                    templateKey: record.key,
-                    template: {
-                      id: record.key,
-                      name: record.name,
-                      html: record.html,
-                    },
-                  }));
-                }
-              })}
-            />
-          </Card>
-
-          <Flex justify="end" gap={10} wrap="wrap" style={{ marginTop: 16 }} >
-            <Button onClick={() => setCurrent(0)}>
-              {t("previous", { defaultValue: "Previous", })}
-            </Button>
-
-            <Button type="primary" onClick={() => setCurrent(2)}
-              onClick={async () => {
-                try {
-                  if (!campaignData.template) {
-                    message.warning("Please select a template");
-                    return;
+            <Card styles={{ body: { padding: 0 } }} >
+              <Table
+                loading={loading}
+                columns={columns}
+                pagination={false}
+                dataSource={tableData}
+                scroll={{ x: 700 }}
+                rowSelection={rowSelection}
+                onRow={(record) => ({
+                  onClick: () => {
+                    setCampaignData(prev => ({
+                      ...prev,
+                      templateKey: record.key,
+                      template: {
+                        id: record.key,
+                        name: record.name,
+                        html: record.html,
+                      },
+                    }));
                   }
-                  setCurrent(2);
-                } catch (error) {
-                  message.warning("Please select a template");
-                }
-              }}
-            >
-              {t("next", { defaultValue: "Next", })}
-            </Button>
-          </Flex>
+                })}
+              />
+            </Card>
+
+            <Flex justify="end" gap={10} wrap="wrap"  >
+              <Button onClick={() => setCurrent(0)}>
+                {t("previous", { defaultValue: "Previous", })}
+              </Button>
+
+              <Button type="primary" onClick={() => setCurrent(2)}
+                onClick={async () => {
+                  try {
+                    if (!campaignData.template) {
+                      message.warning("Please select a template");
+                      return;
+                    }
+                    setCurrent(2);
+                  } catch (error) {
+                    message.warning("Please select a template");
+                  }
+                }}
+              >
+                {t("next", { defaultValue: "Next", })}
+              </Button>
+            </Flex>
+          </Space>
         </Col>
 
         {/* Right Side */}
