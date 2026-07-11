@@ -161,9 +161,9 @@ function Media() {
             </Space>
 
             {loading ? (
-                <div style={{ display: "flex", justifyContent: "center", padding: 80 }}>
+                <Row justify="center" align="middle" style={{ minHeight: "40vh" }} >
                     <Spin size="middle" />
-                </div>
+                </Row>
             ) : mediaList.length === 0 ? (
                 <Empty
                     description="No Media Available"
@@ -183,7 +183,7 @@ function Media() {
                         {mediaList.map((item) => (
                             <Col key={item._id}>
 
-                                <Card styles={{ body: { padding: 0 } }}>
+                                <Card bodyStyle={{ padding: 0 }}>
                                     <Checkbox
                                         checked={selectedMedia.includes(item._id)}
                                         onChange={(e) => {
@@ -195,10 +195,7 @@ function Media() {
                                                 );
                                             }
                                         }}
-                                        style={{
-                                            padding: 8,
-                                            height: 30,
-                                        }}
+                                        style={{ padding: 8, height: 30, }}
                                     />
                                     <div
                                         onMouseEnter={() => setHoveredId(item._id)}
@@ -219,26 +216,21 @@ function Media() {
                                                     <img
                                                         alt={item.name}
                                                         src={item.url}
-                                                        style={{
-                                                            height: 220,
-                                                            width: "100%",
-                                                            objectFit: "contain",
-                                                            borderRadius: 0,
-                                                        }}
+                                                        height={200}
+                                                        width="100%"
+                                                        style={{ objectFit: "contain", borderRadius: 0, }}
                                                     />
                                                 ) : item.type?.startsWith("video/") ? (
                                                     <video
                                                         controls
-                                                        style={{
-                                                            height: 220,
-                                                            width: "100%",
-                                                            objectFit: "contain",
-                                                        }}
+                                                        height={210}
+                                                        width="100%"
+                                                        style={{ objectFit: "contain", }}
                                                     >
                                                         <source src={item.url} type={item.type} />
                                                     </video>
                                                 ) : item.type === "application/pdf" || item.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                                                    <div
+                                                    <Flex
                                                         style={{
                                                             height: 220,
                                                             display: "flex",
@@ -255,7 +247,7 @@ function Media() {
                                                             <FileExcelOutlined style={{ fontSize: 50, color: "green" }} />
                                                         )}
                                                         <span style={{ textAlign: "center", fontSize: 12, }}>{item.name}</span>
-                                                    </div>
+                                                    </Flex>
                                                 ) : (
                                                     <div
                                                         style={{
@@ -309,7 +301,7 @@ function Media() {
                             </Col>
                         ))}
                     </Row>
-                    <Flex justify="end" style={{ marginTop: 24 }}>
+                    <Flex justify="flex-end">
                         <Pagination
                             current={page}
                             total={total}

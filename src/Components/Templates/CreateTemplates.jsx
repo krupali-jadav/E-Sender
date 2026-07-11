@@ -1,5 +1,5 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Card, Col, Form, Input, message, Row, Space, Spin } from "antd";
+import { Button, Card, Col, Form, Input, message, Row, Space, Spin, Typography } from "antd";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import Package from "esender-email-editor";
 import axiosInstance from "../../util/axiosInstance";
 import CreateProjectModal from "./CreateProject";
 import SwitchProjectModal from "./SwichProjectModel";
+const { Title, Text } = Typography;
 
 function CreateTemplates() {
     const navigate = useNavigate();
@@ -151,10 +152,10 @@ function CreateTemplates() {
     return (
         <>
             <Space style={{ padding: "16px 0px 0px 40px", fontSize: 15 }} size="small">
-                <span style={{ fontWeight: "bold" }}>Project:</span>
+                <Text strong>Project:</Text>
                 <Button
                     type="link"
-                    style={{ padding: 0, fontSize: 16 }}
+                    style={{ padding: 0 }}
                     onClick={() => setProjectModalOpen(true)}
                 >
                     {selectedProject?.name || "Select Project"}
@@ -246,7 +247,7 @@ function CreateTemplates() {
                     projects={projects}
                     selectedProject={selectedProject}
                     // onProjectSelect={() => {
-                        
+
                     // }}
                     onCreateProject={() => {
                         setEditProject(null);

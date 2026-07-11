@@ -14,7 +14,7 @@ const Sessions = () => {
 
 
     const sessionDevices = async () => {
-         console.log("Calling session API...");
+        console.log("Calling session API...");
         setLoading(true);
         try {
             const data = await sessionAll({ status: "all" });
@@ -64,70 +64,72 @@ const Sessions = () => {
 
     const renderSessions = (sessions, icon, color, title) => (
         <Card>
-            <Row gutter={[16, 24]} align="middle" style={{ marginBottom: 16 }} justify="space-between"  >
-                <Col>
-                    <Space align="center">
-                        {React.cloneElement(icon, { style: { color, fontSize: "28px" } })}
-                        <Title level={5}>{title}</Title>
-                    </Space>
+            <Space direction="vertical" style={{ width: "100%" }}>
+                <Row gutter={[16, 24]} align="middle" justify="space-between"  >
+                    <Col>
+                        <Space align="center">
+                            {React.cloneElement(icon, { style: { color, fontSize: "28px" } })}
+                            <Title level={5}>{title}</Title>
+                        </Space>
 
-                </Col>
-                <Col>
+                    </Col>
+                    <Col>
 
-                    <Title level={4} style={{ margin: 0 }}>
-                        {sessions?.length}
-                    </Title>
-                </Col>
-            </Row>
-            <div
-                style={{
-                    maxHeight: "450px",
-                    overflowY: "auto",
-                }}
-            >
-                {sessions?.map((item) => (
-                    <Card
-                        key={item._id}
-                        size="small"
-                        style={{ marginBottom: 12 }}
-                    >
-                        <Row justify="space-between" align="middle">
-                            <Col>
-                                <Text strong>
-                                    {item?.info?.os || "Unknown OS"}
-                                </Text>
+                        <Title level={4}>
+                            {sessions?.length}
+                        </Title>
+                    </Col>
+                </Row>
+                <div
+                    style={{
+                        maxHeight: "450px",
+                        overflowY: "auto",
+                    }}
+                >
+                    {sessions?.map((item) => (
+                        <Card
+                            key={item._id}
+                            size="small"
+                            style={{ marginBottom: 12 }}
+                        >
+                            <Row justify="space-between" align="middle">
+                                <Col>
+                                    <Text strong>
+                                        {item?.info?.os || "Unknown OS"}
+                                    </Text>
 
-                                <br />
+                                    <br />
 
-                                <Text type="secondary">
-                                    {item?.info?.browser || "Unknown Browser"}
-                                </Text>
-                                <br />
-                                <Text type="secondary">
-                                    {t("last.active")}{" "}
-                                    {item?.createdAt
-                                        ? formatDate(item.createdAt)
-                                        : "N/A"}
-                                </Text>
-                            </Col>
-                            <Col>
-                                {!item?.logout ? (
-                                    <Button
-                                        type="primary"
-                                        icon={<LogoutOutlined />}
-                                        loading={loadingButton[item._id]}
-                                        onClick={() => handleSessionLogout(item._id)}
-                                    >
-                                        {t("layout.logout")}
-                                    </Button>
-                                ) : (
-                                    <Text type="secondary">{t("signedout")}</Text>
-                                )}
-                            </Col>
-                        </Row>
-                    </Card>
-                ))}
-            </div>
+                                    <Text type="secondary">
+                                        {item?.info?.browser || "Unknown Browser"}
+                                    </Text>
+                                    <br />
+                                    <Text type="secondary">
+                                        {t("last.active")}{" "}
+                                        {item?.createdAt
+                                            ? formatDate(item.createdAt)
+                                            : "N/A"}
+                                    </Text>
+                                </Col>
+                                <Col>
+                                    {!item?.logout ? (
+                                        <Button
+                                            type="primary"
+                                            icon={<LogoutOutlined />}
+                                            loading={loadingButton[item._id]}
+                                            onClick={() => handleSessionLogout(item._id)}
+                                        >
+                                            {t("layout.logout")}
+                                        </Button>
+                                    ) : (
+                                        <Text type="secondary">{t("signedout")}</Text>
+                                    )}
+                                </Col>
+                            </Row>
+                        </Card>
+                    ))}
+                </div>
+            </Space>
         </Card>
     );
 

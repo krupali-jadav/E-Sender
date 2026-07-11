@@ -126,7 +126,7 @@ function Campaigns() {
             // dataSource={data}
             pagination={false}
             scroll={{ x: "max-content" }}
-            
+
           />
         </Card>
       </Space>

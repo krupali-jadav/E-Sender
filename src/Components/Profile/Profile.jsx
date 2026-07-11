@@ -96,12 +96,7 @@ const Profile = () => {
 
   return (
     <PageContainer title="Profile">
-      <Card
-        style={{
-          padding: "26px",
-          borderRadius: "8px",
-        }}
-      >
+      <Card>
         <Form
           form={form}
           layout="vertical"

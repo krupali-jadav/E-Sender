@@ -109,17 +109,13 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
                 <Text strong>{t("projects", { defaultValue: "Projects" })}</Text>
                 {projects.length > 0 ? (
                     <List
-                        style={{ marginTop: 12 }}
                         loading={loading}
                         dataSource={projects}
                         renderItem={(item, index) => (
                             <List.Item>
                                 <Card
                                     size="small"
-                                    style={{
-                                        width: "100%",
-                                        borderRadius: 8,
-                                    }}
+                                    style={{ width: "100%", }}
                                 >
                                     <Flex justify="space-between">
                                         <div>
@@ -141,8 +137,7 @@ const CreateProjectModal = ({ open, onCancel, refreshProjects, editProject }) =>
                 ) : (
                     <Empty
                         image={Empty.PRESENTED_IMAGE_SIMPLE}
-                        description="No Project Created"
-                        style={{ marginTop: 20 }}
+                        description="No Project Created" 
                     />
                 )}
             </div>
